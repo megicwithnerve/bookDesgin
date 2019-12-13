@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.magician.book.dao.CollectionMapper">
+  <resultMap id="BaseResultMap" type="com.magician.book.pojo.BookCollection">
+    <id column="collection_id" jdbcType="INTEGER" property="collectionId" />
+    <result column="book_id" jdbcType="INTEGER" property="bookId" />
+    <result column="reader_id" jdbcType="INTEGER" property="readerId" />
+    <result column="chapter_id" jdbcType="INTEGER" property="chapterId" />
+    <result column="updateTime" jdbcType="DATE" property="updatetime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    collection_id, book_id, reader_id, chapter_id, updateTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_collection
+    where collection_id = #{collectionId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_collection
+    where collection_id = #{collectionId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.magician.book.pojo.BookCollection">
+    insert into tb_collection (collection_id, book_id, reader_id, 
+      chapter_id, updateTime)
+    values (#{collectionId,jdbcType=INTEGER}, #{bookId,jdbcType=INTEGER}, #{readerId,jdbcType=INTEGER}, 
+      #{chapterId,jdbcType=INTEGER}, #{updatetime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.magician.book.pojo.BookCollection">
+    insert into tb_collection
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="collectionId != null">
+        collection_id,
+      </if>
+      <if test="bookId != null">
+        book_id,
+      </if>
+      <if test="readerId != null">
+        reader_id,
+      </if>
+      <if test="chapterId != null">
+        chapter_id,
+      </if>
+      <if test="updatetime != null">
+        updateTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="collectionId != null">
+        #{collectionId,jdbcType=INTEGER},
+      </if>
+      <if test="bookId != null">
+        #{bookId,jdbcType=INTEGER},
+      </if>
+      <if test="readerId != null">
+        #{readerId,jdbcType=INTEGER},
+      </if>
+      <if test="chapterId != null">
+        #{chapterId,jdbcType=INTEGER},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.magician.book.pojo.BookCollection">
+    update tb_collection
+    <set>
+      <if test="bookId != null">
+        book_id = #{bookId,jdbcType=INTEGER},
+      </if>
+      <if test="readerId != null">
+        reader_id = #{readerId,jdbcType=INTEGER},
+      </if>
+      <if test="chapterId != null">
+        chapter_id = #{chapterId,jdbcType=INTEGER},
+      </if>
+      <if test="updatetime != null">
+        updateTime = #{updatetime,jdbcType=DATE},
+      </if>
+    </set>
+    where collection_id = #{collectionId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.magician.book.pojo.BookCollection">
+    update tb_collection
+    set book_id = #{bookId,jdbcType=INTEGER},
+      reader_id = #{readerId,jdbcType=INTEGER},
+      chapter_id = #{chapterId,jdbcType=INTEGER},
+      updateTime = #{updatetime,jdbcType=DATE}
+    where collection_id = #{collectionId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.magician.book.dao.BuyrecordMapper">
+  <resultMap id="BaseResultMap" type="com.magician.book.pojo.Buyrecord">
+    <id column="buyrecord_id" jdbcType="INTEGER" property="buyrecordId" />
+    <result column="book_id" jdbcType="INTEGER" property="bookId" />
+    <result column="chapter_id" jdbcType="INTEGER" property="chapterId" />
+    <result column="writer_id" jdbcType="INTEGER" property="writerId" />
+    <result column="price" jdbcType="INTEGER" property="price" />
+    <result column="cratedTime" jdbcType="DATE" property="cratedtime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    buyrecord_id, book_id, chapter_id, writer_id, price, cratedTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_buyrecord
+    where buyrecord_id = #{buyrecordId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_buyrecord
+    where buyrecord_id = #{buyrecordId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.magician.book.pojo.Buyrecord">
+    insert into tb_buyrecord (buyrecord_id, book_id, chapter_id, 
+      writer_id, price, cratedTime
+      )
+    values (#{buyrecordId,jdbcType=INTEGER}, #{bookId,jdbcType=INTEGER}, #{chapterId,jdbcType=INTEGER}, 
+      #{writerId,jdbcType=INTEGER}, #{price,jdbcType=INTEGER}, #{cratedtime,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.magician.book.pojo.Buyrecord">
+    insert into tb_buyrecord
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="buyrecordId != null">
+        buyrecord_id,
+      </if>
+      <if test="bookId != null">
+        book_id,
+      </if>
+      <if test="chapterId != null">
+        chapter_id,
+      </if>
+      <if test="writerId != null">
+        writer_id,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="cratedtime != null">
+        cratedTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="buyrecordId != null">
+        #{buyrecordId,jdbcType=INTEGER},
+      </if>
+      <if test="bookId != null">
+        #{bookId,jdbcType=INTEGER},
+      </if>
+      <if test="chapterId != null">
+        #{chapterId,jdbcType=INTEGER},
+      </if>
+      <if test="writerId != null">
+        #{writerId,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=INTEGER},
+      </if>
+      <if test="cratedtime != null">
+        #{cratedtime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.magician.book.pojo.Buyrecord">
+    update tb_buyrecord
+    <set>
+      <if test="bookId != null">
+        book_id = #{bookId,jdbcType=INTEGER},
+      </if>
+      <if test="chapterId != null">
+        chapter_id = #{chapterId,jdbcType=INTEGER},
+      </if>
+      <if test="writerId != null">
+        writer_id = #{writerId,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=INTEGER},
+      </if>
+      <if test="cratedtime != null">
+        cratedTime = #{cratedtime,jdbcType=DATE},
+      </if>
+    </set>
+    where buyrecord_id = #{buyrecordId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.magician.book.pojo.Buyrecord">
+    update tb_buyrecord
+    set book_id = #{bookId,jdbcType=INTEGER},
+      chapter_id = #{chapterId,jdbcType=INTEGER},
+      writer_id = #{writerId,jdbcType=INTEGER},
+      price = #{price,jdbcType=INTEGER},
+      cratedTime = #{cratedtime,jdbcType=DATE}
+    where buyrecord_id = #{buyrecordId,jdbcType=INTEGER}
+  </update>
+</mapper>

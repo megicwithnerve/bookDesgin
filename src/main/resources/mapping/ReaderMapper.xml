@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.magician.book.dao.ReaderMapper">
+  <resultMap id="BaseResultMap" type="com.magician.book.pojo.Reader">
+    <id column="redaer_id" jdbcType="INTEGER" property="redaerId" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="telphone" jdbcType="VARCHAR" property="telphone" />
+    <result column="balance" jdbcType="VARCHAR" property="balance" />
+    <result column="reader_status" jdbcType="VARCHAR" property="readerStatus" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    redaer_id, email, password, username, telphone, balance, reader_status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_reader
+    where redaer_id = #{redaerId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_reader
+    where redaer_id = #{redaerId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.magician.book.pojo.Reader">
+    insert into tb_reader (redaer_id, email, password, 
+      username, telphone, balance, 
+      reader_status)
+    values (#{redaerId,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{username,jdbcType=VARCHAR}, #{telphone,jdbcType=VARCHAR}, #{balance,jdbcType=VARCHAR}, 
+      #{readerStatus,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.magician.book.pojo.Reader">
+    insert into tb_reader
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="redaerId != null">
+        redaer_id,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="telphone != null">
+        telphone,
+      </if>
+      <if test="balance != null">
+        balance,
+      </if>
+      <if test="readerStatus != null">
+        reader_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="redaerId != null">
+        #{redaerId,jdbcType=INTEGER},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="telphone != null">
+        #{telphone,jdbcType=VARCHAR},
+      </if>
+      <if test="balance != null">
+        #{balance,jdbcType=VARCHAR},
+      </if>
+      <if test="readerStatus != null">
+        #{readerStatus,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.magician.book.pojo.Reader">
+    update tb_reader
+    <set>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="telphone != null">
+        telphone = #{telphone,jdbcType=VARCHAR},
+      </if>
+      <if test="balance != null">
+        balance = #{balance,jdbcType=VARCHAR},
+      </if>
+      <if test="readerStatus != null">
+        reader_status = #{readerStatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where redaer_id = #{redaerId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.magician.book.pojo.Reader">
+    update tb_reader
+    set email = #{email,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      telphone = #{telphone,jdbcType=VARCHAR},
+      balance = #{balance,jdbcType=VARCHAR},
+      reader_status = #{readerStatus,jdbcType=VARCHAR}
+    where redaer_id = #{redaerId,jdbcType=INTEGER}
+  </update>
+</mapper>

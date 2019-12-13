@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.magician.book.dao.CommentMapper">
+  <resultMap id="BaseResultMap" type="com.magician.book.pojo.Comment">
+    <id column="comment_id" jdbcType="INTEGER" property="commentId" />
+    <result column="book_id" jdbcType="INTEGER" property="bookId" />
+    <result column="reader_id" jdbcType="INTEGER" property="readerId" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="createTime" jdbcType="DATE" property="createtime" />
+    <result column="comment_status" jdbcType="INTEGER" property="commentStatus" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.magician.book.pojo.Comment">
+    <result column="context" jdbcType="LONGVARCHAR" property="context" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    comment_id, book_id, reader_id, parent_id, createTime, comment_status
+  </sql>
+  <sql id="Blob_Column_List">
+    context
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_comment
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_comment
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.magician.book.pojo.Comment">
+    insert into tb_comment (comment_id, book_id, reader_id, 
+      parent_id, createTime, comment_status, 
+      context)
+    values (#{commentId,jdbcType=INTEGER}, #{bookId,jdbcType=INTEGER}, #{readerId,jdbcType=INTEGER}, 
+      #{parentId,jdbcType=INTEGER}, #{createtime,jdbcType=DATE}, #{commentStatus,jdbcType=INTEGER}, 
+      #{context,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.magician.book.pojo.Comment">
+    insert into tb_comment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="commentId != null">
+        comment_id,
+      </if>
+      <if test="bookId != null">
+        book_id,
+      </if>
+      <if test="readerId != null">
+        reader_id,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="createtime != null">
+        createTime,
+      </if>
+      <if test="commentStatus != null">
+        comment_status,
+      </if>
+      <if test="context != null">
+        context,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="commentId != null">
+        #{commentId,jdbcType=INTEGER},
+      </if>
+      <if test="bookId != null">
+        #{bookId,jdbcType=INTEGER},
+      </if>
+      <if test="readerId != null">
+        #{readerId,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=DATE},
+      </if>
+      <if test="commentStatus != null">
+        #{commentStatus,jdbcType=INTEGER},
+      </if>
+      <if test="context != null">
+        #{context,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.magician.book.pojo.Comment">
+    update tb_comment
+    <set>
+      <if test="bookId != null">
+        book_id = #{bookId,jdbcType=INTEGER},
+      </if>
+      <if test="readerId != null">
+        reader_id = #{readerId,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        createTime = #{createtime,jdbcType=DATE},
+      </if>
+      <if test="commentStatus != null">
+        comment_status = #{commentStatus,jdbcType=INTEGER},
+      </if>
+      <if test="context != null">
+        context = #{context,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.magician.book.pojo.Comment">
+    update tb_comment
+    set book_id = #{bookId,jdbcType=INTEGER},
+      reader_id = #{readerId,jdbcType=INTEGER},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      createTime = #{createtime,jdbcType=DATE},
+      comment_status = #{commentStatus,jdbcType=INTEGER},
+      context = #{context,jdbcType=LONGVARCHAR}
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.magician.book.pojo.Comment">
+    update tb_comment
+    set book_id = #{bookId,jdbcType=INTEGER},
+      reader_id = #{readerId,jdbcType=INTEGER},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      createTime = #{createtime,jdbcType=DATE},
+      comment_status = #{commentStatus,jdbcType=INTEGER}
+    where comment_id = #{commentId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.magician.book.dao.RechargerecordMapper">
+  <resultMap id="BaseResultMap" type="com.magician.book.pojo.Rechargerecord">
+    <id column="rechargerecord_id" jdbcType="INTEGER" property="rechargerecordId" />
+    <result column="reader_id" jdbcType="INTEGER" property="readerId" />
+    <result column="ticket_number" jdbcType="INTEGER" property="ticketNumber" />
+    <result column="discount" jdbcType="INTEGER" property="discount" />
+    <result column="price" jdbcType="INTEGER" property="price" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="out_trade_no" jdbcType="VARCHAR" property="outTradeNo" />
+    <result column="trade_no" jdbcType="VARCHAR" property="tradeNo" />
+    <result column="createdTime" jdbcType="DATE" property="createdtime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    rechargerecord_id, reader_id, ticket_number, discount, price, status, out_trade_no, 
+    trade_no, createdTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_rechargerecord
+    where rechargerecord_id = #{rechargerecordId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_rechargerecord
+    where rechargerecord_id = #{rechargerecordId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.magician.book.pojo.Rechargerecord">
+    insert into tb_rechargerecord (rechargerecord_id, reader_id, ticket_number, 
+      discount, price, status, 
+      out_trade_no, trade_no, createdTime
+      )
+    values (#{rechargerecordId,jdbcType=INTEGER}, #{readerId,jdbcType=INTEGER}, #{ticketNumber,jdbcType=INTEGER}, 
+      #{discount,jdbcType=INTEGER}, #{price,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+      #{outTradeNo,jdbcType=VARCHAR}, #{tradeNo,jdbcType=VARCHAR}, #{createdtime,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.magician.book.pojo.Rechargerecord">
+    insert into tb_rechargerecord
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rechargerecordId != null">
+        rechargerecord_id,
+      </if>
+      <if test="readerId != null">
+        reader_id,
+      </if>
+      <if test="ticketNumber != null">
+        ticket_number,
+      </if>
+      <if test="discount != null">
+        discount,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="outTradeNo != null">
+        out_trade_no,
+      </if>
+      <if test="tradeNo != null">
+        trade_no,
+      </if>
+      <if test="createdtime != null">
+        createdTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="rechargerecordId != null">
+        #{rechargerecordId,jdbcType=INTEGER},
+      </if>
+      <if test="readerId != null">
+        #{readerId,jdbcType=INTEGER},
+      </if>
+      <if test="ticketNumber != null">
+        #{ticketNumber,jdbcType=INTEGER},
+      </if>
+      <if test="discount != null">
+        #{discount,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="outTradeNo != null">
+        #{outTradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeNo != null">
+        #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="createdtime != null">
+        #{createdtime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.magician.book.pojo.Rechargerecord">
+    update tb_rechargerecord
+    <set>
+      <if test="readerId != null">
+        reader_id = #{readerId,jdbcType=INTEGER},
+      </if>
+      <if test="ticketNumber != null">
+        ticket_number = #{ticketNumber,jdbcType=INTEGER},
+      </if>
+      <if test="discount != null">
+        discount = #{discount,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="outTradeNo != null">
+        out_trade_no = #{outTradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeNo != null">
+        trade_no = #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="createdtime != null">
+        createdTime = #{createdtime,jdbcType=DATE},
+      </if>
+    </set>
+    where rechargerecord_id = #{rechargerecordId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.magician.book.pojo.Rechargerecord">
+    update tb_rechargerecord
+    set reader_id = #{readerId,jdbcType=INTEGER},
+      ticket_number = #{ticketNumber,jdbcType=INTEGER},
+      discount = #{discount,jdbcType=INTEGER},
+      price = #{price,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      out_trade_no = #{outTradeNo,jdbcType=VARCHAR},
+      trade_no = #{tradeNo,jdbcType=VARCHAR},
+      createdTime = #{createdtime,jdbcType=DATE}
+    where rechargerecord_id = #{rechargerecordId,jdbcType=INTEGER}
+  </update>
+</mapper>

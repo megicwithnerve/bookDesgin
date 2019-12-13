@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.magician.book.dao.SetmealMapper">
+  <resultMap id="BaseResultMap" type="com.magician.book.pojo.Setmeal">
+    <id column="setmeal_id" jdbcType="INTEGER" property="setmealId" />
+    <result column="ticket_number" jdbcType="INTEGER" property="ticketNumber" />
+    <result column="discount" jdbcType="INTEGER" property="discount" />
+    <result column="price" jdbcType="INTEGER" property="price" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    setmeal_id, ticket_number, discount, price
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_setmeal
+    where setmeal_id = #{setmealId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_setmeal
+    where setmeal_id = #{setmealId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.magician.book.pojo.Setmeal">
+    insert into tb_setmeal (setmeal_id, ticket_number, discount, 
+      price)
+    values (#{setmealId,jdbcType=INTEGER}, #{ticketNumber,jdbcType=INTEGER}, #{discount,jdbcType=INTEGER}, 
+      #{price,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.magician.book.pojo.Setmeal">
+    insert into tb_setmeal
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="setmealId != null">
+        setmeal_id,
+      </if>
+      <if test="ticketNumber != null">
+        ticket_number,
+      </if>
+      <if test="discount != null">
+        discount,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="setmealId != null">
+        #{setmealId,jdbcType=INTEGER},
+      </if>
+      <if test="ticketNumber != null">
+        #{ticketNumber,jdbcType=INTEGER},
+      </if>
+      <if test="discount != null">
+        #{discount,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.magician.book.pojo.Setmeal">
+    update tb_setmeal
+    <set>
+      <if test="ticketNumber != null">
+        ticket_number = #{ticketNumber,jdbcType=INTEGER},
+      </if>
+      <if test="discount != null">
+        discount = #{discount,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=INTEGER},
+      </if>
+    </set>
+    where setmeal_id = #{setmealId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.magician.book.pojo.Setmeal">
+    update tb_setmeal
+    set ticket_number = #{ticketNumber,jdbcType=INTEGER},
+      discount = #{discount,jdbcType=INTEGER},
+      price = #{price,jdbcType=INTEGER}
+    where setmeal_id = #{setmealId,jdbcType=INTEGER}
+  </update>
+</mapper>

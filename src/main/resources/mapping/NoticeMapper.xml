@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.magician.book.dao.NoticeMapper">
+  <resultMap id="BaseResultMap" type="com.magician.book.pojo.Notice">
+    <id column="notice_id" jdbcType="INTEGER" property="noticeId" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_notice
+    where notice_id = #{noticeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.magician.book.pojo.Notice">
+    insert into tb_notice (notice_id)
+    values (#{noticeId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.magician.book.pojo.Notice">
+    insert into tb_notice
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="noticeId != null">
+        notice_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="noticeId != null">
+        #{noticeId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>

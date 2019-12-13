@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.magician.book.dao.ThumbMapper">
+  <resultMap id="BaseResultMap" type="com.magician.book.pojo.Thumb">
+    <id column="thumb_id" jdbcType="INTEGER" property="thumbId" />
+    <result column="book_id" jdbcType="INTEGER" property="bookId" />
+    <result column="reader_id" jdbcType="INTEGER" property="readerId" />
+    <result column="thumb_status" jdbcType="INTEGER" property="thumbStatus" />
+    <result column="updateTime" jdbcType="DATE" property="updatetime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    thumb_id, book_id, reader_id, thumb_status, updateTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_thumb
+    where thumb_id = #{thumbId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_thumb
+    where thumb_id = #{thumbId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.magician.book.pojo.Thumb">
+    insert into tb_thumb (thumb_id, book_id, reader_id, 
+      thumb_status, updateTime)
+    values (#{thumbId,jdbcType=INTEGER}, #{bookId,jdbcType=INTEGER}, #{readerId,jdbcType=INTEGER}, 
+      #{thumbStatus,jdbcType=INTEGER}, #{updatetime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.magician.book.pojo.Thumb">
+    insert into tb_thumb
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="thumbId != null">
+        thumb_id,
+      </if>
+      <if test="bookId != null">
+        book_id,
+      </if>
+      <if test="readerId != null">
+        reader_id,
+      </if>
+      <if test="thumbStatus != null">
+        thumb_status,
+      </if>
+      <if test="updatetime != null">
+        updateTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="thumbId != null">
+        #{thumbId,jdbcType=INTEGER},
+      </if>
+      <if test="bookId != null">
+        #{bookId,jdbcType=INTEGER},
+      </if>
+      <if test="readerId != null">
+        #{readerId,jdbcType=INTEGER},
+      </if>
+      <if test="thumbStatus != null">
+        #{thumbStatus,jdbcType=INTEGER},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.magician.book.pojo.Thumb">
+    update tb_thumb
+    <set>
+      <if test="bookId != null">
+        book_id = #{bookId,jdbcType=INTEGER},
+      </if>
+      <if test="readerId != null">
+        reader_id = #{readerId,jdbcType=INTEGER},
+      </if>
+      <if test="thumbStatus != null">
+        thumb_status = #{thumbStatus,jdbcType=INTEGER},
+      </if>
+      <if test="updatetime != null">
+        updateTime = #{updatetime,jdbcType=DATE},
+      </if>
+    </set>
+    where thumb_id = #{thumbId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.magician.book.pojo.Thumb">
+    update tb_thumb
+    set book_id = #{bookId,jdbcType=INTEGER},
+      reader_id = #{readerId,jdbcType=INTEGER},
+      thumb_status = #{thumbStatus,jdbcType=INTEGER},
+      updateTime = #{updatetime,jdbcType=DATE}
+    where thumb_id = #{thumbId,jdbcType=INTEGER}
+  </update>
+</mapper>

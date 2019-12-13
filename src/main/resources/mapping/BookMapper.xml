@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.magician.book.dao.BookMapper">
+  <resultMap id="BaseResultMap" type="com.magician.book.pojo.Book">
+    <id column="book_id" jdbcType="INTEGER" property="bookId" />
+    <result column="book_image" jdbcType="VARCHAR" property="bookImage" />
+    <result column="book_name" jdbcType="VARCHAR" property="bookName" />
+    <result column="book_info" jdbcType="VARCHAR" property="bookInfo" />
+    <result column="word_number" jdbcType="INTEGER" property="wordNumber" />
+    <result column="price" jdbcType="INTEGER" property="price" />
+    <result column="writer_name" jdbcType="VARCHAR" property="writerName" />
+    <result column="writer_id" jdbcType="INTEGER" property="writerId" />
+    <result column="book_status" jdbcType="INTEGER" property="bookStatus" />
+    <result column="message" jdbcType="VARCHAR" property="message" />
+    <result column="clicks" jdbcType="INTEGER" property="clicks" />
+    <result column="thumbs" jdbcType="INTEGER" property="thumbs" />
+    <result column="createTime" jdbcType="DATE" property="createtime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    book_id, book_image, book_name, book_info, word_number, price, writer_name, writer_id, 
+    book_status, message, clicks, thumbs, createTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_book
+    where book_id = #{bookId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_book
+    where book_id = #{bookId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.magician.book.pojo.Book">
+    insert into tb_book (book_id, book_image, book_name, 
+      book_info, word_number, price, 
+      writer_name, writer_id, book_status, 
+      message, clicks, thumbs, 
+      createTime)
+    values (#{bookId,jdbcType=INTEGER}, #{bookImage,jdbcType=VARCHAR}, #{bookName,jdbcType=VARCHAR}, 
+      #{bookInfo,jdbcType=VARCHAR}, #{wordNumber,jdbcType=INTEGER}, #{price,jdbcType=INTEGER}, 
+      #{writerName,jdbcType=VARCHAR}, #{writerId,jdbcType=INTEGER}, #{bookStatus,jdbcType=INTEGER}, 
+      #{message,jdbcType=VARCHAR}, #{clicks,jdbcType=INTEGER}, #{thumbs,jdbcType=INTEGER}, 
+      #{createtime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.magician.book.pojo.Book">
+    insert into tb_book
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bookId != null">
+        book_id,
+      </if>
+      <if test="bookImage != null">
+        book_image,
+      </if>
+      <if test="bookName != null">
+        book_name,
+      </if>
+      <if test="bookInfo != null">
+        book_info,
+      </if>
+      <if test="wordNumber != null">
+        word_number,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="writerName != null">
+        writer_name,
+      </if>
+      <if test="writerId != null">
+        writer_id,
+      </if>
+      <if test="bookStatus != null">
+        book_status,
+      </if>
+      <if test="message != null">
+        message,
+      </if>
+      <if test="clicks != null">
+        clicks,
+      </if>
+      <if test="thumbs != null">
+        thumbs,
+      </if>
+      <if test="createtime != null">
+        createTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bookId != null">
+        #{bookId,jdbcType=INTEGER},
+      </if>
+      <if test="bookImage != null">
+        #{bookImage,jdbcType=VARCHAR},
+      </if>
+      <if test="bookName != null">
+        #{bookName,jdbcType=VARCHAR},
+      </if>
+      <if test="bookInfo != null">
+        #{bookInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="wordNumber != null">
+        #{wordNumber,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=INTEGER},
+      </if>
+      <if test="writerName != null">
+        #{writerName,jdbcType=VARCHAR},
+      </if>
+      <if test="writerId != null">
+        #{writerId,jdbcType=INTEGER},
+      </if>
+      <if test="bookStatus != null">
+        #{bookStatus,jdbcType=INTEGER},
+      </if>
+      <if test="message != null">
+        #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="clicks != null">
+        #{clicks,jdbcType=INTEGER},
+      </if>
+      <if test="thumbs != null">
+        #{thumbs,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.magician.book.pojo.Book">
+    update tb_book
+    <set>
+      <if test="bookImage != null">
+        book_image = #{bookImage,jdbcType=VARCHAR},
+      </if>
+      <if test="bookName != null">
+        book_name = #{bookName,jdbcType=VARCHAR},
+      </if>
+      <if test="bookInfo != null">
+        book_info = #{bookInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="wordNumber != null">
+        word_number = #{wordNumber,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=INTEGER},
+      </if>
+      <if test="writerName != null">
+        writer_name = #{writerName,jdbcType=VARCHAR},
+      </if>
+      <if test="writerId != null">
+        writer_id = #{writerId,jdbcType=INTEGER},
+      </if>
+      <if test="bookStatus != null">
+        book_status = #{bookStatus,jdbcType=INTEGER},
+      </if>
+      <if test="message != null">
+        message = #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="clicks != null">
+        clicks = #{clicks,jdbcType=INTEGER},
+      </if>
+      <if test="thumbs != null">
+        thumbs = #{thumbs,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        createTime = #{createtime,jdbcType=DATE},
+      </if>
+    </set>
+    where book_id = #{bookId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.magician.book.pojo.Book">
+    update tb_book
+    set book_image = #{bookImage,jdbcType=VARCHAR},
+      book_name = #{bookName,jdbcType=VARCHAR},
+      book_info = #{bookInfo,jdbcType=VARCHAR},
+      word_number = #{wordNumber,jdbcType=INTEGER},
+      price = #{price,jdbcType=INTEGER},
+      writer_name = #{writerName,jdbcType=VARCHAR},
+      writer_id = #{writerId,jdbcType=INTEGER},
+      book_status = #{bookStatus,jdbcType=INTEGER},
+      message = #{message,jdbcType=VARCHAR},
+      clicks = #{clicks,jdbcType=INTEGER},
+      thumbs = #{thumbs,jdbcType=INTEGER},
+      createTime = #{createtime,jdbcType=DATE}
+    where book_id = #{bookId,jdbcType=INTEGER}
+  </update>
+</mapper>

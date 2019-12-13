@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.magician.book.dao.WriterMapper">
+  <resultMap id="BaseResultMap" type="com.magician.book.pojo.Writer">
+    <id column="writer_id" jdbcType="INTEGER" property="writerId" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="writer_name" jdbcType="VARCHAR" property="writerName" />
+    <result column="real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="telphone" jdbcType="VARCHAR" property="telphone" />
+    <result column="profit" jdbcType="VARCHAR" property="profit" />
+    <result column="writer_status" jdbcType="INTEGER" property="writerStatus" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    writer_id, email, password, writer_name, real_name, telphone, profit, writer_status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_writer
+    where writer_id = #{writerId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_writer
+    where writer_id = #{writerId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.magician.book.pojo.Writer">
+    insert into tb_writer (writer_id, email, password, 
+      writer_name, real_name, telphone, 
+      profit, writer_status)
+    values (#{writerId,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{writerName,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, #{telphone,jdbcType=VARCHAR}, 
+      #{profit,jdbcType=VARCHAR}, #{writerStatus,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.magician.book.pojo.Writer">
+    insert into tb_writer
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="writerId != null">
+        writer_id,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="writerName != null">
+        writer_name,
+      </if>
+      <if test="realName != null">
+        real_name,
+      </if>
+      <if test="telphone != null">
+        telphone,
+      </if>
+      <if test="profit != null">
+        profit,
+      </if>
+      <if test="writerStatus != null">
+        writer_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="writerId != null">
+        #{writerId,jdbcType=INTEGER},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="writerName != null">
+        #{writerName,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null">
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="telphone != null">
+        #{telphone,jdbcType=VARCHAR},
+      </if>
+      <if test="profit != null">
+        #{profit,jdbcType=VARCHAR},
+      </if>
+      <if test="writerStatus != null">
+        #{writerStatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.magician.book.pojo.Writer">
+    update tb_writer
+    <set>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="writerName != null">
+        writer_name = #{writerName,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null">
+        real_name = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="telphone != null">
+        telphone = #{telphone,jdbcType=VARCHAR},
+      </if>
+      <if test="profit != null">
+        profit = #{profit,jdbcType=VARCHAR},
+      </if>
+      <if test="writerStatus != null">
+        writer_status = #{writerStatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where writer_id = #{writerId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.magician.book.pojo.Writer">
+    update tb_writer
+    set email = #{email,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      writer_name = #{writerName,jdbcType=VARCHAR},
+      real_name = #{realName,jdbcType=VARCHAR},
+      telphone = #{telphone,jdbcType=VARCHAR},
+      profit = #{profit,jdbcType=VARCHAR},
+      writer_status = #{writerStatus,jdbcType=INTEGER}
+    where writer_id = #{writerId,jdbcType=INTEGER}
+  </update>
+</mapper>

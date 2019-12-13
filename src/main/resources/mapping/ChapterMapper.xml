@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.magician.book.dao.ChapterMapper">
+  <resultMap id="BaseResultMap" type="com.magician.book.pojo.Chapter">
+    <id column="chapter_id" jdbcType="INTEGER" property="chapterId" />
+    <result column="chapter_number" jdbcType="VARCHAR" property="chapterNumber" />
+    <result column="chapter_name" jdbcType="VARCHAR" property="chapterName" />
+    <result column="price" jdbcType="INTEGER" property="price" />
+    <result column="book_id" jdbcType="INTEGER" property="bookId" />
+    <result column="book_name" jdbcType="VARCHAR" property="bookName" />
+    <result column="writer_id" jdbcType="INTEGER" property="writerId" />
+    <result column="chapter_status" jdbcType="INTEGER" property="chapterStatus" />
+    <result column="vip_chapter" jdbcType="INTEGER" property="vipChapter" />
+    <result column="message" jdbcType="VARCHAR" property="message" />
+    <result column="createdTime" jdbcType="DATE" property="createdtime" />
+    <result column="updateTime" jdbcType="DATE" property="updatetime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.magician.book.pojo.Chapter">
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    chapter_id, chapter_number, chapter_name, price, book_id, book_name, writer_id, chapter_status, 
+    vip_chapter, message, createdTime, updateTime
+  </sql>
+  <sql id="Blob_Column_List">
+    content
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_chapter
+    where chapter_id = #{chapterId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_chapter
+    where chapter_id = #{chapterId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.magician.book.pojo.Chapter">
+    insert into tb_chapter (chapter_id, chapter_number, chapter_name, 
+      price, book_id, book_name, 
+      writer_id, chapter_status, vip_chapter, 
+      message, createdTime, updateTime, 
+      content)
+    values (#{chapterId,jdbcType=INTEGER}, #{chapterNumber,jdbcType=VARCHAR}, #{chapterName,jdbcType=VARCHAR}, 
+      #{price,jdbcType=INTEGER}, #{bookId,jdbcType=INTEGER}, #{bookName,jdbcType=VARCHAR}, 
+      #{writerId,jdbcType=INTEGER}, #{chapterStatus,jdbcType=INTEGER}, #{vipChapter,jdbcType=INTEGER}, 
+      #{message,jdbcType=VARCHAR}, #{createdtime,jdbcType=DATE}, #{updatetime,jdbcType=DATE}, 
+      #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.magician.book.pojo.Chapter">
+    insert into tb_chapter
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="chapterId != null">
+        chapter_id,
+      </if>
+      <if test="chapterNumber != null">
+        chapter_number,
+      </if>
+      <if test="chapterName != null">
+        chapter_name,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="bookId != null">
+        book_id,
+      </if>
+      <if test="bookName != null">
+        book_name,
+      </if>
+      <if test="writerId != null">
+        writer_id,
+      </if>
+      <if test="chapterStatus != null">
+        chapter_status,
+      </if>
+      <if test="vipChapter != null">
+        vip_chapter,
+      </if>
+      <if test="message != null">
+        message,
+      </if>
+      <if test="createdtime != null">
+        createdTime,
+      </if>
+      <if test="updatetime != null">
+        updateTime,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="chapterId != null">
+        #{chapterId,jdbcType=INTEGER},
+      </if>
+      <if test="chapterNumber != null">
+        #{chapterNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="chapterName != null">
+        #{chapterName,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=INTEGER},
+      </if>
+      <if test="bookId != null">
+        #{bookId,jdbcType=INTEGER},
+      </if>
+      <if test="bookName != null">
+        #{bookName,jdbcType=VARCHAR},
+      </if>
+      <if test="writerId != null">
+        #{writerId,jdbcType=INTEGER},
+      </if>
+      <if test="chapterStatus != null">
+        #{chapterStatus,jdbcType=INTEGER},
+      </if>
+      <if test="vipChapter != null">
+        #{vipChapter,jdbcType=INTEGER},
+      </if>
+      <if test="message != null">
+        #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="createdtime != null">
+        #{createdtime,jdbcType=DATE},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=DATE},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.magician.book.pojo.Chapter">
+    update tb_chapter
+    <set>
+      <if test="chapterNumber != null">
+        chapter_number = #{chapterNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="chapterName != null">
+        chapter_name = #{chapterName,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=INTEGER},
+      </if>
+      <if test="bookId != null">
+        book_id = #{bookId,jdbcType=INTEGER},
+      </if>
+      <if test="bookName != null">
+        book_name = #{bookName,jdbcType=VARCHAR},
+      </if>
+      <if test="writerId != null">
+        writer_id = #{writerId,jdbcType=INTEGER},
+      </if>
+      <if test="chapterStatus != null">
+        chapter_status = #{chapterStatus,jdbcType=INTEGER},
+      </if>
+      <if test="vipChapter != null">
+        vip_chapter = #{vipChapter,jdbcType=INTEGER},
+      </if>
+      <if test="message != null">
+        message = #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="createdtime != null">
+        createdTime = #{createdtime,jdbcType=DATE},
+      </if>
+      <if test="updatetime != null">
+        updateTime = #{updatetime,jdbcType=DATE},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where chapter_id = #{chapterId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.magician.book.pojo.Chapter">
+    update tb_chapter
+    set chapter_number = #{chapterNumber,jdbcType=VARCHAR},
+      chapter_name = #{chapterName,jdbcType=VARCHAR},
+      price = #{price,jdbcType=INTEGER},
+      book_id = #{bookId,jdbcType=INTEGER},
+      book_name = #{bookName,jdbcType=VARCHAR},
+      writer_id = #{writerId,jdbcType=INTEGER},
+      chapter_status = #{chapterStatus,jdbcType=INTEGER},
+      vip_chapter = #{vipChapter,jdbcType=INTEGER},
+      message = #{message,jdbcType=VARCHAR},
+      createdTime = #{createdtime,jdbcType=DATE},
+      updateTime = #{updatetime,jdbcType=DATE},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where chapter_id = #{chapterId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.magician.book.pojo.Chapter">
+    update tb_chapter
+    set chapter_number = #{chapterNumber,jdbcType=VARCHAR},
+      chapter_name = #{chapterName,jdbcType=VARCHAR},
+      price = #{price,jdbcType=INTEGER},
+      book_id = #{bookId,jdbcType=INTEGER},
+      book_name = #{bookName,jdbcType=VARCHAR},
+      writer_id = #{writerId,jdbcType=INTEGER},
+      chapter_status = #{chapterStatus,jdbcType=INTEGER},
+      vip_chapter = #{vipChapter,jdbcType=INTEGER},
+      message = #{message,jdbcType=VARCHAR},
+      createdTime = #{createdtime,jdbcType=DATE},
+      updateTime = #{updatetime,jdbcType=DATE}
+    where chapter_id = #{chapterId,jdbcType=INTEGER}
+  </update>
+</mapper>
