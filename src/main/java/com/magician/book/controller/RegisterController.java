@@ -11,6 +11,9 @@ public class RegisterController {
     @RequestMapping("/reader/register")
     public APIResult readerregister(Reader reader){
 
+
+
+
         return new APIResult();
     }
 
