@@ -90,7 +90,7 @@
       locked = #{locked,jdbcType=TINYINT}
     where admin_id = #{adminId,jdbcType=BIGINT}
   </update>
-  <select id="selectByEmailAndPwd" resultMap="com.magician.book.pojo.Admin">
+  <select id="selectByEmailAndPwd" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from tb_admin

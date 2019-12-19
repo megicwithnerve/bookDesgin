@@ -54,3 +54,7 @@ mybatis:
   mapper-locations: classpath:mapping/*xml
   typeAliasesPackage: com.magician.book.pojo
 
+logging:
+  level:
+    com.magician.book.dao: debug
+

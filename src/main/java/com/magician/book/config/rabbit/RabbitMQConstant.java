@@ -12,6 +12,9 @@ public class RabbitMQConstant {
     //队列2
     public static final String QUEUE_2 = "queue_2";
 
+    //队列3
+    public static final String QUEUE_3 = "queue_3";
+
     //死信队列
     public static final String DEAD_QUEUE = "dead_queue";
 
@@ -35,6 +38,9 @@ public class RabbitMQConstant {
 
     //路由键routing_key2
     public static final String ROUTING_KEY2 = "routing_key2";
+
+    //路由键routing_key3
+    public static final String ROUTING_KEY3 = "routing_key3";
 
     //符号*匹配一个词
     public static final String TOPIC_ROUTINGKEY1 = "hello.*";

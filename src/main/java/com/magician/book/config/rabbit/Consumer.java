@@ -37,7 +37,22 @@ public class Consumer {
         try {
             byte[] body = message.getBody();
             String json = new String(body);
-            log.info("queue_2收到消息 : " + json);
+            System.out.println("q2");
+            log.info("路由收到消息 : " + json);
+            //手动ACK
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RabbitListener(queues = RabbitMQConstant.QUEUE_3)
+    public void simplConsumer4(Message message, com.rabbitmq.client.Channel channel){
+        try {
+            byte[] body = message.getBody();
+            String json = new String(body);
+            System.out.println("q3");
+            log.info("路由收到消息 : " + json);
             //手动ACK
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
         } catch (IOException e) {

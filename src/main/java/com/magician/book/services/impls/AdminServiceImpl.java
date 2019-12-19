@@ -17,10 +17,15 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public APIResult queryByPwd(String loginName, String pwd) {
         Long id = 1L;
+        APIResult apiResult = null;
         List<Admin> list = adminMapper.selectByEmailAndPwd(loginName,pwd);
-        System.out.println(list.get(0));
-        APIResult apiResult = new APIResult("ss",true,200,list);
-//        apiResult.setData(list);
+        if(list.size() == 0) {
+            apiResult = new APIResult("账号或密码错误", false, 200, null);
+        }else {
+            Admin admin = list.get(0);
+            apiResult = new APIResult("账号密码正确",true,200,admin);
+        }
+
         return apiResult;
     }
 }

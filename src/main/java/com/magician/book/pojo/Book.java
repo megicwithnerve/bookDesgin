@@ -29,6 +29,8 @@ public class Book {
 
     private Date createtime;
 
+    private String bookKind;
+
     public Integer getBookId() {
         return bookId;
     }
@@ -131,5 +133,13 @@ public class Book {
 
     public void setCreatetime(Date createtime) {
         this.createtime = createtime;
+    }
+
+    public String getBookKind() {
+        return bookKind;
+    }
+
+    public void setBookKind(String bookKind) {
+        this.bookKind = bookKind == null ? null : bookKind.trim();
     }
 }

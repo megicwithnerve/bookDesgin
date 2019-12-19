@@ -4,6 +4,8 @@ package com.magician.book.services;
 //import com.magician.book.utils.APIRequest;
 //import com.magician.book.utils.Pager;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.magician.book.pojo.Writer;
 import com.magician.book.utils.APIResult;
 import com.magician.book.utils.Pager;
@@ -15,8 +17,20 @@ public interface WriterService {
 
     public APIResult updateWriterInfo(Writer writer);
 
+    //登录
+    public APIResult getWriterBypwd(String email,String pwd);
+
+    //注册
+    public APIResult insertWriter(Writer writer);
+
+    //查找邮箱唯一
+    public APIResult onlyOneWriter(String email);
+
+    //搜索作者
+    public PageInfo searchWriter(Integer indexpage,Integer pagesize,String writerName,Integer status);
+
     //获取发给作者的消息
-    public Pager getWriterMessage(Integer writerId);
+    public PageInfo getWriterMessage(Integer writerId);
 
 
 

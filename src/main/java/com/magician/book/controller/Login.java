@@ -25,10 +25,11 @@ import java.util.Map;
 public class Login {
 
 
-    @PostMapping("/admin/login")
+    @PostMapping("admin/login")
     public APIResult login(@RequestParam("userName") String userName,
                         @RequestParam("password") String password,
                         HttpSession session){
+
 
         if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)) {
             session.setAttribute("errorMsg", "用户名或密码不能为空");

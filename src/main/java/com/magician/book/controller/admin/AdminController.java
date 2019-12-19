@@ -1,9 +1,13 @@
 package com.magician.book.controller.admin;
 
+import com.github.pagehelper.PageInfo;
 import com.magician.book.pojo.Reader;
 import com.magician.book.pojo.Setmeal;
+import com.magician.book.pojo.Writer;
+import com.magician.book.services.WriterService;
 import com.magician.book.utils.APIResult;
 import com.magician.book.utils.Pager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +23,9 @@ import java.util.List;
 @Controller
 public class AdminController {
 
+    @Autowired
+    WriterService writerService;
+
     @RequestMapping("/admin/serachReader")
     @ResponseBody
     public Pager serachReader(@RequestParam("indexpage") Integer indexpage,
@@ -33,22 +40,23 @@ public class AdminController {
         return new APIResult();
     }
 
-    @RequestMapping("/admin/serachWriter")
-    @ResponseBody
-    public Pager serachWriter(@RequestParam("indexpage") Integer indexpage,
-                              @RequestParam("pagesize") Integer pagesize,
-                              @RequestParam("searchValue") String searchValue,
-                              @RequestParam("writerStatus") String readerStatus){
-        return new Pager(0,1);
-    }
+//    @RequestMapping("/admin/serachWriter")
+//    @ResponseBody
+//    public Pager serachWriter(@RequestParam("indexpage") Integer indexpage,
+//                              @RequestParam("pagesize") Integer pagesize,
+//                              @RequestParam("searchValue") String searchValue,
+//                              @RequestParam("writerStatus") String readerStatus){
+//
+//        return new Pager(0,1);
+//    }
 
-    @RequestMapping("/admin/serachChapter")
+    @RequestMapping("/admin/searchWriter")
     @ResponseBody
-    public Pager serachChapter(@RequestParam("indexpage") Integer indexpage,
-                              @RequestParam("pagesize") Integer pagesize,
-                              @RequestParam("searchValue") String searchValue,
-                              @RequestParam("chapterStatus") String chapterStatus){
-        return new Pager(0,1);
+    public PageInfo getWriters(@RequestParam("indexpage") Integer indexpage,
+                               @RequestParam("pagesize") Integer pagesize,
+                               @RequestParam("searchName") String searchName,
+                               @RequestParam("status") Integer status){
+        return writerService.searchWriter(indexpage,pagesize,searchName,status);
     }
 
     @RequestMapping("/admin/editWriter")

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<header th:replace="writer/header::header-fragment"></header>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+    <!-- 引入页面头header-fragment -->
+    <div th:replace="writer/header::header-nav"></div>
+    <!-- 引入工具栏sidebar-fragment -->
+    <div th:replace="writer/sidebar::sidebar-fragment(${path})"></div>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card card-primary card-outline">
+                            <div class="card-header">
+                                <h3 class="card-title">书籍信息</h3>
+                            </div> <!-- /.card-body -->
+                            <div class="card-body">
+                                <form role="form" id="userNameForm">
+                                    <div class="form-group col-sm-8">
+                                        <div class="alert alert-danger" id="updateUserName-info" style="display: none;"></div>
+                                    </div>
+                                    <!-- text input -->
+                                    <div class="form-group">
+                                        <label>书籍名称</label>
+                                        <input type="text" class="form-control" id="bookname"
+                                               name="loginUserName"
+                                               placeholder="请输入书籍名称" required="true">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>简介</label>
+                                        <textarea  class="form-control" id="bookinfo"
+                                               name="bookinfo"
+                                               placeholder="请输入简介" required="true">
+                                        </textarea>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>类别</label>
+                                        <div class="select is-fullwidth ">
+                                            <select id="selectData">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>图片</label>
+                                        <div class="field-body">
+                                            <div class="field">
+                                                <p class="control">
+                                                    <img id="img" width="280px" height="280px">
+                                                <form ref="form">
+                                                    <input type="hidden" name="key" id="key">
+                                                    <input type="hidden" name="token" id="token">
+                                                    <input name="file" type="file" id="file" onchange="chg(this.id)" accept="image/*"/>
+                                                </form>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="button" id="updateUserNameButton" onsubmit="return false;"
+                                                class="btn btn-danger float-right">确认上传
+                                        </button>
+                                    </div>
+                                </form>
+                            </div><!-- /.card-body -->
+                        </div>
+                    </div>
+
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <!-- 引入页脚footer-fragment -->
+    <div th:replace="writer/footer::footer-fragment"></div>
+</div>
+<!-- jQuery -->
+<script th:src="@{/writer/plugins/jquery/jquery.min.js}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script th:src="@{/writer/plugins/jQueryUI/jquery-ui.min.js}"></script>
+<!-- Bootstrap 4 -->
+<script th:src="@{/writer/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!-- writerLTE App -->
+<script th:src="@{/writer/dist/js/adminlte.min.js}"></script>
+<!-- public.js -->
+<script th:src="@{/writer/dist/js/public.js}"></script>
+<!-- profile -->
+<script th:src="@{/writer/dist/js/newbook.js}"></script>
+</body>
+</html>

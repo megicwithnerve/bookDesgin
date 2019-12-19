@@ -1,5 +1,6 @@
 package com.magician.book.services;
 
+import com.github.pagehelper.PageInfo;
 import com.magician.book.pojo.Setmeal;
 import com.magician.book.utils.APIRequest;
 import com.magician.book.utils.APIResult;
@@ -11,5 +12,5 @@ public interface SetmealService {
     //修改套餐
     public APIResult updatePackage(Setmeal setmeal);
     //获取套餐
-    public Pager getPackageList(Integer indexpage,Integer pagesze);
+    public PageInfo getPackageList(Integer indexpage, Integer pagesze);
 }

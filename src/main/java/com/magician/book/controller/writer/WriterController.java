@@ -1,5 +1,6 @@
 package com.magician.book.controller.writer;
 
+import com.alipay.api.domain.PageInfo;
 import com.magician.book.pojo.Book;
 import com.magician.book.pojo.Chapter;
 import com.magician.book.pojo.Writer;
@@ -20,6 +21,8 @@ import java.util.Map;
 
 @Controller
 public class WriterController {
+
+
 
 
     @RequestMapping("/writer/getinfo")
@@ -97,5 +100,14 @@ public class WriterController {
     @ResponseBody
     public APIResult editchapter(Chapter chapter){
         return new APIResult();
+    }
+
+    @RequestMapping("/writer/searchwriter")
+    @ResponseBody
+    public PageInfo getWriters(@RequestParam("indexpage") Integer indexpage,
+                               @RequestParam("pagesize") Integer pagesize,
+                               @RequestParam("searchName") String searchName,
+                               @RequestParam("status") Integer status){
+        return null;
     }
 }

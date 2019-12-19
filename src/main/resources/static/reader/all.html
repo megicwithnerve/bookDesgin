@@ -1,0 +1,122 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<title>免费小说_全本免费小说网_全本小说网</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="keywords" content="免费小说,全本免费小说网,全本小说网" />
+	<meta name="description"
+		content="来也全本免费小说网专注提供全网最新最热的精品全本小说无弹窗免费在线阅读，提供全本免费小说，同时提供包括玄幻小说，网游小说，言情小说，都市小说，恐怖小说等其他类型小说的全本全集在线阅读！请关注言情小说吧(www.laiyetxt.com)" />
+	<meta name="applicable-device" content="pc">
+	<meta name="mobile-agent" content="format=xhtml;url=https://m.laiyetxt.com" />
+	<meta https-equiv="Cache-Control" content="no-transform" />
+	<meta https-equiv="Cache-Control" content="no-siteapp" />
+	<link rel="stylesheet" href="css/lycss.css" type="text/css" />
+	<style>
+		/* #content-main{
+		height: calc(100% - 50px),
+        overflow : hidden,
+	   
+	} */
+	</style>
+</head>
+
+<body>
+	<div id="top" class="bg-f7">
+		<div class="w1000 h36 ma_au">
+			<div class="fl">
+				<!-- <script>login();</script> -->
+			</div>
+			<div class="fr">
+				<ul>
+					<li>本站所有小说，均为<font class="red"> 全文免费在线阅读 </font>
+					</li>
+					<li><em class="ver">|</em><a href="javascript:void(0);"
+							onclick="AddFavorite(window.location.href,document.title)">收藏本站</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="clearfix"></div>
+	<div id="header">
+		<div class="w1000 ma_au clearfix">
+			<div class="fl logo">
+				<a href="" title="laiyetxt.com - 来也全本小说网,免费全本小说大全,免费全文阅读">
+					<img src="images/logo.png" alt="来也小说网">
+				</a>
+			</div>
+			<div class="fl search">
+				<div class="searchA">
+					<form name="articlesearch" method="post" action="/modules/article/search.php">
+						<select name="searchtype" style="display:none;">
+							<option value="all" selected="selected">综合</option>
+						</select>
+
+						<input placeholder="书名/作者/主角/书ID" type="text" class="searchInput" name="searchkey"
+							style="width:344px;" value="">
+						<input name="submit" type="submit" value="搜&nbsp;&nbsp;索" class="searchBtn">
+					</form>
+				</div>
+			</div>
+			<!--<div class="headImg fr" id="himg" style="width:323px;"><a href="/" target="_blank" title="免费 "><img alt="免费 " src="/" width="323" height="47"></a></div>-->
+		</div>
+	</div>
+	<div id="nav">
+		<ul class="w1000 ma_au clearfix">
+			<li class="cur"><a href="/" title="来也小说网首页">小说首页</a></li>
+			<li><a href="https://www.a745.cc/">连载小说</a></li>
+			<li><a href="/shuku/">分类书库</a></li>
+			<li><a href="/modules/article/bookcase.php">云书架</a></li>
+			<li style="float:right"><a href="/modules/article/newebook.php">上传小说<i class="hot"></i></a></li>
+			<li style="float:right"><a id="history1" href="javascript:void(0)">最近阅读</a></li>
+		</ul>
+	</div>
+	<div class="w1000 ma_au">
+		<ul class="nav_fenlei clearfix">
+			<li><b>男频：</b></li>
+			<li><a href="#" onclick="jump()">玄幻</a></li>
+			<li><a href="#">仙侠</a></li>
+			<li><a href="#">都市</a></li>
+			<li><a href="/shuku/7_1_1.html">历史</a></li>
+			<li><a href="/shuku/6_1_1.html">军事</a></li>
+			<li><a href="/shuku/8_1_1.html">游戏</a></li>
+			<li><a href="/shuku/11_1_1.html">灵异</a></li>
+			<li><em>|</em></li>
+			<li><b>女频：</b></li>
+			<li><a href="/shuku/12_1_1.html">现代言情</a></li>
+			<li><a href="/shuku/14_1_1.html">穿越架空</a></li>
+			<li><a href="/shuku/15_1_1.html">总裁豪门</a></li>
+			<li><a href="/shuku/16_1_1.html">青春校园</a></li>
+			<li><a href="/shuku/13_1_1.html">古代言情</a></li>
+			<li><em>|</em></li>
+			<li class="all_fenlei"><a href="/shuku/">全部分类</a></li>
+		</ul>
+	</div>
+	<div class="row J_mainContent" id="content-main">
+		<iframe id="J_iframe" width="100%" src="index.html" scrolling="no" frameborder="0">
+		</iframe>
+	</div>
+</body>
+<script>
+	//定义iframe的ID
+	var iframeids = ["J_iframe"];
+	function setIframeHeight(iframe) {
+  if (iframe) {
+    var iframeWin = iframe.contentWindow || iframe.contentDocument.parentWindow;
+    if (iframeWin.document.body) {
+      iframe.height = iframeWin.document.documentElement.scrollHeight || iframeWin.document.body.scrollHeight;
+    }
+  }
+};
+window.onload = function () {
+  setIframeHeight(document.getElementById('J_iframe'));// #ID为当前的iframe的id
+};
+
+
+function jump(){
+	document.getElementById('J_iframe').src = "./bookclass.html"
+}
+</script>
+
+</html>

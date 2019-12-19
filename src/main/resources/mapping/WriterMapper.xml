@@ -125,4 +125,32 @@
       writer_status = #{writerStatus,jdbcType=INTEGER}
     where writer_id = #{writerId,jdbcType=INTEGER}
   </update>
+
+  <select id="getByEmailPwd" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_writer
+    where email = #{email,jdbcType=VARCHAR} and password = #{[password,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getByemail" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_writer
+    where email = #{email,jdbcType=VARCHAR}
+  </select>
+
+  <select id="searchWriter" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_writer
+    <where>
+      <if test="searchName != null">
+        and writer_name like #{searchName,jdbcType=VARCHAR}
+      </if>
+      <if test="status != null">
+        and writer_status = #{status,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
 </mapper>

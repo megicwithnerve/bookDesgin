@@ -2,6 +2,8 @@ package com.magician.book.dao;
 
 import com.magician.book.pojo.Writer;
 
+import java.util.List;
+
 public interface WriterMapper {
     int deleteByPrimaryKey(Integer writerId);
 
@@ -14,4 +16,13 @@ public interface WriterMapper {
     int updateByPrimaryKeySelective(Writer record);
 
     int updateByPrimaryKey(Writer record);
+
+    Writer getByEmailPwd(String email,String password);
+
+    List<Writer> getByemail(String email);
+
+    //获取条数
+    Integer count(String searchName,Integer status);
+    //分页获取
+    List<Writer> searchWriter(String searchName,Integer status);
 }

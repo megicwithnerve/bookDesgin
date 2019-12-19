@@ -1,5 +1,6 @@
 package com.magician.book.controller;
 
+import com.magician.book.config.rabbit.RabbitMQConstant;
 import com.magician.book.config.rabbit.RabbitMQSend;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -62,6 +63,9 @@ public class RabbitMqContronller {
             @RequestParam(value = "json", required = false) String json,
             @RequestParam(value ="routingKey", required = false) String routingKey){
         try {
+            System.out.println("q2");
+            routingKey = "routing_key3";
+            System.out.println(routingKey);
             this.send.routingSend(routingKey,json);
             return "succeed";
         } catch (Exception e) {
@@ -99,7 +103,7 @@ public class RabbitMqContronller {
         try {
             MessageProperties messageProperties = new MessageProperties();
             //设置消息过期时间,这里设置的时间是10分钟
-            messageProperties.setExpiration(6 + "000");
+            messageProperties.setExpiration(6 + "00");
             Message message = new Message(json.getBytes(), messageProperties);
             message.getMessageProperties().setDeliveryMode(MessageDeliveryMode.PERSISTENT);
             //这里的key应该传死信队列绑定死信交换机的路由key,这里我们传key1

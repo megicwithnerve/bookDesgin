@@ -20,8 +20,7 @@ public class Pager {
     }
 
     public Integer getBeginrows() {
-        System.out.println("getIndexpage:"+getIndexpage());
-        System.out.println("getPagesize:"+getPagesize());
+
         this.beginrows = ((getIndexpage() - 1) * getPagesize()) + 1;
         return beginrows;
     }

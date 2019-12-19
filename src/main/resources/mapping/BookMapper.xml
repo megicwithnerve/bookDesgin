@@ -15,13 +15,14 @@
     <result column="clicks" jdbcType="INTEGER" property="clicks" />
     <result column="thumbs" jdbcType="INTEGER" property="thumbs" />
     <result column="createTime" jdbcType="DATE" property="createtime" />
+    <result column="book_kind" jdbcType="VARCHAR" property="bookKind" />
   </resultMap>
   <sql id="Base_Column_List">
-    book_id, book_image, book_name, book_info, word_number, price, writer_name, writer_id, 
-    book_status, message, clicks, thumbs, createTime
+    book_id, book_image, book_name, book_info, word_number, price, writer_name, writer_id,
+    book_status, message, clicks, thumbs, createTime, book_kind
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
+    select
     <include refid="Base_Column_List" />
     from tb_book
     where book_id = #{bookId,jdbcType=INTEGER}
@@ -31,16 +32,16 @@
     where book_id = #{bookId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.magician.book.pojo.Book">
-    insert into tb_book (book_id, book_image, book_name, 
-      book_info, word_number, price, 
-      writer_name, writer_id, book_status, 
-      message, clicks, thumbs, 
-      createTime)
-    values (#{bookId,jdbcType=INTEGER}, #{bookImage,jdbcType=VARCHAR}, #{bookName,jdbcType=VARCHAR}, 
-      #{bookInfo,jdbcType=VARCHAR}, #{wordNumber,jdbcType=INTEGER}, #{price,jdbcType=INTEGER}, 
-      #{writerName,jdbcType=VARCHAR}, #{writerId,jdbcType=INTEGER}, #{bookStatus,jdbcType=INTEGER}, 
-      #{message,jdbcType=VARCHAR}, #{clicks,jdbcType=INTEGER}, #{thumbs,jdbcType=INTEGER}, 
-      #{createtime,jdbcType=DATE})
+    insert into tb_book (book_id, book_image, book_name,
+      book_info, word_number, price,
+      writer_name, writer_id, book_status,
+      message, clicks, thumbs,
+      createTime, book_kind)
+    values (#{bookId,jdbcType=INTEGER}, #{bookImage,jdbcType=VARCHAR}, #{bookName,jdbcType=VARCHAR},
+      #{bookInfo,jdbcType=VARCHAR}, #{wordNumber,jdbcType=INTEGER}, #{price,jdbcType=INTEGER},
+      #{writerName,jdbcType=VARCHAR}, #{writerId,jdbcType=INTEGER}, #{bookStatus,jdbcType=INTEGER},
+      #{message,jdbcType=VARCHAR}, #{clicks,jdbcType=INTEGER}, #{thumbs,jdbcType=INTEGER},
+      #{createtime,jdbcType=DATE}, #{bookKind,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.magician.book.pojo.Book">
     insert into tb_book
@@ -84,6 +85,9 @@
       <if test="createtime != null">
         createTime,
       </if>
+      <if test="bookKind != null">
+        book_kind,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="bookId != null">
@@ -124,6 +128,9 @@
       </if>
       <if test="createtime != null">
         #{createtime,jdbcType=DATE},
+      </if>
+      <if test="bookKind != null">
+        #{bookKind,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -166,6 +173,9 @@
       <if test="createtime != null">
         createTime = #{createtime,jdbcType=DATE},
       </if>
+      <if test="bookKind != null">
+        book_kind = #{bookKind,jdbcType=VARCHAR},
+      </if>
     </set>
     where book_id = #{bookId,jdbcType=INTEGER}
   </update>
@@ -182,7 +192,31 @@
       message = #{message,jdbcType=VARCHAR},
       clicks = #{clicks,jdbcType=INTEGER},
       thumbs = #{thumbs,jdbcType=INTEGER},
-      createTime = #{createtime,jdbcType=DATE}
+      createTime = #{createtime,jdbcType=DATE},
+      book_kind = #{bookKind,jdbcType=VARCHAR}
     where book_id = #{bookId,jdbcType=INTEGER}
   </update>
+  <select id="searchBooks" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_book
+    <where>
+      <if test="kind != null">
+        book_kind like #{kind,jdbcType=VARCHAR}
+      </if>
+      <if test="bookname != null">
+        book_name like #{bookname,jdbcType=VARCHAR}
+      </if>
+      <if test="writername != null">
+        writer_name like #{bookname,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+
+  <select id="getWriterBooksById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_book
+    where writer_id = #{writerId,jdbcType=INTEGER}
+  </select>
 </mapper>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<aside th:fragment="sidebar-fragment(path)" class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a th:href="@{/writer/index}" class="brand-link">
+        <img th:src="@{/writer/dist/img/logo.png}" alt="ssm-cluster Logo" class="brand-image img-circle elevation-3"
+             style="opacity: .8">
+        <span class="brand-text font-weight-light">管理系统</span>
+    </a>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img th:src="@{/writer/dist/img/avatar5.png}" class="img-circle elevation-2" alt="User Image">
+            </div>
+            <div class="info">
+                <a href="#" class="d-block" th:text="${session.loginUser}"></a>
+            </div>
+        </div>
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                data-accordion="false">
+                <li class="nav-header">个人中心</li>
+                <li class="nav-item">
+                    <a th:href="@{/writer/index}" th:class="${path}=='index'?'nav-link active':'nav-link'">
+                        <i class="nav-icon fa fa-dashboard"></i>
+                        <p>
+                            个人信息
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{/writer/news/edit}" th:class="${path}=='edit'?'nav-link active':'nav-link'">
+                        <i class="fa fa-comments nav-icon"></i>
+                        <p>
+                            消息通知
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-header">书籍管理</li>
+                <li class="nav-item">
+                    <a th:href="@{/writer/categories}" th:class="${path}=='categories'?'nav-link active':'nav-link'">
+                        <i class="fa fa-bookmark nav-icon" aria-hidden="true"></i>
+                        <p>
+                            待审核
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{/writer/newbook}" th:class="${path}=='newbook'?'nav-link active':'nav-link'">
+                        <i class="fa fa-list-alt nav-icon" aria-hidden="true"></i>
+                        <p>
+                            申请新书
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{/writer/booklist}" th:class="${path}=='booklist'?'nav-link active':'nav-link'">
+                        <i class="nav-icon fa fa fa-pencil-square-o" aria-hidden="true"></i>
+                        <p>
+                            书架管理
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-header">系统管理</li>
+                <li class="nav-item">
+                    <a th:href="@{/writer/profile}"
+                       th:class="${path}=='profile'?'nav-link active':'nav-link'">
+                        <i class="fa fa-user-secret nav-icon"></i>
+                        <p>修改密码</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{/writer/logout}" class="nav-link">
+                        <i class="fa fa-sign-out nav-icon"></i>
+                        <p>安全退出</p>
+                    </a>
+                </li>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>
+</html>

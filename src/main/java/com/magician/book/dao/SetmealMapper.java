@@ -2,6 +2,8 @@ package com.magician.book.dao;
 
 import com.magician.book.pojo.Setmeal;
 
+import java.util.List;
+
 public interface SetmealMapper {
     int deleteByPrimaryKey(Integer setmealId);
 
@@ -14,4 +16,6 @@ public interface SetmealMapper {
     int updateByPrimaryKeySelective(Setmeal record);
 
     int updateByPrimaryKey(Setmeal record);
+
+    List<Setmeal> getList();
 }
