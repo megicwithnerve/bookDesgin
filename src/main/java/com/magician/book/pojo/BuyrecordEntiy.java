@@ -1,18 +1,16 @@
 package com.magician.book.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Buyrecord {
-
+public class BuyrecordEntiy implements Serializable {
     private Integer buyrecordId;
 
-    private Integer readerId;
+    private Book book;
 
-    private Integer bookId;
+    private Chapter chapter;
 
-    private Integer chapterId;
-
-    private Integer writerId;
+    private Writer writer;
 
     private Integer price;
 
@@ -26,28 +24,28 @@ public class Buyrecord {
         this.buyrecordId = buyrecordId;
     }
 
-    public Integer getBookId() {
-        return bookId;
+    public Book getBook() {
+        return book;
     }
 
-    public void setBookId(Integer bookId) {
-        this.bookId = bookId;
+    public void setBook(Book book) {
+        this.book = book;
     }
 
-    public Integer getChapterId() {
-        return chapterId;
+    public Chapter getChapter() {
+        return chapter;
     }
 
-    public void setChapterId(Integer chapterId) {
-        this.chapterId = chapterId;
+    public void setChapter(Chapter chapter) {
+        this.chapter = chapter;
     }
 
-    public Integer getWriterId() {
-        return writerId;
+    public Writer getWriter() {
+        return writer;
     }
 
-    public void setWriterId(Integer writerId) {
-        this.writerId = writerId;
+    public void setWriter(Writer writer) {
+        this.writer = writer;
     }
 
     public Integer getPrice() {

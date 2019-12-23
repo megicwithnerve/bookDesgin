@@ -139,4 +139,15 @@
       createdTime = #{createdtime,jdbcType=DATE}
     where rechargerecord_id = #{rechargerecordId,jdbcType=INTEGER}
   </update>
+
+  <select id="getRechargerecord"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_rechargerecord
+    where reader_id = #{readerId,jdbcType=INTEGER}
+    order by cratedTime desc
+    <if test="offset != null and limit != null">
+      limit #{offset},#{limit}
+    </if>
+  </select>
 </mapper>

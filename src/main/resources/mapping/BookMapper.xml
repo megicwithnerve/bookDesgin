@@ -196,7 +196,7 @@
       book_kind = #{bookKind,jdbcType=VARCHAR}
     where book_id = #{bookId,jdbcType=INTEGER}
   </update>
-  <select id="searchBooks" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="searchBooks"  resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from tb_book
@@ -211,6 +211,15 @@
         writer_name like #{bookname,jdbcType=VARCHAR}
       </if>
     </where>
+    <if test="clicks != null">
+      order by clicks
+    </if>
+    <if test="thumbs != null">
+      order by thumbs
+    </if>
+    <if test="offset != null and limit != null">
+      limit #{offset},#{limit}
+    </if>
   </select>
 
   <select id="getWriterBooksById" parameterType="java.lang.Integer" resultMap="BaseResultMap">

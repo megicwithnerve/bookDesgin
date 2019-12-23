@@ -16,8 +16,8 @@ public interface BookMapper {
     int updateByPrimaryKeySelective(Book record);
 
     int updateByPrimaryKey(Book record);
-
-    List<Book> searchBooks(String kind, String bookname, String writername);
-
+    //书籍列表
+    List<Book> searchBooks(String kind, String bookname, String writername,Integer clicks,Integer thumbs,Integer offset,Integer limit);
+    //根据id获取
     List<Book> getWriterBooksById(Integer writerId);
 }

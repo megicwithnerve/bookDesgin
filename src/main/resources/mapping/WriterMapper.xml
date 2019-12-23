@@ -152,5 +152,8 @@
         and writer_status = #{status,jdbcType=INTEGER}
       </if>
     </where>
+    <if test="offset != null and limit != null">
+      limit #{offset},#{limit}
+    </if>
   </select>
 </mapper>

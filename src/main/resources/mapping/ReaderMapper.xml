@@ -114,4 +114,35 @@
       reader_status = #{readerStatus,jdbcType=VARCHAR}
     where redaer_id = #{redaerId,jdbcType=INTEGER}
   </update>
+
+  <select id="getByEmailPwd" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_reader
+    where email = #{email,jdbcType=VARCHAR} and password = #{[password,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getByemail" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_reader
+    where email = #{email,jdbcType=VARCHAR}
+  </select>
+
+  <select id="searchReader" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_writer
+    <where>
+      <if test="searchName != null">
+        and username like #{searchName,jdbcType=VARCHAR}
+      </if>
+      <if test="status != null">
+        and reader_status = #{status,jdbcType=INTEGER}
+      </if>
+    </where>
+    <if test="offset != null and limit != null">
+      limit #{offset},#{limit}
+    </if>
+  </select>
 </mapper>

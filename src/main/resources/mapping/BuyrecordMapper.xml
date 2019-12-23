@@ -8,9 +8,11 @@
     <result column="writer_id" jdbcType="INTEGER" property="writerId" />
     <result column="price" jdbcType="INTEGER" property="price" />
     <result column="cratedTime" jdbcType="DATE" property="cratedtime" />
+    <result column="reader_id" jdbcType="INTEGER" property="readerId" />
+
   </resultMap>
   <sql id="Base_Column_List">
-    buyrecord_id, book_id, chapter_id, writer_id, price, cratedTime
+    buyrecord_id, book_id, chapter_id, writer_id, price, cratedTime,readerId
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -24,10 +26,10 @@
   </delete>
   <insert id="insert" parameterType="com.magician.book.pojo.Buyrecord">
     insert into tb_buyrecord (buyrecord_id, book_id, chapter_id, 
-      writer_id, price, cratedTime
+      writer_id, price, cratedTime,readerId
       )
     values (#{buyrecordId,jdbcType=INTEGER}, #{bookId,jdbcType=INTEGER}, #{chapterId,jdbcType=INTEGER}, 
-      #{writerId,jdbcType=INTEGER}, #{price,jdbcType=INTEGER}, #{cratedtime,jdbcType=DATE}
+      #{writerId,jdbcType=INTEGER}, #{price,jdbcType=INTEGER}, #{cratedtime,jdbcType=DATE},#{readerId,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.magician.book.pojo.Buyrecord">
@@ -51,6 +53,9 @@
       <if test="cratedtime != null">
         cratedTime,
       </if>
+      <if test="readerId != null">
+        reader_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="buyrecordId != null">
@@ -70,6 +75,9 @@
       </if>
       <if test="cratedtime != null">
         #{cratedtime,jdbcType=DATE},
+      </if>
+      <if test="readerId != null">
+        #{readerId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -91,6 +99,9 @@
       <if test="cratedtime != null">
         cratedTime = #{cratedtime,jdbcType=DATE},
       </if>
+      <if test="readerId != null">
+        readerId = #{readerId,jdbcType=INTEGER},
+      </if>
     </set>
     where buyrecord_id = #{buyrecordId,jdbcType=INTEGER}
   </update>
@@ -100,7 +111,19 @@
       chapter_id = #{chapterId,jdbcType=INTEGER},
       writer_id = #{writerId,jdbcType=INTEGER},
       price = #{price,jdbcType=INTEGER},
-      cratedTime = #{cratedtime,jdbcType=DATE}
+      cratedTime = #{cratedtime,jdbcType=DATE},
+      reader_id = #{readerId,jdbcType=INTEGER}
     where buyrecord_id = #{buyrecordId,jdbcType=INTEGER}
   </update>
+
+  <select id="getBuyRecord"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_buyrecord
+    where reader_id = #{readerId,jdbcType=INTEGER}
+    order by cratedTime desc
+    <if test="offset != null and limit != null">
+      limit #{offset},#{limit}
+    </if>
+  </select>
 </mapper>

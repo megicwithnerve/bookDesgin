@@ -22,7 +22,7 @@ public interface WriterMapper {
     List<Writer> getByemail(String email);
 
     //获取条数
-    Integer count(String searchName,Integer status);
+    Integer WriterCount(String searchName,Integer status);
     //分页获取
-    List<Writer> searchWriter(String searchName,Integer status);
+    List<Writer> searchWriter(String searchName,Integer status,Integer offset,Integer limit);
 }

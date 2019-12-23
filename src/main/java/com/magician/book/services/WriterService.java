@@ -27,10 +27,10 @@ public interface WriterService {
     public APIResult onlyOneWriter(String email);
 
     //搜索作者
-    public PageInfo searchWriter(Integer indexpage,Integer pagesize,String writerName,Integer status);
+    public Pager searchWriter(Integer indexpage,Integer pagesize,String writerName,Integer status);
 
     //获取发给作者的消息
-    public PageInfo getWriterMessage(Integer writerId);
+    public Pager getWriterMessage(Integer writerId);
 
 
 

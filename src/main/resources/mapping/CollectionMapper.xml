@@ -90,4 +90,14 @@
       updateTime = #{updatetime,jdbcType=DATE}
     where collection_id = #{collectionId,jdbcType=INTEGER}
   </update>
+  <select id="getCollectionList"  resultMap="BaseResultMap">
+  select
+  <include refid="Base_Column_List" />
+  from tb_collection
+  where reader_id = #{readerId,jdbcType=INTEGER}
+    <if test="offset != null and limit != null">
+      limit #{offset},#{limit}
+    </if>
+</select>
+
 </mapper>

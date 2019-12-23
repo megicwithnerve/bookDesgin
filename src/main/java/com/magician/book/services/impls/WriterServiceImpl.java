@@ -95,7 +95,7 @@ public class WriterServiceImpl implements WriterService {
 
     //作者列表
     @Override
-    public PageInfo searchWriter(Integer indexpage, Integer pagesize, String writerName, Integer status) {
+    public Pager searchWriter(Integer indexpage, Integer pagesize, String writerName, Integer status) {
 
 
 
@@ -104,19 +104,16 @@ public class WriterServiceImpl implements WriterService {
         }else {
             writerName+="%";
         }
-        System.out.println(writerName);
-        System.out.println(status);
 
-        PageHelper.startPage(1,5);
-        List<Writer> list =  writerMapper.searchWriter(writerName,status);
-        System.out.println(list.size());
-        PageInfo pageInfo = new PageInfo<Writer>(list,5);
-
-        return pageInfo;
+        List<Writer> list =  writerMapper.searchWriter(writerName,status,null,null);
+        Pager pager = new Pager(list.size(),indexpage,pagesize);
+        List<Writer> data = writerMapper.searchWriter(writerName,status,pager.getBeginrows(),pagesize);
+        pager.setData(data);
+        return pager;
     }
 
     @Override
-    public PageInfo getWriterMessage(Integer writerId) {
+    public Pager getWriterMessage(Integer writerId) {
         return null;
     }
 }

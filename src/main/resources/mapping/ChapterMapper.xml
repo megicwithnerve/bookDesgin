@@ -207,4 +207,42 @@
       updateTime = #{updatetime,jdbcType=DATE}
     where chapter_id = #{chapterId,jdbcType=INTEGER}
   </update>
+
+
+  <select id="getChapterList"  resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_chapter
+    <where>
+      <if test="bookId != null">
+        and book_id = #{bookId,jdbcType=INTEGER}
+      </if>
+      <if test="chapterStatus != null">
+        and chapter_status = #{chapterStatus,jdbcType=INTEGER}
+      </if>
+    </where>
+    <if test="order != null">
+      order by createdTime desc
+    </if>
+    <if test="offset != null and limit != null">
+      limit #{offset},#{limit}
+    </if>
+  </select>
+  <select id="getByChapterId"  resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_chapter
+    <where>
+      <if test="chapterId != null">
+        and chapter_id = #{chapterId,jdbcType=INTEGER}
+      </if>
+      <if test="chapterStatus != null">
+        and chapter_status = #{chapterStatus,jdbcType=INTEGER}
+      </if>
+    </where>
+  </select>
 </mapper>

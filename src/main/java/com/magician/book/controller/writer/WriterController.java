@@ -104,7 +104,7 @@ public class WriterController {
 
     @RequestMapping("/writer/searchwriter")
     @ResponseBody
-    public PageInfo getWriters(@RequestParam("indexpage") Integer indexpage,
+    public Pager getWriters(@RequestParam("indexpage") Integer indexpage,
                                @RequestParam("pagesize") Integer pagesize,
                                @RequestParam("searchName") String searchName,
                                @RequestParam("status") Integer status){
