@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.magician.book.dao.ReaderMapper">
   <resultMap id="BaseResultMap" type="com.magician.book.pojo.Reader">
-    <id column="redaer_id" jdbcType="INTEGER" property="redaerId" />
+    <id column="reader_id" jdbcType="INTEGER" property="readerId" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="username" jdbcType="VARCHAR" property="username" />
@@ -11,31 +11,31 @@
     <result column="reader_status" jdbcType="VARCHAR" property="readerStatus" />
   </resultMap>
   <sql id="Base_Column_List">
-    redaer_id, email, password, username, telphone, balance, reader_status
+    reader_id, email, password, username, telphone, balance, reader_status
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from tb_reader
-    where redaer_id = #{redaerId,jdbcType=INTEGER}
+    where reader_id = #{readerId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_reader
-    where redaer_id = #{redaerId,jdbcType=INTEGER}
+    where reader_id = #{readerId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.magician.book.pojo.Reader">
-    insert into tb_reader (redaer_id, email, password, 
+    insert into tb_reader (reader_id, email, password,
       username, telphone, balance, 
       reader_status)
-    values (#{redaerId,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{username,jdbcType=VARCHAR}, #{telphone,jdbcType=VARCHAR}, #{balance,jdbcType=VARCHAR}, 
-      #{readerStatus,jdbcType=VARCHAR})
+    values (#{readerId,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+      #{username,jdbcType=VARCHAR}, #{telphone,jdbcType=VARCHAR}, #{balance,jdbcType=INTEGER},
+      #{readerStatus,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.magician.book.pojo.Reader">
     insert into tb_reader
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="redaerId != null">
-        redaer_id,
+      <if test="readerId != null">
+        reader_id,
       </if>
       <if test="email != null">
         email,
@@ -57,8 +57,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="redaerId != null">
-        #{redaerId,jdbcType=INTEGER},
+      <if test="readerId != null">
+        #{readerId,jdbcType=INTEGER},
       </if>
       <if test="email != null">
         #{email,jdbcType=VARCHAR},
@@ -73,10 +73,10 @@
         #{telphone,jdbcType=VARCHAR},
       </if>
       <if test="balance != null">
-        #{balance,jdbcType=VARCHAR},
+        #{balance,jdbcType=INTEGER},
       </if>
       <if test="readerStatus != null">
-        #{readerStatus,jdbcType=VARCHAR},
+        #{readerStatus,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -96,13 +96,13 @@
         telphone = #{telphone,jdbcType=VARCHAR},
       </if>
       <if test="balance != null">
-        balance = #{balance,jdbcType=VARCHAR},
+        balance = #{balance,jdbcType=INTEGER},
       </if>
       <if test="readerStatus != null">
-        reader_status = #{readerStatus,jdbcType=VARCHAR},
+        reader_status = #{readerStatus,jdbcType=INTEGER},
       </if>
     </set>
-    where redaer_id = #{redaerId,jdbcType=INTEGER}
+    where reader_id = #{readerId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.magician.book.pojo.Reader">
     update tb_reader
@@ -110,16 +110,16 @@
       password = #{password,jdbcType=VARCHAR},
       username = #{username,jdbcType=VARCHAR},
       telphone = #{telphone,jdbcType=VARCHAR},
-      balance = #{balance,jdbcType=VARCHAR},
-      reader_status = #{readerStatus,jdbcType=VARCHAR}
-    where redaer_id = #{redaerId,jdbcType=INTEGER}
+      balance = #{balance,jdbcType=INTEGER},
+      reader_status = #{readerStatus,jdbcType=INTEGER}
+    where reader_id = #{readerId,jdbcType=INTEGER}
   </update>
 
   <select id="getByEmailPwd" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from tb_reader
-    where email = #{email,jdbcType=VARCHAR} and password = #{[password,jdbcType=VARCHAR}
+    where email = #{email,jdbcType=VARCHAR} and password = #{password,jdbcType=VARCHAR}
   </select>
 
   <select id="getByemail" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -132,7 +132,7 @@
   <select id="searchReader" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
-    from tb_writer
+    from tb_reader
     <where>
       <if test="searchName != null">
         and username like #{searchName,jdbcType=VARCHAR}

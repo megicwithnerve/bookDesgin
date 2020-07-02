@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>目录</title>
+<link rel="stylesheet" th:href="@{/reader/css/lycss.css}" type="text/css" />
+<script th:src="@{/reader/js/all.js}"></script>
+</head>
+<body class="bc">
+<div th:include="reader/header::header-nav(${bookKind},${reader})"></div>
+<!--头部结束-->
+<div id="wrap" class="w1000 ma_au clearfix mt10">
+	<div id="crumbs" class="crumbs bgf">
+    当前位置：
+    <a href="/bookread/index">bookread</a><span>&gt;</span>
+    <a target="_self" th:href="'/bookread/reader/bookKind/'+${bookinfo.bookKind}" th:text="${bookinfo.bookKind}"></a>
+    <span>&gt;</span><span th:text="${bookinfo.bookName}"></span>
+</div>
+	<div id="article-title" class="article-title">
+        <h1 th:text="${bookinfo.bookName}"></h1>
+        <p><span>作者：<a th:href="'/bookread/reader/writer/'+${bookinfo.writerId}" target="_blank" th:text="${bookinfo.writerName}"></a></span></p>
+    </div>
+	<div class="mt10"></div>
+	<div id="section-list" class="mlist clearfix">
+					<div class="section clearfix">
+			<h3 class="tit"><i class="icon"></i>正文</h3>
+		</div>
+        <li th:each="item : ${chapters}">
+            <a th:href="'/bookread/reader/chapter/'+${item.chapterId}"  th:text="${item.chapterNumber}+' '+${item.chapterName}"></a></li>
+
+					</div>
+	<div id="ml-page" class="ml-page">
+                <div class="small-page">
+                   <a class="r2 pageno" th:onclick="'getpager('+(${pager.indexpage}-1)+')'">上一页</a>
+                    <span class="page-num">[[${pager.indexpage}]] / [[${pager.countpage}]]</span>
+                   <a class="next"  th:onclick="'getpager('+(${pager.indexpage}+1)+')'">下一页<span class="right-triangle"></span></a>
+                </div>
+                            
+    </div>
+</div>
+<div th:replace="reader/footer::footer-fragment"></div>
+<script>
+
+    var countpage = [[${pager.countpage}]];
+    var bookId = [[${bookinfo.bookId}]]
+    var pagesize = [[${pager.pagesize}]]
+    function getpager(indexpage) {
+        if(indexpage <= 0 || indexpage >  countpage){
+            return;
+        }
+        var url = `/bookread/reader/mulu/${bookId}?indexpage=${indexpage}&pagesize=${pagesize}`
+        location.href = url;
+    }
+</script>
+</body>
+</html>

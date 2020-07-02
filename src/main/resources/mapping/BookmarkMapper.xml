@@ -69,11 +69,45 @@
     where bookmark_id = #{bookmarkId,jdbcType=INTEGER}
   </update>
 
+  <resultMap id="ResultBookmarkMap" type="com.magician.book.pojo.BookMarkEntiy">
+    <id column="bookmark_id" jdbcType="INTEGER" property="bookmarkId" />
+    <result column="collection_id" jdbcType="INTEGER" property="collectionId" />
+    <association property="chapter" javaType="com.magician.book.pojo.Chapter">
+      <id column="chapter_id" jdbcType="INTEGER" property="chapterId" />
+      <result column="chapter_number" jdbcType="VARCHAR" property="chapterNumber" />
+      <result column="chapter_name" jdbcType="VARCHAR" property="chapterName" />
+      <result column="price" jdbcType="INTEGER" property="price" />
+      <result column="book_id" jdbcType="INTEGER" property="bookId" />
+      <result column="book_name" jdbcType="VARCHAR" property="bookName" />
+      <result column="writer_id" jdbcType="INTEGER" property="writerId" />
+      <result column="chapter_status" jdbcType="INTEGER" property="chapterStatus" />
+      <result column="vip_chapter" jdbcType="INTEGER" property="vipChapter" />
+      <result column="message" jdbcType="VARCHAR" property="message" />
+      <result column="createdTime" jdbcType="TIMESTAMP" property="createdtime" />
+      <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    </association>
+  </resultMap>
+  <!--<select id="searchBookmark"  resultMap="BaseResultMap">-->
+    <!--select-->
+    <!--<include refid="Base_Column_List" />-->
+    <!--from tb_bookmark-->
+    <!--where collection_id = #{collectionId,jdbcType=INTEGER}-->
+  <!--</select>-->
+  <select id="searchBookmark"  resultMap="ResultBookmarkMap">
+    select *
+    from tb_bookmark bm,tb_chapter c
+    where bm.collection_id = #{collectionId,jdbcType=INTEGER}
+    and bm.chapter_id = c.chapter_id
+    <if test="offset != null and limit != null">
+      limit #{offset},#{limit}
+    </if>
+  </select>
 
-  <select id="searchBookmark"  resultMap="BaseResultMap">
+  <select id="getBookMarkOne" parameterType="com.magician.book.pojo.Bookmark" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from tb_bookmark
-    where collection_id = #{collectionId,jdbcType=INTEGER}
+    where collection_id = #{collectionId,jdbcType=INTEGER} 
+    and chapter_id = #{chapterId,jdbcType=INTEGER}
   </select>
 </mapper>

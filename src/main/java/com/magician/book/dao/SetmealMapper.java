@@ -17,5 +17,5 @@ public interface SetmealMapper {
 
     int updateByPrimaryKey(Setmeal record);
 
-    List<Setmeal> getList();
+    List<Setmeal> getList(Integer offset, Integer limit,Integer isDel);
 }

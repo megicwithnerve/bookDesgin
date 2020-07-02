@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>首页</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="applicable-device" content="pc">
+	<meta name="mobile-agent" content="format=xhtml;url=https://m.laiyetxt.com" />
+	<meta https-equiv="Cache-Control" content="no-transform" />
+	<meta https-equiv="Cache-Control" content="no-siteapp" />
+	<link rel="stylesheet" th:href="@{/reader/css/lycss.css}" type="text/css" />
+</head>
+
+<body>
+	<div th:include="reader/header::header-nav(${bookKind},${reader})"></div>
+	<div id="wrap" class="w1000 ma_au clearfix">
+		<div class="box1 mt20 clearfix" th:if="${recommend.size()} ne 0">
+			<div class="datuBook fl" >
+
+				<a th:href="'/bookread/reader/bookinfo/'+${recommend[0].book.bookId}">
+					<div class="oh scal bookShadow fl" style="width: 180px; height: 220px;"><img th:src="'https://zsjvideo.oss-cn-hangzhou.aliyuncs.com/image/zsj/'+${recommend[0].book.bookImage}"
+							alt="封面图片" class="fl"></div>
+				</a>
+				<div class="bookName fl fw  w190">
+					<a th:href="'/bookread/reader/bookinfo/'+${recommend[0].book.bookId}" target="_blank" th:text="${recommend[0].book.bookName}"></a>
+				</div>
+				<div class="typeAuthor text-overflow fl  w190">
+					<span class="span1"><a  th:href="'/bookread/reader/bookKind/'+${recommend[0].book.bookKind}"
+											th:text="${recommend[0].book.bookKind}" target="_blank"></a></span>
+					<span class="span2"><a th:href="'/bookread/reader/writer/'+${recommend[0].book.writerId}" target="_blank"
+										   th:text="${recommend[0].book.writerName}"></a></span>
+				</div>
+				<div class="detail w190 fl">简介：[[${recommend[0].book.bookInfo}]]
+
+				</div>
+				<div class="newArticle fl w190"><a th:href="'/bookread/reader/chapter/'+${recommend[0].chapter.chapterId}" target="_blank"
+												   th:text="'最近更新：'+${recommend[0].chapter.chapterNumber}+' '+${recommend[0].chapter.chapterName}"></a></div>
+				<a th:href="'/bookread/reader/chapter/'+${recommend[0].chapter.chapterId}" class="fl readBegin" target="_blank">立即阅读</a>
+
+			</div>
+			<ul class="books fl" >
+				<li th:if=" ${bookStat.index}%2 ne 0" th:each="item,bookStat : ${recommend}">
+					<div class="book">
+						<a th:href="'/bookread/reader/bookinfo/'+${item.book.bookId}" target="_blank">
+							<div class="scal oh  bookShadow fl" style="width: 100px; height: 138px;">
+								<img th:src="'https://zsjvideo.oss-cn-hangzhou.aliyuncs.com/image/zsj/'+${item.book.bookImage}" class="fl">
+							</div>
+						</a>
+						<div class="bookDetail">
+							<div class="bookName text-overflow"><a th:href="'/bookread/reader/bookinfo/'+${item.book.bookId}" target="_blank" th:text="${item.book.bookName}"></a></div>
+							<div class="detail"> [[${item.book.bookInfo}]]
+
+							</div>
+							<div class="typeAuthor fl text-overflow">
+								<span class="span1">
+									<a th:href="'/bookread/reader/bookKind/'+${item.book.bookKind}"
+									   th:text="${item.book.bookKind}" target="_blank"></a>|
+								</span>
+								<span class="span2"><a th:href="'/bookread/reader/writer/'+${item.book.writerId}" target="_blank"
+                                th:text="${item.book.writerName}"></a></span>
+							</div>
+						</div>
+					</div>
+
+					<div th:if="${bookStat.index}+1 ne ${bookStat.size}" class="book">
+						<a th:href="'/bookread/reader/bookinfo/'+${recommend[bookStat.index+1].book.bookId}" target="_blank">
+							<div class="scal oh  bookShadow fl" style="width: 100px; height: 138px;">
+								<img th:src="'https://zsjvideo.oss-cn-hangzhou.aliyuncs.com/image/zsj/'+${recommend[bookStat.index+1].book.bookImage}" class="fl">
+							</div>
+						</a>
+						<div class="bookDetail">
+							<div class="bookName text-overflow"><a th:href="'/bookread/reader/bookinfo/'+${recommend[bookStat.index+1].book.bookId}" target="_blank" th:text="${recommend[bookStat.index+1].book.bookName}"></a></div>
+							<div class="detail"> [[${recommend[bookStat.index+1].book.bookInfo}]]
+
+							</div>
+							<div class="typeAuthor fl text-overflow">
+								<span class="span1">
+									<a th:href="'/bookread/reader/bookKind/'+${recommend[bookStat.index+1].book.bookKind}"
+									   th:text="${recommend[bookStat.index+1].book.bookKind}" target="_blank"></a>|
+								</span>
+								<span class="span2"><a th:href="'/bookread/reader/writer/'+${recommend[bookStat.index+1].book.writerId}" target="_blank"
+													   th:text="${recommend[bookStat.index+1].book.writerName}"></a></span>
+							</div>
+						</div>
+					</div>
+
+				</li>
+
+			</ul>
+		</div>
+
+		<div class="commonTitle mt20 clearfix">
+			<span class="fl fw">大神专区</span>
+		</div>
+		<div class="box3 mt20 clearfix">
+			<ul class="books fl">
+
+				<li th:each="item,bookStat : ${goodBook}">
+					<a th:href="'/bookread/reader/bookinfo/'+${item.book.bookId}" target="_blank">
+						<div class="scal oh bookShadow fl" style="width: 120px; height: 162px;"><img
+								th:src="'https://zsjvideo.oss-cn-hangzhou.aliyuncs.com/image/zsj/'+${item.book.bookImage}"
+								class="fl"></div>
+						<div class="bookName fl text-overflow" th:text="${item.book.bookName}"></div>
+						<div class="bookAuthor text-overflow" th:text="${item.writer.writerName}"></div>
+					</a>
+				</li>
+
+
+			</ul>
+			<div class="youbian fr">
+				<div class="hd">
+					<h2 class="tit"><span class="icon"></span>点击榜</h2>
+				</div>
+				<ul class="tlist-rank">
+
+					<li th:class="'item-'+(${bookStat.index}+1)" th:each="item,bookStat : ${clicksbook}">
+						<div class="view-with-pic" th:if="${bookStat.index} eq 0">
+							<span class="no" th:text="${bookStat.index}+1"></span>
+							<div class="pic">
+								<a th:href="'/bookread/reader/bookinfo/'+${item.book.bookId}"><img width="55"
+										height="75" alt=""
+										th:src="'https://zsjvideo.oss-cn-hangzhou.aliyuncs.com/image/zsj/'+${item.book.bookImage}"></a>
+							</div>
+							<div class="cont">
+								<h3><a th:href="'/bookread/reader/bookinfo/'+${item.book.bookId}" title=""
+										th:text="${item.book.bookName}"></a></h3>
+								<p><i class="desc-t">作者：</i><a class="desc-v"
+										th:href="'/bookread/reader/writer/'+${item.writer.writerId}"
+										th:text="${item.writer.writerName}"></a></p>
+								<p><i class="desc-t">点击：</i><span class="desc-v click_num"
+										th:text="${item.book.clicks}"></span></p>
+							</div>
+						</div>
+						<div class="view-no-pic" th:if="${bookStat.index} ne 0">
+							<span class="no" th:text="${bookStat.index}+1"></span>
+							<a th:href="'/bookread/reader/bookinfo/'+${item.book.bookId}" title=""
+								th:text="${item.book.bookName}"></a>
+						</div>
+					</li>
+
+				</ul>
+			</div>
+		</div>
+		<div class="commonTitle mt20 clearfix">
+			<span class="fl fw">最近更新</span>
+		</div>
+		<div class="box4 mt20 clearfix">
+			<dl>
+				<dd class="tablelist on">
+					<span class="xfl">分类</span>
+					<span class="xsm">书名</span>
+					<span class="xzz">作者</span>
+					<span class="xzx">最新章节</span>
+					<span class="xsj tr">更新时间</span>
+				</dd>
+
+				<dd th:class="${bookStat.index}%2 == 0 ? 'on' : ''" th:each="item,bookStat : ${newChapter}">
+					<span class="xfl text-overflow">
+						<a th:href="'/bookread/reader/bookKind/'+${item.book.bookKind}" class="ysb08"
+							th:text="${item.book.bookKind}"></a>
+					</span>
+					<span class="xsm text-overflow"><a th:href="'/bookread/reader/bookinfo/'+${item.book.bookId}"
+							th:text="${item.book.bookName}"></a></span>
+					<span class="xzz text-overflow"><a class="ys86"
+							th:href="'/bookread/reader/writer/'+${item.writer.writerId}" target="_blank"
+							th:text="${item.writer.writerName}"></a></span>
+					<span class="xzx text-overflow"><a class="ysb08"
+							th:href="'/bookread/reader/chapter/'+${item.chapter.chapterId}" target="_blank"
+							th:text="${item.chapter.chapterNumber}+' '+${item.chapter.chapterName}"></a></span>
+					<span class="xsj tr ys86" th:text="${#dates.format(item.chapter.createdtime,'MM-dd')}"></span>
+</dd>
+
+
+		</dl>
+	</div>
+</div>
+<div th:replace="reader/footer::footer-fragment"></div>
+
+</body>
+</html>

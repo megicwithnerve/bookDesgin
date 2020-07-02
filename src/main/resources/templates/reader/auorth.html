@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>作者书籍</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <link rel="stylesheet" th:href="@{/reader/css/lycss.css}" type="text/css" />
+  <link rel="stylesheet" th:href="@{/reader/css/zxf_page.css}" type="text/css" />
+
+  <script th:src="@{/reader/js/all.js}"></script>
+</head>
+<body>
+<div th:include="reader/header::header-nav(${bookKind},${reader})"></div>
+<div id="content">
+<table class="grid" width="100%" align="center">
+<caption th:text = "'“'+${writer.writerName}+'”的小说列表'"></caption>
+  <tr align="center">
+    <th width="20%">小说名称</th>
+    <th width="40%">最新章节</th>
+    <th width="15%">作者</th>
+	<th width="9%">字数</th>
+    <th width="10%">更新</th>
+    <!--<th width="6%">状态</th>-->
+  </tr>
+  
+  <tr align="center" th:each="item,bookStat : ${books}">
+    <td><a th:href="'/bookread/reader/bookinfo/'+${item.book.bookId}" th:text="${item.book.bookName}"></a></td>
+    <td><a th:href="'/bookread/reader/chapter/'+${item.chapter.chapterId}" th:text="${item.chapter.chapterNumber}+' '+${item.chapter.chapterName}"></a></td>
+    <td th:text="${writer.writerName}"></td>
+	<td th:text="${item.book.wordNumber}"></td>
+    <td align="center" th:text="${#dates.format(item.chapter.createdtime,'yyyy-MM-dd')}"></td>
+    <!--<td th:if="${item.book.bookStatus}" align="center">已上架</td>-->
+  </tr>
+
+</table>
+  <div class="zxf_pagediv"></div>
+<div th:replace="reader/footer::footer-fragment"></div>
+<script th:src="@{/reader/js/jquery-1.9.1.min.js}"></script>
+<script th:src="@{/reader/js/zxf_page.js}"></script>
+  <script>
+    var writerId = [[${writer.writerId}]];
+    var indexpage = [[${ pager.indexpage }]];
+    var pagessize = [[${ pager.pagesize }]];
+    var countpages = [[${ pager.countpage }]];
+    $(function () {
+      init()
+    })
+
+    function init() {
+      //翻页
+      $(".zxf_pagediv").createPage({
+        pageNum: countpages,
+        current: indexpage,
+        backfun: function (e) {
+          if (e.current > countpages) {
+
+            return
+          }
+          if (e.current == 0) {
+            e.current = 1
+          }
+          pageGet(e.current);
+        }
+      });
+
+
+    }
+    function pageGet(indexpage) {
+      if(indexpage <= 0 || indexpage >  countpages){
+        return;
+      }
+        var url = `/bookread/reader/writer/${writerId}?indexpage=${indexpage}&pagesize=${pagessize}`
+      location.href = url;
+    }
+  </script>
+</div>
+</body>
+</html>

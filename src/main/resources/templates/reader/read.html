@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>电子书阅览系统</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="applicable-device" content="pc">
+	<link rel="stylesheet" th:href="@{/reader/css/lycss.css}" type="text/css" />
+	<script th:src="@{/reader/js/all.js}"></script>
+<script type="text/javascript">
+
+// var preview_page = "/html/16689/11288503.html";
+// var next_page = "/html/16689/11288504_2.html";
+// var index_page = "/html/16689.html";
+// var articleid = "";
+// var chapter_id = "";
+// function jumpPage() {
+//   var event = document.all ? window.event : arguments[0];
+//   if (event.keyCode == 37) document.location = preview_page;
+//   if (event.keyCode == 39) document.location = next_page;
+//   if (event.keyCode == 13) document.location = index_page;
+// }
+// document.onkeydown=jumpPage;
+
+</script>
+</head>
+<body class="skin_1">
+<div th:include="reader/header::header-nav(${bookKind},${reader})"></div>
+<!--头部结束-->
+<div id="wrap" class="w1000 ma_au clearfix mt10">
+	<div id="crumbs" class="crumbs bgf">
+		当前位置：
+		<a href="/bookread/index">bookread</a><span>&gt;</span>
+		<a target="_self" th:href="'/bookread/reader/bookKind/'+${book.bookKind}" th:text="${book.bookKind}"></a>
+		<span>&gt;</span>
+		<a th:href="'/bookread/reader/bookinfo/'+${book.bookId}" th:text="${book.bookName}"></a>
+	</div>
+	<div class="mt10"></div>
+
+	<div class="article-title mt10">
+		<h1 th:text="${chapter.chapter.chapterNumber}+' '+${chapter.chapter.chapterName}"></h1>
+		<p>
+            <span>小说：<a th:href="'/bookread/reader/bookinfo/'+${book.bookId}" th:text="${book.bookName}"></a></span>
+            <span>作者：<a a th:href="'/bookread/reader/writer/'+${book.writerId}"  th:text="${book.writerName}" target="_blank" title=""></a></span>
+            <span th:text="'字数：'+${book.wordNumber}"></span>
+        </p>
+	</div>
+	<div class="read-page mt20"> 
+		<!--<span class="gray">（← 快捷键 </span> -->
+			<a th:if="${chapter.pre} ne null" th:href="'/bookread/reader/chapter/'+${chapter.pre.chapterId}" id="prevChapterBtn">上一章</a>
+			<a th:href="'/bookread/reader/mulu/'+${book.bookId}">回目录</a>
+			<a th:if="${chapter.next} ne null" th:href="'/bookread/reader/chapter/'+${chapter.next.chapterId}" id="nextChapterBtn">下一章</a>
+		<!--<span class="gray">快捷键→）</span> -->
+	</div>
+	<div class="content-wrap">
+		
+		<!--<div class="side-ad-wrap ad-left" id="ad-left">-->
+			<!--<div class="bd" style="width:100%;">-->
+				<!--<a id="history1"  href="javascript:void(0)">广告招租????</a>-->
+			<!--</div>-->
+		<!--</div>-->
+		<div class="side-ad-wrap ad-right" id="ad-right">
+			<div class="bd" style="width:100%;">
+				<!-- <a style="color:red" id="report" href="javascript:void(0)">报错</a> -->
+				<!--<a id="mybooks"  href="javascript:void(0)">我的书架</a>-->
+				<a th:onclick="'addbookmark('+${book.bookId}+','+${chapter.chapter.chapterId}+')'" href="javascript:void(0)">添加书签</a>
+			</div>
+		</div>
+		<div id="zt" class="family_0">
+			<div id="dx" class="size_1">
+				<p th:utext="${chapter.chapter.content}">
+
+				</p>
+			</div>
+		</div>
+	</div>
+	<div class="read-page">
+		<!--<span class="gray">（← 快捷键 </span> -->
+		<a th:if="${chapter.pre} ne null" th:href="'/bookread/reader/chapter/'+${chapter.pre.chapterId}" id="prevChapterBtn">上一章</a>
+		<a th:href="'/bookread/reader/mulu/'+${book.bookId}">回目录</a>
+		<a th:if="${chapter.next} ne null" th:href="'/bookread/reader/chapter/'+${chapter.next.chapterId}" id="nextChapterBtn">下一章</a>
+		<!--<span class="gray">快捷键→）</span> -->
+	</div>
+</div>
+
+
+<div th:replace="reader/footer::footer-fragment"></div>
+</body>
+<script th:src="@{/reader/js/jquery-1.9.1.min.js}"></script>
+<!--<script th:src="@{/reader/js/mybook.js}"></script>-->
+<!--<script th:src="@{/reader/js/layer/layer.js}"></script>-->
+<script>
+	function loginstatus() {
+		//监测是否登录
+		var login = false;
+		$.ajax({
+			url: '/bookread/reader/loginstatus',
+			type: 'post',
+			dataType: 'json',
+			data: {},
+			async: false,
+			success: function (data) {
+				login = data.result;
+				if (data.result == false) {
+					alert(data.message);
+				}
+			},
+			error: function () {
+
+			}
+		});
+		return login;
+	}
+
+	function addbookmark(bookId,chapterId) {
+		var login = loginstatus();
+		if(login == false){
+			return;
+		}
+
+		$.ajax({
+			url: '/bookread/reader/addmybookmark',
+			type: 'post',
+			dataType: 'json',
+			data: {bookId,chapterId},
+			success:function(data){
+				console.log(data)
+				alert(data.message);
+			},
+			error:function(){
+
+			}
+		});
+	}
+</script>
+</html>

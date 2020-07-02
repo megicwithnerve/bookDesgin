@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.magician.book.dao.BookEntityMapper">
+
+    <resultMap type="com.magician.book.pojo.BookEntity" id="resultUserMap">
+        <association  property="book" javaType="com.magician.book.pojo.Book">
+            <id column="book_id" jdbcType="INTEGER" property="bookId" />
+            <result column="book_image" jdbcType="VARCHAR" property="bookImage" />
+            <result column="book_name" jdbcType="VARCHAR" property="bookName" />
+            <result column="book_info" jdbcType="VARCHAR" property="bookInfo" />
+            <result column="word_number" jdbcType="INTEGER" property="wordNumber" />
+            <result column="price" jdbcType="INTEGER" property="price" />
+            <result column="writer_name" jdbcType="VARCHAR" property="writerName" />
+            <result column="writer_id" jdbcType="INTEGER" property="writerId" />
+            <result column="book_status" jdbcType="INTEGER" property="bookStatus" />
+            <result column="message" jdbcType="VARCHAR" property="message" />
+            <result column="clicks" jdbcType="INTEGER" property="clicks" />
+            <result column="thumbs" jdbcType="INTEGER" property="thumbs" />
+            <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+            <result column="book_kind" jdbcType="VARCHAR" property="bookKind" />
+        </association >
+        <association property="writer" javaType="com.magician.book.pojo.Writer">
+            <id column="writer_id" jdbcType="INTEGER" property="writerId" />
+            <result column="email" jdbcType="VARCHAR" property="email" />
+            <result column="password" jdbcType="VARCHAR" property="password" />
+            <result column="writer_name" jdbcType="VARCHAR" property="writerName" />
+            <result column="real_name" jdbcType="VARCHAR" property="realName" />
+            <result column="telphone" jdbcType="VARCHAR" property="telphone" />
+            <result column="profit" jdbcType="INTEGER" property="profit" />
+            <result column="writer_status" jdbcType="INTEGER" property="writerStatus" />
+        </association>
+        <association property="chapter" javaType="com.magician.book.pojo.Chapter">
+            <id column="chapter_id" jdbcType="INTEGER" property="chapterId" />
+            <result column="chapter_number" jdbcType="VARCHAR" property="chapterNumber" />
+            <result column="chapter_name" jdbcType="VARCHAR" property="chapterName" />
+            <result column="price" jdbcType="INTEGER" property="price" />
+            <result column="book_id" jdbcType="INTEGER" property="bookId" />
+            <result column="book_name" jdbcType="VARCHAR" property="bookName" />
+            <result column="writer_id" jdbcType="INTEGER" property="writerId" />
+            <result column="chapter_status" jdbcType="INTEGER" property="chapterStatus" />
+            <result column="vip_chapter" jdbcType="INTEGER" property="vipChapter" />
+            <result column="message" jdbcType="VARCHAR" property="message" />
+            <result column="createdTime" jdbcType="TIMESTAMP" property="createdtime" />
+            <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+        </association>
+    </resultMap>
+
+    <select id="getBookEntitylist" resultMap="resultUserMap">
+        select *
+        from tb_book b,tb_chapter c,tb_writer w
+        <where>
+            c.createdTime = (select max(createdTime) from tb_chapter c2 where c2.book_id = b.book_id and c2.chapter_status = 1)
+            and b.writer_id = w.writer_id
+            and w.writer_status = 1
+            and b.book_status = 1
+            and c.chapter_status = 1
+            <if test="bookKind != null">
+                and b.book_kind = #{bookKind,jdbcType=VARCHAR}
+            </if>
+            <if test="writerId != null">
+                and w.writer_id = #{writerId,jdbcType=INTEGER}
+            </if>
+            <if test="writerName != null and bookName != null">
+                and (w.writer_name like #{writerName,jdbcType=VARCHAR}
+                or b.book_name like #{bookName,jdbcType=VARCHAR})
+            </if>
+        </where>
+        <if test="chapterTime != null">
+            order by c.createdTime desc
+        </if>
+        <if test="clicks != null">
+            order by b.clicks desc
+        </if>
+        <if test="thumbs != null">
+            order by b.thumbs desc
+        </if>
+        <if test="offset != null and limit != null">
+            limit #{offset},#{limit}
+        </if>
+    </select>
+    <select id="getBookEntityById" resultMap="resultUserMap">
+        select *
+        from tb_book b,tb_chapter c,tb_writer w
+        <where>
+            c.createdTime = (select max(createdTime) from tb_chapter c2 where c2.book_id = b.book_id and c2.chapter_status = 1)
+            and b.writer_id = w.writer_id
+            and w.writer_status = 1
+            and b.book_status = 1
+            and c.chapter_status = 1
+
+            <if test="bookId != null">
+                and b.book_id = #{bookId,jdbcType=INTEGER}
+            </if>
+        </where>
+
+        <if test="offset != null and limit != null">
+            limit #{offset},#{limit}
+        </if>
+    </select>
+</mapper>

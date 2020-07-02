@@ -1,10 +1,15 @@
 package com.magician.book.config.rabbit;
 
+import com.magician.book.pojo.AlipayVo;
+import com.magician.book.services.RechargeRecordService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 
@@ -14,8 +19,11 @@ import java.io.IOException;
  * @Date 2019/8/15
  */
 
-@Configuration
+@Controller
 public class Consumer {
+
+    @Autowired
+    RechargeRecordService rechargeRecordService;
 
     private  static final Logger log = LoggerFactory.getLogger(Consumer.class);
 
@@ -71,6 +79,10 @@ public class Consumer {
             byte[] body = message.getBody();
             String json = new String(body);
             log.info("consumer_bead_queue收到消息 : " + json);
+            AlipayVo alipayVo = new AlipayVo();
+            alipayVo.setOut_trade_no(json);
+            rechargeRecordService.updateRechargeByVo(alipayVo,alipayVo.getOut_trade_no(),0);
+
             System.out.println(json);
             //手动ACK
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);

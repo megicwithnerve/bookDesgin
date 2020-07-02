@@ -1,6 +1,9 @@
 package com.magician.book.dao;
 
 import com.magician.book.pojo.Comment;
+import com.magician.book.pojo.CommentEntity;
+
+import java.util.List;
 
 public interface CommentMapper {
     int deleteByPrimaryKey(Integer commentId);
@@ -16,4 +19,6 @@ public interface CommentMapper {
     int updateByPrimaryKeyWithBLOBs(Comment record);
 
     int updateByPrimaryKey(Comment record);
+
+    List<CommentEntity> selectCommentEntity(Integer bookId,Integer offset,Integer limit);
 }

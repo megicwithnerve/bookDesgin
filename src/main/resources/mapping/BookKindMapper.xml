@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.magician.book.dao.BookKindMapper">
+  <resultMap id="BaseResultMap" type="com.magician.book.pojo.BookKind">
+    <id column="bookKind_id" jdbcType="INTEGER" property="bookkindId" />
+    <result column="bookKindName" jdbcType="VARCHAR" property="bookkindname" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    bookKind_id, bookKindName
+  </sql>
+  <!--<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">-->
+    <!--select -->
+    <!--<include refid="Base_Column_List" />-->
+    <!--from tb_bookkind-->
+    <!--where bookKind_id = #{bookkindId,jdbcType=INTEGER}-->
+  <!--</select>-->
+  <!--<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">-->
+    <!--delete from tb_bookkind-->
+    <!--where bookKind_id = #{bookkindId,jdbcType=INTEGER}-->
+  <!--</delete>-->
+  <!--<insert id="insert" parameterType="com.iforce.zingrow.pojo.BookKind">-->
+    <!--insert into tb_bookkind (bookKind_id, bookKindName)-->
+    <!--values (#{bookkindId,jdbcType=INTEGER}, #{bookkindname,jdbcType=VARCHAR})-->
+  <!--</insert>-->
+  <!--<insert id="insertSelective" parameterType="com.magician.book.pojo.BookKind">-->
+    <!--insert into tb_bookkind-->
+    <!--<trim prefix="(" suffix=")" suffixOverrides=",">-->
+      <!--<if test="bookkindId != null">-->
+        <!--bookKind_id,-->
+      <!--</if>-->
+      <!--<if test="bookkindname != null">-->
+        <!--bookKindName,-->
+      <!--</if>-->
+    <!--</trim>-->
+    <!--<trim prefix="values (" suffix=")" suffixOverrides=",">-->
+      <!--<if test="bookkindId != null">-->
+        <!--#{bookkindId,jdbcType=INTEGER},-->
+      <!--</if>-->
+      <!--<if test="bookkindname != null">-->
+        <!--#{bookkindname,jdbcType=VARCHAR},-->
+      <!--</if>-->
+    <!--</trim>-->
+  <!--</insert>-->
+  <!--<update id="updateByPrimaryKeySelective" parameterType="com.magician.book.pojo.BookKind">-->
+    <!--update tb_bookkind-->
+    <!--<set>-->
+      <!--<if test="bookkindname != null">-->
+        <!--bookKindName = #{bookkindname,jdbcType=VARCHAR},-->
+      <!--</if>-->
+    <!--</set>-->
+    <!--where bookKind_id = #{bookkindId,jdbcType=INTEGER}-->
+  <!--</update>-->
+  <!--<update id="updateByPrimaryKey" parameterType="com.magician.book.pojo.BookKind">-->
+    <!--update tb_bookkind-->
+    <!--set bookKindName = #{bookkindname,jdbcType=VARCHAR}-->
+    <!--where bookKind_id = #{bookkindId,jdbcType=INTEGER}-->
+  <!--</update>-->
+  <select id="getBookList" resultMap="BaseResultMap">
+    select
+    *
+    from tb_bookkind
+    <if test="offset != null and limit != null">
+      limit #{offset},#{limit}
+    </if>
+  </select>
+
+</mapper>

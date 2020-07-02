@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>欢迎页面-L-admin1.0</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="../css/font.css">
+  <link rel="stylesheet" href="../css/xadmin.css">
+  <link rel="stylesheet" href="../css/zxf_page.css">
+
+  <script src="../js/jquery.min.js"></script>
+  <script type="text/javascript" src="../lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript" src="../js/xadmin.js"></script>
+  <script type="text/javascript" src="../js/zxf_page.js"></script>
+
+  <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+  <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body class="layui-anim layui-anim-up">
+  <div class="x-nav">
+    <span class="layui-breadcrumb">
+      <a href="./writerlist.html">作者列表</a>
+      <a href="./booklist.html" id="writerName"></a>
+      <cite><a href="#" id="bookName"></a></cite>
+    </span>
+    <a class="layui-btn layui-btn-primary layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+      href="javascript:location.replace(location.href);" title="刷新">
+      <i class="layui-icon" style="line-height:38px">ဂ</i></a>
+  </div>
+  <div class="x-body" id="listRow">
+ <form class=" x-so" style="float: right;" onsubmit="return false">
+        <input type="text" id="searchName" name="" placeholder="请输入章节名" autocomplete="off" class="layui-input">
+        <button class="layui-btn" onclick=" search()" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+      </form>
+   
+    <table class="layui-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>章节号</th>
+          <th>章节名</th>
+          <th>VIP章节</th>
+          <th>价格</th>
+          <th>创建时间</th>
+          <th>状态</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody id="chapterBody">
+
+
+      </tbody>
+
+    </table>
+    <div class="zxf_pagediv"></div>
+
+  </div>
+  <!-- 添加页面 -->
+ 
+  <!-- 修改页面 -->
+  <div id="editRow" style="display: none;">
+
+    <div class="layui-card">
+
+      <div class="layui-card-body">
+        <form class="layui-form" id="editForm" action="" onsubmit="return false" lay-filter="component-form-element">
+          <div class="layui-row layui-col-space10 layui-form-item">
+            <div class="layui-col-lg3">
+              <label class="layui-form-label">章节名：</label>
+              <div class="layui-input-block">
+                <input type="text" name="fullname" id="chapterNameEdit" lay-verify="required" placeholder=""
+                  autocomplete="off" class="layui-input">
+              </div>
+            </div>
+            <div class="layui-col-lg3">
+              <label class="layui-form-label">章节类型：</label>
+              <div class="layui-input-block">
+                <select name="type" id="vipChapterEdit" lay-verify="required" lay-filter="aihao">
+                  <option value="0">免费章节</option>
+                  <option value="1">VIP章节</option>
+                </select>
+
+              </div>
+            </div>
+          </div>
+          <div class="layui-row layui-col-space10 layui-form-item">
+            <div class="layui-col-lg3">
+              <label class="layui-form-label">章节号：</label>
+              <div class="layui-input-block">
+                <input type="text" name="fullname" id="chapterNumberEdit" lay-verify="required" placeholder=""
+                  autocomplete="off" class="layui-input">
+              </div>
+            </div>
+
+          </div>
+          <div class="layui-form-item layui-col-lg10">
+            <label class="layui-form-label">章节内容：</label>
+            <div class="layui-input-block">
+              <!-- <textarea name="other" placeholder="" class="layui-textarea"></textarea> -->
+              <textarea name="Chapter" id="editChapter" rows="10" cols="80">
+              </textarea>
+            </div>
+          </div>
+
+          <div class="layui-form-item">
+            <div class="layui-input-block">
+              <button class="layui-btn" onclick="updateChapter()" lay-filter="component-form-element">保存</button>
+              <a title="返回" class="layui-btn  layui-btn-normal" onclick="showListRow()" href="javascript:;">
+                返回
+              </a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+<script src="../ckeditor/ckeditor.js"></script>
+
+<script>
+
+  var writerId = window.sessionStorage.writerId;
+  var bookId = window.sessionStorage.bookId;
+  var chapterId;
+  var book;
+  var index = 1;
+  var pagesize = 10;
+
+  //两个富文本框
+  var addConfig = {
+    customConfig: './samples/editConfig.js'
+  };
+
+  CKEDITOR.replace('addChapter', addConfig);
+
+  var editConfig = {
+    customConfig: './samples/editConfig.js'
+  };
+
+  CKEDITOR.replace('editChapter', editConfig);
+
+  $(document).ready(function () {
+    getWriterById(writerId);
+    getBookById(bookId);
+    init(index, pagesize);
+
+  });
+  //搜索
+  function search() {
+    init(1, pagesize)
+  }
+  //获取作者信息
+  function getWriterById(writerId){
+    $.ajax({
+      type: 'POST',
+      url: "/bookread/admin/getWriterById",
+      data: {
+        writerId
+      },
+      dataType: 'json',
+      success: function (res) {
+        // console.log(res)
+        writer = res.data
+        $("#writerName").text(writer.writerName+"的书架")
+      },
+      error: function (res) {
+        console.log(res);
+      }
+    })
+  }
+  //获取书籍信息
+  function getBookById(bookId) {
+    $.ajax({
+      type: 'POST',
+      url: "/bookread/admin/bookById",
+      data: {
+        bookId
+      },
+      dataType: 'json',
+      success: function (res) {
+        // console.log(res)
+        book = res.data
+        $("#bookName").text(book.bookName)
+      },
+      error: function (res) {
+        console.log(res);
+      }
+    })
+  }
+  //获取初始化
+  function init(index, pagesize) {
+    var chapterName = $("#searchName").val().trim()
+    indexpage = index
+    var data = {
+      indexpage: indexpage,
+      pagesize: pagesize,
+      bookId: bookId,
+      chapterName: chapterName,
+      chapterStatus: null,
+      writerId:null
+    }
+
+    $.ajax({
+      type: 'POST',
+      url: "/bookread/admin/getchapter",
+      data: data,
+      dataType: 'json',
+      success: function (res) {
+        putList(res)
+        pages(res)
+      },
+      error: function (res) {
+        console.log(res);
+      }
+
+    })
+  }
+
+
+  //创建分页
+  function pages(pager) {
+
+    //翻页
+    $(".zxf_pagediv").createPage({
+      pageNum: pager.countpage,
+      current: pager.indexpage,
+      backfun: function (e) {
+        if (e.current > pager.countpage) {
+
+          return
+        }
+        if (e.current == 0) {
+          e.current = 1
+        }
+        pageGet(e.current, pager.pagesize);
+      }
+    });
+  }
+  //获取分页数据
+  function pageGet(index, pagesize) {
+    var chapterName = $("#searchName").val().trim()
+    indexpage = index;
+    var data = {
+      indexpage: indexpage,
+      pagesize: pagesize,
+      bookId: bookId,
+      chapterName: chapterName,
+      chapterStatus: null,
+      writerId:null
+    }
+
+    $.ajax({
+      type: 'POST',
+      url: "/bookread/admin/getchapter",
+      data: data,
+      dataType: 'json',
+      success: function (res) {
+        putList(res);
+      },
+      error: function (res) {
+        console.log(res);
+      }
+
+    })
+  }
+
+  //渲染列表数据
+  function putList(pager) {
+    var chapterBody = $("#chapterBody");
+    chapterBody.empty()
+    for (var i of pager.data) {
+      var vip = "否"
+      if (i.vipChapter == 1) {
+        vip = "是"
+      }
+      var a = '';
+      var statusName;
+      if (i.chapterStatus == 0) {
+        statusName = "待审核"
+      } else if (i.chapterStatus == 1) {
+        statusName = "已上架"
+        a=` <a title="下架" class="layui-btn layui-btn-sm layui-btn-danger" onclick="updateStatus(${i.chapterId})"
+              href="javascript:;">
+              下架
+            </a>`
+      } else {
+        statusName = "已下架"
+      }
+      var time = new Date(i.createdtime);
+      var Time = time.getFullYear() + "-" + (time.getMonth() + 1) + "-" + time.getDate() + " " + time.getHours() + ":"
+        + time.getMinutes() + ":" + time.getSeconds();
+
+      var tr = `<tr>
+          <td>${i.chapterId}</td>
+          <td>${i.chapterNumber}</td>
+          <td>${i.chapterName}</td>
+          <td>${vip}</td>
+          <td>${i.price}</td>
+          <td>${Time}</td>
+          <td class="td-status">
+            <span class="layui-btn layui-btn-normal layui-btn-sm">${statusName}</span></td>
+          <td class="td-manage">
+            <a title="编辑" class="layui-btn layui-btn-sm layui-btn-normal" onclick="showEditRow(${i.chapterId})" href="javascript:;">
+              编辑
+            </a>
+           `+a+`
+          </td>
+        </tr>`
+
+      chapterBody.append(tr)
+    }
+  }
+  
+  //显示列表
+  function showListRow() {
+    $("#editRow").css('display', 'none');
+    $("#listRow").css('display', 'block');
+    init(index, pagesize);
+
+  }
+  //显示修改
+  function showEditRow(chapterId) {
+    $("#editRow").css('display', 'block');
+    $("#listRow").css('display', 'none');
+    pullChapter(chapterId)
+
+  }
+
+ 
+  function chapterReSet() {
+    $("#chapterName").val("");
+    $("#vipChapter").val("0");
+    $("#chapterNumber").val("");
+    CKEDITOR.instances.addChapter.setData('');
+
+  }
+
+  function pullChapter(id) {
+    chapterId = id;
+    $.ajax({
+      type: 'POST',
+      url: "/bookread//admin/getChapterById",
+      data: {
+        chapterId
+      },
+      dataType: 'json',
+      success: function (res) {
+        // console.log(res)
+        putChapter(res.data)
+      },
+      error: function (res) {
+        console.log(res);
+      }
+    })
+
+  }
+
+  function putChapter(chapter) {
+    $("#vipChapterEdit").val(chapter.vipChapter);
+    renderForm()
+    $("#chapterNameEdit").val(chapter.chapterName);
+    $("#chapterNumberEdit").val(chapter.chapterNumber);
+    CKEDITOR.instances.editChapter.setData(chapter.content);
+  }
+
+
+  function renderForm() {
+    layui.use('form', function () {
+      var form = layui.form; //高版本建议把括号去掉，有的低版本，需要加()
+      form.render();
+    });
+  }
+
+  function updateChapter() {
+    var vipChapter = $("#vipChapterEdit").val();
+    var chapterName = $("#chapterNameEdit").val();
+    var chapterNumber = $("#chapterNumberEdit").val();
+    var content = CKEDITOR.instances.editChapter.getData();
+    var chapterStatus = 0;
+    var writerId = null;
+    var data = {
+      vipChapter,
+      chapterName,
+      chapterNumber,
+      chapterId,
+      content,
+      chapterStatus,
+      writerId
+    }
+
+    $.ajax({
+      type: 'POST',
+      url: "/bookread/writer/editchapter",
+      data: data,
+      dataType: 'json',
+      success: function (res) {
+       alert(res.message)
+      },
+      error: function (res) {
+        console.log(res);
+      }
+
+    });
+
+  }
+
+  function updateStatus(chapterId){
+    var chapterStatus = 2;
+    var data = {
+      chapterId,
+      chapterStatus
+    }
+
+    $.ajax({
+      type: 'POST',
+      url: "/bookread/writer/editchapter",
+      data: data,
+      dataType: 'json',
+      success: function (res) {
+        console.log(res)
+       alert(res.message)
+       pageGet(indexpage,pagesize)
+      },
+      error: function (res) {
+        console.log(res);
+      }
+
+    });
+  }
+  
+</script>
+
+</html>

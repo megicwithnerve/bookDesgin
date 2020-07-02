@@ -21,7 +21,7 @@ public class Pager {
 
     public Integer getBeginrows() {
 
-        this.beginrows = ((getIndexpage() - 1) * getPagesize()) + 1;
+        this.beginrows = ((getIndexpage() - 1) * getPagesize());
         return beginrows;
     }
 

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head lang="en">
+    <meta charset="utf-8" />
+    <title>个人信息</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/reader/css/public.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/reader/css/mygrxx.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/reader/css/mygxin.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/reader/css/proList.css}" />
+    <link rel="stylesheet" th:href="@{/reader/css/lycss.css}" type="text/css" />
+
+</head>
+<style>
+    .pay {
+        display: inline-block;
+        width: 100px;
+        height: 40px;
+        text-align: center;
+        line-height: 40px;
+        background: #c10000;
+        color: #fff;
+    }
+</style>
+
+<body>
+    <div th:include="reader/header::header-nav(${bookKind},${reader})"></div>
+    <div class="Bott">
+        <div class="wrapper clearfix">
+            <div class="zuo fl">
+                <h3>
+                    <p class="clearfix"><span class="fl" th:text="${reader.username}"></span></p>
+
+                </h3>
+                <div>
+                    <h4>账户管理</h4>
+                    <ul>
+                        <li><a href="/bookread/reader/myinfo">个人信息</a></li>
+                        <li><a href="/bookread/reader/editpassword">修改密码</a></li>
+                    </ul>
+                    <h4>个人中心</h4>
+                    <ul>
+                        <li><a href="/bookread/reader/buyrecord">购买记录</a></li>
+                        <li class="on"><a href="/bookread/reader/order">我的充值</a></li>
+                        <li><a href="/bookread/reader/orderrecord">充值记录</a></li>
+                    </ul>
+
+                </div>
+            </div>
+            <div class="you fl">
+                <div class="order cart mt" style="margin-top:0px;">
+
+                    <div class="orderCon wrapper clearfix" style="margin-top:0px;">
+                        <div class="orderL fl">
+                            <!--------h3---------------->
+                            <h3>充值套餐</h3>
+                            <!--------addres---------------->
+
+                            <div class="addres clearfix">
+                                <div th:each="item,setmealStat : ${setmeal}" th:class="${setmealStat.index} eq 0 ? 'addre fl on':'addre fl'" onclick="choose(this)" th:id="${item.setmealId}">
+                                       <div class="tit clearfix">
+                                           <p class="fl" name="test" th:text="${item.setmealName}">
+
+                                           </p>
+                                       </div>
+                                       <div class="addCon">
+                                           <p th:text="'价格（元）: '+${item.price}"></p>
+                                           <p th:text="'充值数: '+${item.ticketNumber}"></p>
+                                           <p th:text="'赠送数: '+${item.discount}"></p>
+                                       </div>
+                                </div>
+
+                            </div>
+                            <h3>支付方式</h3>
+                            <!--------way---------------->
+                            <div class="way clearfix">
+                                <img class="on" src="/bookread/reader/images/way01.jpg">
+                            </div>
+                            <h3>确认支付</h3>
+                            <!--------dis---------------->
+                            <div class="dis clearfix">
+                                <span class="pay" onclick="pay()">
+                                    去支付
+                                </span>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    
+
+   <!--footer-->
+   <div th:replace="reader/footer::footer-fragment"></div>
+    <script thsrc="@{/reader/js/jquery-1.9.1.min.js}" type="text/javascript" charset="utf-8"></script>
+    <script>
+        function choose(event) {
+            $(event).addClass('on').siblings().removeClass('on');
+        }
+
+        function pay() {
+            var p = $(".addre.fl.on");
+            var setmealId = p[0]['id'];
+
+            location.href = "/bookread/alipay/reader/pay?setmealId="+setmealId;
+        }
+    </script>
+</body>
+
+</html>

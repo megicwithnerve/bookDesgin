@@ -1,7 +1,7 @@
 package com.magician.book.pojo;
 
 public class Reader {
-    private Integer redaerId;
+    private Integer readerId;
 
     private String email;
 
@@ -11,16 +11,16 @@ public class Reader {
 
     private String telphone;
 
-    private String balance;
+    private Integer balance;
 
-    private String readerStatus;
+    private Integer readerStatus;
 
-    public Integer getRedaerId() {
-        return redaerId;
+    public Integer getReaderId() {
+        return readerId;
     }
 
-    public void setRedaerId(Integer redaerId) {
-        this.redaerId = redaerId;
+    public void setReaderId(Integer readerId) {
+        this.readerId = readerId;
     }
 
     public String getEmail() {
@@ -55,19 +55,19 @@ public class Reader {
         this.telphone = telphone == null ? null : telphone.trim();
     }
 
-    public String getBalance() {
+    public Integer getBalance() {
         return balance;
     }
 
-    public void setBalance(String balance) {
-        this.balance = balance == null ? null : balance.trim();
+    public void setBalance(Integer balance) {
+        this.balance = balance;
     }
 
-    public String getReaderStatus() {
+    public Integer getReaderStatus() {
         return readerStatus;
     }
 
-    public void setReaderStatus(String readerStatus) {
-        this.readerStatus = readerStatus == null ? null : readerStatus.trim();
+    public void setReaderStatus(Integer readerStatus) {
+        this.readerStatus = readerStatus;
     }
 }

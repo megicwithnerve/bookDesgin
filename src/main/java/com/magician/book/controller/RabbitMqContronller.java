@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @Autor zxf
  * @Date 2019/8/15
  */
-@RestController
+//@RestController
 public class RabbitMqContronller {
 
     private final RabbitMQSend send;
@@ -103,7 +103,7 @@ public class RabbitMqContronller {
         try {
             MessageProperties messageProperties = new MessageProperties();
             //设置消息过期时间,这里设置的时间是10分钟
-            messageProperties.setExpiration(6 + "00");
+            messageProperties.setExpiration("1");
             Message message = new Message(json.getBytes(), messageProperties);
             message.getMessageProperties().setDeliveryMode(MessageDeliveryMode.PERSISTENT);
             //这里的key应该传死信队列绑定死信交换机的路由key,这里我们传key1

@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>书籍信息</title>
+
+    <link rel="stylesheet" th:href="@{/reader/css/lycss.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/reader/css/pinglun.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{/reader/css/zxf_page.css}" type="text/css" />
+    <script th:src="@{/reader/js/all.js}"></script>
+</head>
+
+<body>
+    <div th:include="reader/header::header-nav(${bookKind},${reader})"></div>
+    <!--头部结束-->
+    <div id="wrap" class="w1000 ma_au clearfix mt10 bg-f8">
+        <div id="crumbs" class="crumbs bgf">
+            当前位置：
+            <a href="/bookread/index">bookread</a><span>&gt;</span>
+            <a target="_self" th:href="'/bookread/reader/bookKind/'+${bookinfo.bookKind}"
+                th:text="${bookinfo.bookKind}"></a>
+            <span>&gt;</span><span th:text="${bookinfo.bookName}"></span>
+        </div>
+        <div id="leftbox" class="leftbox fl">
+            <div class="xinxi clearfix">
+                <div class="pic fl bookShadow">
+                    <a href="#"><img
+                            th:src="'https://zsjvideo.oss-cn-hangzhou.aliyuncs.com/image/zsj/'+${bookinfo.bookImage}"
+                            width="173" height="220" alt=""></a>
+                </div>
+                <div class="xxcont">
+                    <h3><a href="#" title="" th:text="${bookinfo.bookName}"></a></h3>
+                    <div class="tag">
+
+                    </div>
+                    <dl class="info">
+                        <dt>作者：</dt>
+                        <dd><a th:href="'/bookread/reader/writer/'+${bookinfo.writerId}" target="_blank"
+                                th:text="${bookinfo.writerName}"></a></dd>
+                        <dt>类型：</dt>
+                        <dd><a th:href="'/bookread/reader/bookKind/'+${bookinfo.bookKind}"
+                                th:text="${bookinfo.bookKind}+'小说'" target="_blank"></a></dd>
+                        <dt>字数：</dt>
+                        <dd th:text="${bookinfo.wordNumber}+'字'"></dd>
+                        <dt>点击：</dt>
+                        <dd th:text="${bookinfo.clicks} "></dd>
+                        <!--<dt>状态：</dt>-->
+                        <!--<dd th:if="${bookinfo.bookStatus}">已上架</dd>-->
+                    </dl>
+                    <div id="abstract-text">
+                        <p>
+                            <i>简介：</i>
+                            &nbsp;&nbsp;&nbsp;&nbsp;[[${bookinfo.bookInfo}]]
+                        </p>
+                    </div>
+                    <div class="btn-group clearfix">
+                        <a th:onclick="'collection('+${bookinfo.bookId}+')'" class="btn-text btn-collect"
+                            style="display: inline-block;" href="javascript:void(0)">加入书架</a>
+                        <a class="btn-text btn-read" th:href="'/bookread/reader/mulu/'+${bookinfo.bookId}">立即阅读</a>
+                        <!--<a class="btn-text btn-cate" href="javascript:void(0)">查看书架</a>-->
+                        <!--<a id="report" class="report" href="javascript:void(0)"><i></i>错误举报</a>-->
+                    </div>
+                </div>
+                <div class="tjbtn" id="tjbtn">
+                    <a th:if="${thumbType} eq true" href="javascript:void(0)"
+                        th:onclick="'editThumb(0,'+${bookinfo.bookId}+')'" style='opacity:1;'>
+                        <font class="tjfont" th:text="${bookinfo.thumbs}"></font> 推荐本书！
+                    </a>
+                    <a th:if="${thumbType} eq false" href="javascript:void(0)"
+                        th:onclick="'editThumb(1,'+${bookinfo.bookId}+')'">
+                        <font class="tjfont" th:text="${bookinfo.thumbs}"></font> 推荐本书！
+                    </a>
+                </div>
+            </div>
+            <div class="list-wrap">
+                <div class="list-content">
+                    <div id="section-list" class="md-list section-list">
+                        <div class="hder">
+                            <h2 class="tit">最新章节</h2>
+                        </div>
+                        <div class="bd clearfix">
+                            <div class="section clearfix">
+                                <ul class="tlist">
+
+                                    <li th:each="item : ${chapters}"><a
+                                            th:href="'/bookread/reader/chapter/'+${item.chapterId}" target="_blank"
+                                            th:text="${item.chapterNumber}+' '+${item.chapterName}"></a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="ft">
+                            <a class="btn-section-all" th:href="'/bookread/reader/mulu/'+${bookinfo.bookId}"
+                                style="padding-right:0;">查看全部章节</a>
+                        </div>
+
+                        <div class="pl mt20">
+                            <section class="ouvJEz" style="">
+                                <div class="_26JdYM">
+                                    <div class="_3GKFE3"><textarea id="commentone" class="_1u_H4i"
+                                            placeholder="写下你的评论..."></textarea>
+                                        <div>
+                                            <div class="_3IXP9Q" style="display: flex;">
+                                                <div class="SKZUyR"><i aria-label="icon: smile" tabindex="-1"
+                                                        class="anticon anticon-smile _3MkVdm"><svg
+                                                            viewBox="64 64 896 896" focusable="false" class=""
+                                                            data-icon="smile" width="1em" height="1em"
+                                                            fill="currentColor" aria-hidden="true">
+                                                        </svg></i></div>
+                                                <div class="_3Tp4of"><button type="button"
+                                                        class="_1OyPqC _3Mi9q9 _1YbC5u"
+                                                        th:onclick="'newComment('+${bookinfo.bookId}+')'"><span>发布</span></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="_2lR7N6" style="display: none;">
+                                    <div class="_17_lFi">
+                                        <div class="_3k5vgx"></div>
+                                        <div>
+                                            <div class="U36Th9"></div>
+                                            <div class="_9aTHBB"></div>
+                                        </div>
+                                    </div>
+                                    <div class="_1Lq8tt"></div>
+                                    <div class="_1Lq8tt _1muh0x"></div>
+                                    <div class="_3Pu4Wf"><i aria-label="ic-like" class="anticon"><svg width="1em"
+                                                height="1em" fill="currentColor" aria-hidden="true" focusable="false"
+                                                class="">
+                                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ic-like">
+                                                </use>
+                                            </svg></i>
+                                        <div class="_1mcOnW"></div><i aria-label="ic-reply" class="anticon"><svg
+                                                width="1em" height="1em" fill="currentColor" aria-hidden="true"
+                                                focusable="false" class="">
+                                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#ic-reply">
+                                                </use>
+                                            </svg></i>
+                                        <div class="_1mcOnW"></div>
+                                    </div>
+                                </div>
+
+                                <h3 class="QxT4hD" >
+                                    <div class="_10KzV0"><span>全部评论</span><span class="_2R7vBo"   th:text="${commentPager.countrows}" id="commendSize"></span></div>
+                                </h3>
+
+                                <div class="_2gPNSa" >
+                                    <div id="commendContext">
+                                        <div class="_2IUqvs" id="comment-42596814"
+                                             th:each="item,commentStat : ${commentPager.data}">
+                                            <div class="_1K9gkf">
+                                                <div class="_23G05g"><a class="_1OhGeD" href="#" target="_blank"
+                                                                        rel="noopener noreferrer" th:text="${item.reader.username}"></a>
+                                                </div>
+                                                <div class="_1xqkrI"><span
+                                                        th:text="${commentPager.countrows} - ${commentStat.index}+'楼'"></span><time
+                                                        th:text="${#dates.format(item.createtime,'YYYY.MM.dd hh:ss')}"></time>
+                                                </div>
+                                                <div class="_2bDGm4" th:text="${item.context}"></div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="zxf_pagediv"></div>
+
+                                </div>
+                            </section>
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="rightbox" class="rightbox fr">
+            <div class="side-wrap">
+                <div class="hd">
+                    <h2 class="tit"><span class="icon"></span>作者其他作品</h2>
+                </div>
+                <ul class="tlist-rank">
+
+                    <li th:class="'item-'+(${bookStat.index}+1)" th:each="item,bookStat : ${writerBook}">
+                        <div class="view-with-pic" th:if="${bookStat.index} eq 0">
+                            <span class="no" th:text="${bookStat.index}+1"></span>
+                            <div class="pic">
+                                <a th:href="'/bookread/reader/bookinfo/'+${item.bookId}"><img width="55" height="75"
+                                        alt=""
+                                        th:src="'https://zsjvideo.oss-cn-hangzhou.aliyuncs.com/image/zsj/'+${item.bookImage}"></a>
+                            </div>
+                            <div class="cont" th:if="${bookStat.index} eq 0">
+                                <h3><a th:href="'/bookread/reader/bookinfo/'+${item.bookId}" title=""
+                                        th:text="${item.bookName}"></a></h3>
+                                <p><i class="desc-t">作者：</i><a class="desc-v"
+                                        th:href="'/bookread/reader/writer/'+${item.writerId}"
+                                        th:text="${item.writerName}"></a></p>
+                                <p><i class="desc-t">点击：</i><span class="desc-v click_num"
+                                        th:text="${item.clicks}"></span></p>
+                            </div>
+                        </div>
+                        <div class="view-no-pic" th:if="${bookStat.index} ne 0">
+                            <span class="no" th:text="${bookStat.index}+1"></span>
+                            <a th:href="'/bookread/reader/bookinfo/'+${item.bookId}" title=""
+                                th:text="${item.bookName}"></a>
+                        </div>
+                    </li>
+
+
+
+                </ul>
+                <div class="bb"></div>
+                <div class="hd">
+                    <h2 class="tit"><span class="icon"></span>点击榜</h2>
+                </div>
+                <ul class="tlist-rank">
+
+                    <li th:class="'item-'+(${bookStat.index}+1)" th:each="item,bookStat : ${clicksbook}">
+                        <div class="view-with-pic" th:if="${bookStat.index} eq 0">
+                            <span class="no" th:text="${bookStat.index}+1"></span>
+                            <div class="pic">
+                                <a th:href="'/bookread/reader/bookinfo/'+${item.book.bookId}"><img width="55"
+                                        height="75" alt=""
+                                        th:src="'https://zsjvideo.oss-cn-hangzhou.aliyuncs.com/image/zsj/'+${item.book.bookImage}"></a>
+                            </div>
+                            <div class="cont" th:if="${bookStat.index} eq 0">
+                                <h3><a th:href="'/bookread/reader/bookinfo/'+${item.book.bookId}" title=""
+                                        th:text="${item.book.bookName}"></a></h3>
+                                <p><i class="desc-t">作者：</i><a class="desc-v"
+                                        th:href="'/bookread/reader/writer/'+${item.writer.writerId}"
+                                        th:text="${item.writer.writerName}"></a></p>
+                                <p><i class="desc-t">点击：</i><span class="desc-v click_num"
+                                        th:text="${item.book.clicks}"></span></p>
+                            </div>
+                        </div>
+                        <div class="view-no-pic" th:if="${bookStat.index} ne 0">
+                            <span class="no" th:text="${bookStat.index}+1"></span>
+                            <a th:href="'/bookread/reader/bookinfo/'+${item.book.bookId}" title=""
+                                th:text="${item.book.bookName}"></a>
+                        </div>
+                    </li>
+
+                </ul>
+                <div class="bb"></div>
+
+            </div>
+        </div>
+    </div>
+    <div th:replace="reader/footer::footer-fragment"></div>
+    <script th:src="@{/reader/js/jquery-1.9.1.min.js}"></script>
+    <script th:src="@{/reader/js/zxf_page.js}"></script>
+
+    <script>
+        function loginstatus() {
+            //监测是否登录
+            var login;
+            $.ajax({
+                url: '/bookread/reader/loginstatus',
+                type: 'post',
+                dataType: 'json',
+                data: {},
+                async: false,
+                success: function (data) {
+                    login = data.result;
+
+                    if (data.result == false) {
+                        alert(data.message);
+                    }
+                },
+                error: function () {
+
+                }
+            });
+            return login;
+        }
+
+        function collection(bookId) {
+            var login = loginstatus();
+            if (login == false) {
+                return;
+            }
+            var data = {
+                bookId: bookId
+            }
+            $.ajax({
+                url: '/bookread/reader/addmybook',
+                type: 'post',
+                dataType: 'json',
+                data: data,
+                success: function (data) {
+                    console.log(data)
+                    alert(data.message);
+                },
+                error: function () {
+
+                }
+            });
+        }
+
+        function editThumb(status, bookId) {
+            var login = loginstatus();
+            if (login == false) {
+                return;
+            }
+            var data = {
+                status,
+                bookId
+            };
+            $.ajax({
+                url: '/bookread/reader/thumbBook',
+                type: 'post',
+                dataType: 'json',
+                data: data,
+                success: function (data) {
+                    if (data.result == true) {
+                        editThumbHtml(data, bookId);
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        }
+        function editThumbHtml(data, bookId) {
+            var tjbt = $("#tjbtn")
+            tjbt.empty();
+            var stauts = 1;
+            var thumbs = data.data;
+            var style = '';
+            if (data.message == "增加点赞") {
+                stauts = 0;
+                style = "style='opacity:1;'"
+            }
+
+            var href = ` <a  href="javascript:void(0)" onclick="editThumb(${stauts},${bookId})" ${style}>
+                        <font class="tjfont" th:text="">${thumbs}</font> 推荐本书！
+                    </a>`
+
+            tjbt.append(href);
+
+        }
+    </script>
+
+    <script>
+
+        var bookId = [[${bookinfo.bookId}]];
+        var indexpage = [[${commentPager.indexpage}]];
+        var pagessize = [[${ commentPager.pagesize }]];
+        var countpages = [[${ commentPager.countpage }]];
+
+        $(function () {
+            init(indexpage,countpages)
+        });
+        //加载评论
+        function getComment(index,size) {
+            var data = {
+                indexpage:index,
+                pagesize:size,
+                bookId
+            };
+            $.ajax({
+                url: '/bookread/reader/getComment',
+                type: 'post',
+                dataType: 'json',
+                data: data,
+                success: function (data) {
+                        putData(data);
+                        init(data.indexpage,data.countpage);
+                },
+                error: function () {
+
+                }
+            });
+
+        }
+        function putData(data) {
+            var commendContext = $("#commendContext");
+            var commendSize = $("#commendSize");
+            console.log(commendSize.html())
+            commendSize.html(data.countrows);
+            commendContext.empty();
+            for (var j in data.data) {
+                var i = data.data[j];
+                var time = new Date(i.createtime);
+                var Time = time.getFullYear() + "." + (time.getMonth() + 1) + "." + time.getDate() + " " + time.getHours() + ":" + time.getMinutes()+":"+time.getSeconds();
+                var lv = data.countrows - ((data.indexpage-1) * data.pagesize) - j;
+                var div = `
+                 <div class="_2IUqvs" >
+                                            <div class="_1K9gkf">
+                                                <div class="_23G05g"><a class="_1OhGeD" href="#" target="_blank"
+                                                                        rel="noopener noreferrer" >${i.reader.username}</a>
+                                                </div>
+                                                <div class="_1xqkrI"><span>${lv}楼</span>
+                                                <time>${Time}</time>
+                                                </div>
+                                                <div class="_2bDGm4" >${i.context}</div>
+
+
+                                            </div>
+                                        </div>`;
+                commendContext.append(div);
+            }
+        }
+        //加载分页标签
+        function init(index,count){
+            $(".zxf_pagediv").createPage({
+                pageNum: count,
+                current: index,
+                backfun: function (e) {
+                    if (e.current > count) {
+
+                        return
+                    }
+                    if (e.current == 0) {
+                        e.current = 1
+                    }
+                    getComment(e.current, pagessize);
+                }
+            });
+        }
+
+        //添加评论
+        function newComment(bookId) {
+            var login = loginstatus();
+
+            var context = $("#commentone").val();
+
+            if (login == false) {
+                return;
+            } else if (context.trim() == '') {
+                alert("评论类容不能为空！")
+                return;
+            }
+            var data = {
+                context: context,
+                bookId: bookId
+            };
+            $.ajax({
+                url: '/bookread/reader/addComment',
+                type: 'post',
+                dataType: 'json',
+                data: data,
+                success: function (data) {
+                    console.log(data)
+                    alert(data.message);
+                    if (data.result == true) {
+                        $("#commentone").val("");
+                        getComment(1,pagessize);
+
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>分类书籍</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<link rel="stylesheet" th:href="@{/reader/css/lycss.css}" type="text/css" />
+	<link rel="stylesheet" th:href="@{/reader/css/zxf_page.css}" type="text/css" />
+
+
+
+</head>
+<div th:include="reader/header::header-nav(${bookKind},${reader})"></div>
+<!--头部结束-->
+<div id="wrap" class="w1000 ma_au clearfix mt20">
+	<div class="col-1 fl">
+		<div id="sider-nav" class="md sider-nav">
+			<div class="hder">
+				<h2 class="tit">小说分类</h2>
+			</div>
+			<div class="bd">
+				<ul class="nav-views gclearfix">
+					<!---->
+					<li th:class="${path} != 'all' ? '':'on'"><a href="/bookread/reader/bookKind/all"
+							target="_self">全部</a>
+					<li th:class="${path} != ${item.bookkindname} ? '':'on'" th:each="item : ${allkind}">
+						<a th:href="'/bookread/reader/bookKind/'+${item.bookkindname}"
+							th:text="${item.bookkindname}"></a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="col-2 fr">
+		<div id="filter" class="filter mb10">
+			<div class="hder">
+				<h2 class="tit">
+					全部小说
+				</h2>
+			</div>
+		</div>
+		<div id="list" class="mt10 list clearfix">
+			<div class="hder">
+				<ul class="tabs">
+					<!---->
+					<li th:class="${type} == 'clicks' ? '' : 'onn' "><a href="#" onclick="getbooks(1)"
+							target="_self">按累计点赞</a></li>
+					<!---->
+
+
+					<li th:class="${type} == 'thumbs' ? '' : 'onn' "><a href="#" onclick="getbooks(2)"
+							target="_self">按累计点击</a></li>
+					<!---->
+
+
+				</ul>
+			</div>
+
+			<div class="booklist clearfix" id="bookul">
+
+				<li th:each="item,bookStat : ${books}">
+					<div class="pic scal bookShadow oh" style="width: 103px; height: 130px;">
+						<a th:href="'/bookread/reader/bookinfo/'+${item.book.bookId}" target="_blank" title="">
+							<img
+								th:src="'https://zsjvideo.oss-cn-hangzhou.aliyuncs.com/image/zsj/'+${item.book.bookImage}">
+						</a>
+					</div>
+					<div class="cont">
+						<h3 class="text-overflow"><a th:href="'/bookread/reader/bookinfo/'+${item.book.bookId}"
+								target="_blank" title="" th:text="${item.book.bookName}"></a></h3>
+						<dl>
+							<dt>作者：</dt>
+							<dd><a th:href="'/bookread/reader/writer/'+${item.writer.writerId}"
+									th:text="${item.writer.writerName}" target="_blank" title=""></a></dd>
+							<!---->
+						</dl>
+						<dl>
+							<dt>更新章节：</dt>
+							<dd><a th:href="'/bookread/reader/chapter/'+${item.chapter.chapterId}" target="_blank"
+									th:text="${item.chapter.chapterNumber}+' '+${item.chapter.chapterName}"></a></dd>
+						</dl>
+						<p th:if="${item.book.bookInfo.length()} < 20">
+							<a th:href="'/bookread/reader/bookinfo/'+${item.book.bookId}" target="_blank"
+							   class="cont-detail"> [[${item.book.bookInfo}]]
+								<span class="more-detail">查看详细&gt;&gt;</span></a>
+						</p>
+						<p th:if="${item.book.bookInfo.length()} >= 20">
+							<a th:href="'/bookread/reader/bookinfo/'+${item.book.bookId}" target="_blank"
+							   class="cont-detail"> [[${item.book.bookInfo.substring(0,20)}]]...
+						<span class="more-detail">查看详细&gt;&gt;</span></a>
+						</p>
+					</div>
+				</li>
+
+
+			</div>
+		</div>
+		<hr class="divider">
+		<div class="zxf_pagediv"></div>
+
+	</div>
+</div>
+<div th:replace="reader/footer::footer-fragment"></div>
+<script th:src="@{/reader/js/jquery-1.9.1.min.js}"></script>
+<script th:src="@{/reader/js/all.js}"></script>
+<script th:src="@{/reader/js/zxf_page.js}"></script>
+<script>
+
+	var bookkindname = "[[${bookkindname}]]";
+	var indexpage = [[${ pager.indexpage }]];
+	var pagessize = [[${ pager.pagesize }]];
+	var countpages = [[${ pager.countpage }]];
+	var typenmae = "[[${type}]]"
+	$(function () {
+		init()
+	})
+
+	function init() {
+		//翻页
+		$(".zxf_pagediv").createPage({
+			pageNum: countpages,
+			current: indexpage,
+			backfun: function (e) {
+				if (e.current > countpages) {
+
+					return
+				}
+				if (e.current == 0) {
+					e.current = 1
+				}
+				pageGet(e.current, pagessize);
+			}
+		});
+
+
+	}
+
+	function pageGet(indexpage, pagesize) {
+		var url;
+		if (typenmae == "clicks") {
+			// clicks = 1;
+			url = "&clicks=1";
+		}
+		if (typenmae == "thumbs") {
+			url = "&thumbs=1"
+		}
+
+
+		location.href = "/bookread/reader/bookKind/" + bookkindname + "?indexpage=" + indexpage + "&pagesize=" + pagesize
+			+ url;
+
+	}
+
+	function getbooks(num){
+		var url;
+		if (num == 2) {
+			// clicks = 1;
+			url = "&clicks=1";
+		}
+		if (num == 1) {
+			url = "&thumbs=1"
+		}
+
+		location.href = "/bookread/reader/bookKind/" + bookkindname + "?"
+			+ url;
+	}
+</script>
+</body>
+
+</html>

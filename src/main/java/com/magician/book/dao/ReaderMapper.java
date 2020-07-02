@@ -12,7 +12,7 @@ public interface ReaderMapper {
 
     int insertSelective(Reader record);
 
-    Reader selectByPrimaryKey(Integer redaerId);
+    Reader selectByPrimaryKey(Integer readerId);
 
     int updateByPrimaryKeySelective(Reader record);
 
@@ -25,5 +25,5 @@ public interface ReaderMapper {
     //获取条数
     Integer ReaderCount(String searchName,Integer status);
     //分页获取
-    List<Writer> searchReader(String searchName,Integer status,Integer offset,Integer limit);
+    List<Reader> searchReader(String searchName,Integer status,Integer offset,Integer limit);
 }

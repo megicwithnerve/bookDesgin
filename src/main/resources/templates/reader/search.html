@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>电子书阅览系统</title>
+    <meta name="keywords" content="小说搜索" />
+    <meta name="description" content="小说搜索" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" th:href="@{/reader/css/css.css}" type="text/css" />
+	<link rel="stylesheet" th:href="@{/reader/css/zxf_page.css}" type="text/css" />
+
+	<style>
+.col{width:1000px;}
+.num {
+    color: #f76120;
+    font-style: normal;
+}
+</style>
+</head>
+<div th:include="reader/header::header-nav(${bookKind},${reader})"></div>
+<!--头部结束-->
+z<div id="wrap" class="w1000 ma_au clearfix mt20">
+
+	<div class="col fr">
+		<div id="filter" class="filter mb10">
+			<div class="hder">
+				<h2 class="tit">
+					搜索 “<strong class="num" th:text="${searchKey}"></strong>” 共有 <b class="num" th:text="${pager.countrows}">  </b>条结果
+				</h2>
+			</div>
+		</div>
+		<div id="list" class="mt10 list clearfix">
+			<div class="booklist clearfix">
+
+				<li th:each="item,bookStat : ${books}">
+				<div class="pic scal bookShadow oh" style="width: 103px; height: 130px;">
+				<a th:href="'/bookread/reader/bookinfo/'+${item.book.bookId}" target="_blank" title="">
+				<img th:src="'https://zsjvideo.oss-cn-hangzhou.aliyuncs.com/image/zsj/'+${item.book.bookImage}">
+				</a>
+				</div>
+				<div class="cont">
+				<h3 class="text-overflow"><a th:href="'/bookread/reader/bookinfo/'+${item.book.bookId}" target="_blank" title="" th:text="${item.book.bookName}"></a></h3>
+				<dl>
+				<dt>作者：</dt><dd><a th:href="'/bookread/reader/writer/'+${item.writer.writerId}"  th:text="${item.writer.writerName}" target="_blank" title=""></a></dd>
+				</dl>
+
+					<p th:if="${item.book.bookInfo.length()} < 20">
+						<a th:href="'/bookread/reader/bookinfo/'+${item.book.bookId}" target="_blank"
+						   class="cont-detail"> [[${item.book.bookInfo}]]
+							<span class="more-detail">查看详细&gt;&gt;</span></a>
+					</p>
+					<p th:if="${item.book.bookInfo.length()} >= 20">
+						<a th:href="'/bookread/reader/bookinfo/'+${item.book.bookId}" target="_blank"
+						   class="cont-detail"> [[${item.book.bookInfo.substring(0,20)}]]...
+							<span class="more-detail">查看详细&gt;&gt;</span></a>
+					</p>
+				</div>
+				</li>
+			</div>
+		</div>
+		<hr class="divider">
+		<div class="zxf_pagediv"></div>
+
+	</div>
+</div>
+<div th:replace="reader/footer::footer-fragment"></div>
+<script th:src="@{/reader/js/jquery-1.9.1.min.js}"></script>
+<script th:src="@{/reader/js/zxf_page.js}"></script>
+<script>
+	var searchKey = "[[${searchKey}]]";
+	var indexpage = [[${ pager.indexpage }]];
+	var pagessize = [[${ pager.pagesize }]];
+	var countpages = [[${ pager.countpage }]];
+	$(function () {
+		init()
+	})
+
+	function init() {
+		//翻页
+		$(".zxf_pagediv").createPage({
+			pageNum: countpages,
+			current: indexpage,
+			backfun: function (e) {
+				if (e.current > countpages) {
+
+					return
+				}
+				if (e.current == 0) {
+					e.current = 1
+				}
+				pageGet(e.current);
+			}
+		});
+
+
+	}
+	function pageGet(indexpage) {
+		if(indexpage <= 0 || indexpage >  countpages){
+			return;
+		}
+		var url = `/bookread/reader/search?searchkey=${searchKey}&indexpage=${indexpage}&pagesize=${pagessize}`
+		location.href = url;}
+</script>
+</body>
+</html>

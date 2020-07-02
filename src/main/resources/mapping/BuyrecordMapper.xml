@@ -7,12 +7,60 @@
     <result column="chapter_id" jdbcType="INTEGER" property="chapterId" />
     <result column="writer_id" jdbcType="INTEGER" property="writerId" />
     <result column="price" jdbcType="INTEGER" property="price" />
-    <result column="cratedTime" jdbcType="DATE" property="cratedtime" />
+    <result column="createdTime" jdbcType="TIMESTAMP" property="createdtime" />
     <result column="reader_id" jdbcType="INTEGER" property="readerId" />
 
   </resultMap>
+
+  <resultMap id="EntityResultMap" type="com.magician.book.pojo.BuyrecordEntiy">
+    <id column="buyrecord_id" jdbcType="INTEGER" property="buyrecordId" />
+    <!--<result column="book_id" jdbcType="INTEGER" property="bookId" />-->
+    <result column="price" jdbcType="INTEGER" property="price" />
+    <result column="createdTime" jdbcType="TIMESTAMP" property="createdtime" />
+    <!--<result column="reader_id" jdbcType="INTEGER" property="readerId" />-->
+    <association  property="book" javaType="com.magician.book.pojo.Book">
+            <id column="book_id" jdbcType="INTEGER" property="bookId" />
+            <!--<result column="book_image" jdbcType="VARCHAR" property="bookImage" />-->
+            <result column="book_name" jdbcType="VARCHAR" property="bookName" />
+            <!--<result column="book_info" jdbcType="VARCHAR" property="bookInfo" />-->
+            <!--<result column="word_number" jdbcType="INTEGER" property="wordNumber" />-->
+            <!--<result column="price" jdbcType="INTEGER" property="price" />-->
+            <!--<result column="writer_name" jdbcType="VARCHAR" property="writerName" />-->
+            <!--<result column="writer_id" jdbcType="INTEGER" property="writerId" />-->
+            <!--<result column="book_status" jdbcType="INTEGER" property="bookStatus" />-->
+            <!--<result column="message" jdbcType="VARCHAR" property="message" />-->
+            <!--<result column="clicks" jdbcType="INTEGER" property="clicks" />-->
+            <!--<result column="thumbs" jdbcType="INTEGER" property="thumbs" />-->
+            <!--<result column="createTime" jdbcType="TIMESTAMP" property="createtime" />-->
+            <!--<result column="book_kind" jdbcType="VARCHAR" property="bookKind" />-->
+        </association >
+        <association property="writer" javaType="com.magician.book.pojo.Writer">
+            <id column="writer_id" jdbcType="INTEGER" property="writerId" />
+            <!--<result column="email" jdbcType="VARCHAR" property="email" />-->
+            <!--<result column="password" jdbcType="VARCHAR" property="password" />-->
+            <result column="writer_name" jdbcType="VARCHAR" property="writerName" />
+            <!--<result column="real_name" jdbcType="VARCHAR" property="realName" />-->
+            <!--<result column="telphone" jdbcType="VARCHAR" property="telphone" />-->
+            <!--<result column="profit" jdbcType="INTEGER" property="profit" />-->
+            <!--<result column="writer_status" jdbcType="INTEGER" property="writerStatus" />-->
+        </association>
+        <association property="chapter" javaType="com.magician.book.pojo.Chapter">
+            <id column="chapter_id" jdbcType="INTEGER" property="chapterId" />
+            <result column="chapter_number" jdbcType="VARCHAR" property="chapterNumber" />
+            <result column="chapter_name" jdbcType="VARCHAR" property="chapterName" />
+            <!--<result column="price" jdbcType="INTEGER" property="price" />-->
+            <!--<result column="book_id" jdbcType="INTEGER" property="bookId" />-->
+            <!--<result column="book_name" jdbcType="VARCHAR" property="bookName" />-->
+            <!--<result column="writer_id" jdbcType="INTEGER" property="writerId" />-->
+            <!--<result column="chapter_status" jdbcType="INTEGER" property="chapterStatus" />-->
+            <!--<result column="vip_chapter" jdbcType="INTEGER" property="vipChapter" />-->
+            <!--<result column="message" jdbcType="VARCHAR" property="message" />-->
+            <!--<result column="createdTime" jdbcType="TIMESTAMP" property="createdtime" />-->
+            <!--<result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />-->
+        </association>
+  </resultMap>
   <sql id="Base_Column_List">
-    buyrecord_id, book_id, chapter_id, writer_id, price, cratedTime,readerId
+    buyrecord_id, book_id, chapter_id, writer_id, price, createdTime,reader_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -26,10 +74,10 @@
   </delete>
   <insert id="insert" parameterType="com.magician.book.pojo.Buyrecord">
     insert into tb_buyrecord (buyrecord_id, book_id, chapter_id, 
-      writer_id, price, cratedTime,readerId
+      writer_id, price, createdTime,readerId
       )
     values (#{buyrecordId,jdbcType=INTEGER}, #{bookId,jdbcType=INTEGER}, #{chapterId,jdbcType=INTEGER}, 
-      #{writerId,jdbcType=INTEGER}, #{price,jdbcType=INTEGER}, #{cratedtime,jdbcType=DATE},#{readerId,jdbcType=INTEGER}
+      #{writerId,jdbcType=INTEGER}, #{price,jdbcType=INTEGER}, #{createdtime,jdbcType=TIMESTAMP},#{readerId,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.magician.book.pojo.Buyrecord">
@@ -50,8 +98,8 @@
       <if test="price != null">
         price,
       </if>
-      <if test="cratedtime != null">
-        cratedTime,
+      <if test="createdtime != null">
+        createdtime,
       </if>
       <if test="readerId != null">
         reader_id,
@@ -73,8 +121,8 @@
       <if test="price != null">
         #{price,jdbcType=INTEGER},
       </if>
-      <if test="cratedtime != null">
-        #{cratedtime,jdbcType=DATE},
+      <if test="createdtime != null">
+        #{createdtime,jdbcType=TIMESTAMP},
       </if>
       <if test="readerId != null">
         #{readerId,jdbcType=INTEGER},
@@ -96,8 +144,8 @@
       <if test="price != null">
         price = #{price,jdbcType=INTEGER},
       </if>
-      <if test="cratedtime != null">
-        cratedTime = #{cratedtime,jdbcType=DATE},
+      <if test="createdtime != null">
+        createdTime = #{createdtime,jdbcType=TIMESTAMP},
       </if>
       <if test="readerId != null">
         readerId = #{readerId,jdbcType=INTEGER},
@@ -111,7 +159,7 @@
       chapter_id = #{chapterId,jdbcType=INTEGER},
       writer_id = #{writerId,jdbcType=INTEGER},
       price = #{price,jdbcType=INTEGER},
-      cratedTime = #{cratedtime,jdbcType=DATE},
+      createdTime = #{createdtime,jdbcType=TIMESTAMP},
       reader_id = #{readerId,jdbcType=INTEGER}
     where buyrecord_id = #{buyrecordId,jdbcType=INTEGER}
   </update>
@@ -121,7 +169,106 @@
     <include refid="Base_Column_List" />
     from tb_buyrecord
     where reader_id = #{readerId,jdbcType=INTEGER}
-    order by cratedTime desc
+    order by createdTime desc
+    <if test="offset != null and limit != null">
+      limit #{offset},#{limit}
+    </if>
+  </select>
+  <select id="getBuyRecordEntity"  resultMap="EntityResultMap">
+      select
+      b1.buyrecord_id, b2.book_id, c.chapter_id, w.writer_id, b1.price, b1.createdTime,b1.reader_id,
+      c.chapter_number,c.chapter_name,b2.book_name,w.writer_name
+      from book.tb_buyrecord b1,book.tb_book b2,book.tb_chapter c,book.tb_writer w
+      where b1.reader_id = #{readerId,jdbcType=INTEGER} and b1.book_id = b2.book_id and b1.writer_id = w.writer_id and b1.chapter_id = c.chapter_id
+      order by createdTime desc
+    <if test="offset != null and limit != null">
+      limit #{offset},#{limit}
+    </if>
+  </select>
+
+  <select id="getBuyRecordByReaderIdChapterId"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_buyrecord
+    where reader_id = #{readerId,jdbcType=INTEGER}
+    and chapter_id = #{chapterId,jdbcType=INTEGER}
+  </select>
+  <resultMap id="EntityAllResultMap" type="com.magician.book.pojo.BuyrecordEntityAll">
+    <id column="buyrecord_id" jdbcType="INTEGER" property="buyrecordId" />
+    <!--<result column="book_id" jdbcType="INTEGER" property="bookId" />-->
+    <result column="price" jdbcType="INTEGER" property="price" />
+    <result column="createdTime" jdbcType="TIMESTAMP" property="createdtime" />
+    <association property="reader" javaType="com.magician.book.pojo.Reader">
+      <id column="reader_id" jdbcType="INTEGER" property="readerId" />
+      <!--<result column="email" jdbcType="VARCHAR" property="email" />-->
+      <!--<result column="password" jdbcType="VARCHAR" property="password" />-->
+      <result column="username" jdbcType="VARCHAR" property="username" />
+      <!--<result column="telphone" jdbcType="VARCHAR" property="telphone" />-->
+      <!--<result column="balance" jdbcType="VARCHAR" property="balance" />-->
+      <!--<result column="reader_status" jdbcType="VARCHAR" property="readerStatus" />-->
+    </association>
+    <association  property="book" javaType="com.magician.book.pojo.Book">
+      <id column="book_id" jdbcType="INTEGER" property="bookId" />
+      <!--<result column="book_image" jdbcType="VARCHAR" property="bookImage" />-->
+      <result column="book_name" jdbcType="VARCHAR" property="bookName" />
+      <!--<result column="book_info" jdbcType="VARCHAR" property="bookInfo" />-->
+      <!--<result column="word_number" jdbcType="INTEGER" property="wordNumber" />-->
+      <!--<result column="price" jdbcType="INTEGER" property="price" />-->
+      <!--<result column="writer_name" jdbcType="VARCHAR" property="writerName" />-->
+      <!--<result column="writer_id" jdbcType="INTEGER" property="writerId" />-->
+      <!--<result column="book_status" jdbcType="INTEGER" property="bookStatus" />-->
+      <!--<result column="message" jdbcType="VARCHAR" property="message" />-->
+      <!--<result column="clicks" jdbcType="INTEGER" property="clicks" />-->
+      <!--<result column="thumbs" jdbcType="INTEGER" property="thumbs" />-->
+      <!--<result column="createTime" jdbcType="TIMESTAMP" property="createtime" />-->
+      <!--<result column="book_kind" jdbcType="VARCHAR" property="bookKind" />-->
+    </association >
+    <association property="writer" javaType="com.magician.book.pojo.Writer">
+      <id column="writer_id" jdbcType="INTEGER" property="writerId" />
+      <!--<result column="email" jdbcType="VARCHAR" property="email" />-->
+      <!--<result column="password" jdbcType="VARCHAR" property="password" />-->
+      <result column="writer_name" jdbcType="VARCHAR" property="writerName" />
+      <!--<result column="real_name" jdbcType="VARCHAR" property="realName" />-->
+      <!--<result column="telphone" jdbcType="VARCHAR" property="telphone" />-->
+      <!--<result column="profit" jdbcType="INTEGER" property="profit" />-->
+      <!--<result column="writer_status" jdbcType="INTEGER" property="writerStatus" />-->
+    </association>
+    <association property="chapter" javaType="com.magician.book.pojo.Chapter">
+      <id column="chapter_id" jdbcType="INTEGER" property="chapterId" />
+      <result column="chapter_number" jdbcType="VARCHAR" property="chapterNumber" />
+      <result column="chapter_name" jdbcType="VARCHAR" property="chapterName" />
+      <!--<result column="price" jdbcType="INTEGER" property="price" />-->
+      <!--<result column="book_id" jdbcType="INTEGER" property="bookId" />-->
+      <!--<result column="book_name" jdbcType="VARCHAR" property="bookName" />-->
+      <!--<result column="writer_id" jdbcType="INTEGER" property="writerId" />-->
+      <!--<result column="chapter_status" jdbcType="INTEGER" property="chapterStatus" />-->
+      <!--<result column="vip_chapter" jdbcType="INTEGER" property="vipChapter" />-->
+      <!--<result column="message" jdbcType="VARCHAR" property="message" />-->
+      <!--<result column="createdTime" jdbcType="TIMESTAMP" property="createdtime" />-->
+      <!--<result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />-->
+    </association>
+  </resultMap>
+  <select id="getBuyRecordEntityByWriter"  resultMap="EntityAllResultMap">
+    select
+    b1.buyrecord_id, b2.book_id, c.chapter_id, w.writer_id, b1.price, b1.createdTime,b1.reader_id,
+    c.chapter_number,c.chapter_name,b2.book_name,w.writer_name,r.reader_id,r.username
+    from book.tb_buyrecord b1,book.tb_book b2,book.tb_chapter c,book.tb_writer w,book.tb_reader r
+    where b1.writer_id = #{writerId,jdbcType=INTEGER} and b1.book_id = b2.book_id and b1.writer_id = w.writer_id and b1.chapter_id = c.chapter_id and b1.reader_id = r.reader_id
+    <if test="startTime != null and endTime != null">
+      and r1.createdTime between #{startTime,jdbcType=VARCHAR} and #{endTime,jdbcType=VARCHAR}
+    </if>
+    order by createdTime desc
+    <if test="offset != null and limit != null">
+      limit #{offset},#{limit}
+    </if>
+  </select>
+  <select id="getBuyRecordEntityByBook"  resultMap="EntityAllResultMap">
+    select
+    b1.buyrecord_id, b2.book_id, c.chapter_id, w.writer_id, b1.price, b1.createdTime,b1.reader_id,
+    c.chapter_number,c.chapter_name,b2.book_name,w.writer_name,r.reader_id,r.username
+    from book.tb_buyrecord b1,book.tb_book b2,book.tb_chapter c,book.tb_writer w,book.tb_reader r
+    where b1.book_id = #{bookId,jdbcType=INTEGER} and b1.book_id = b2.book_id and b1.writer_id = w.writer_id and b1.chapter_id = c.chapter_id and b1.reader_id = r.reader_id
+    order by createdTime desc
     <if test="offset != null and limit != null">
       limit #{offset},#{limit}
     </if>

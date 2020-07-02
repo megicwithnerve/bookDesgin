@@ -1,5 +1,6 @@
 package com.magician.book.dao;
 
+import com.magician.book.pojo.BookMarkEntiy;
 import com.magician.book.pojo.Bookmark;
 
 import java.util.List;
@@ -18,5 +19,7 @@ public interface BookmarkMapper {
     int updateByPrimaryKey(Bookmark record);
 
     //书签列表
-    List<Bookmark> searchBookmark(Integer collectionId);
+    List<BookMarkEntiy> searchBookmark(Integer collectionId,Integer offset,Integer limit);
+
+    Bookmark getBookMarkOne(Bookmark bookmark);
 }

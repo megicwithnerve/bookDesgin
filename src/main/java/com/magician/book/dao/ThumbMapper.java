@@ -14,4 +14,6 @@ public interface ThumbMapper {
     int updateByPrimaryKeySelective(Thumb record);
 
     int updateByPrimaryKey(Thumb record);
+
+    Thumb getThumbOne(Thumb thumb);
 }

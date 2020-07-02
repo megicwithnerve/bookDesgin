@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head >
+    <title>电子书阅览系统</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="applicable-device" content="pc">
+    <meta name="mobile-agent" content="format=xhtml;url=https://m.laiyetxt.com" />
+    <meta https-equiv="Cache-Control" content="no-transform" />
+    <meta https-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="stylesheet" th:href="@{/reader/css/lycss.css}" type="text/css" />
+
+    <style>
+        /* #content-main{
+        height: calc(100% - 50px),
+        overflow : hidden,
+
+    } */
+    </style>
+</head>
+
+<body>
+<div th:fragment="header-nav(bookKind,reader)">
+
+    <div id="top" class="bg-f7">
+        <div class="w1000 h36 ma_au">
+
+            <div class="fr">
+                <ul>
+
+                    <span th:if="${reader} eq null" class="fl">
+                        <a href="/bookread/reader/login" target="_bank"  title="登录">登录</a> | <a href="/bookread/reader/forget" target="_bank" title="忘记密码">忘记密码</a> | <a href="/bookread/reader/register" target="_bank" title="用户注册">用户注册</a>
+		            </span>
+                    <span th:if="${reader} ne null" class="fl">
+                        <a href="#" target="_bank"  th:text="'欢迎您！'+${reader.username}"></a> | <a href="/bookread/loginout/reader"  title="退出登录">退出登录</a>
+		            </span>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div id="header">
+        <div class="w1000 ma_au clearfix">
+            <div class="fl logo">
+                <a href="" title="">
+                    <!--<img th:src="@{reader/images/logo.png}" alt="来也小说网">-->
+                </a>
+                <div style="font-size: 24px;">
+                    电子书阅览系统
+                </div>
+            </div>
+            <div class="fl search">
+                <div class="searchA">
+                    <form name="articlesearch" method="post" action="/bookread/reader/search">
+                        <select name="searchtype" style="display:none;">
+                            <option value="all" selected="selected">综合</option>
+                        </select>
+
+                        <input placeholder="书名/作者" type="text" class="searchInput" name="searchkey"
+                               style="width:344px;" value="">
+                        <input name="submit" type="submit" value="搜&nbsp;&nbsp;索" class="searchBtn">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="nav">
+        <ul class="w1000 ma_au clearfix">
+            <li class="cur"><a href="/bookread/index" title="来也小说网首页">小说首页</a></li>
+            <li style="float:right"><a id="mybooks" href="javascript:void(0)">我的书架</a></li>
+            <li style="float:right"><a id="myinfo" href="/bookread/reader/myinfo">个人中心</a></li>
+        </ul>
+    </div>
+    <div class="w1000 ma_au">
+        <ul class="nav_fenlei clearfix">
+            <li><b>分类：</b></li>
+            <li th:each="item : ${bookKind}">
+                <a th:href="'/bookread/reader/bookKind/'+${item.bookkindname}" th:text="${item.bookkindname}"></a>
+            </li>
+
+
+            <li><em>|</em></li>
+            <li class="all_fenlei"><a href="/bookread/reader/bookKind/all">全部分类</a></li>
+        </ul>
+    </div>
+
+</div>
+
+</body>
+
+
+</html>

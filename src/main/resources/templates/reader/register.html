@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<!-- saved from url=(0256)https://passport.yuewen.com/reg.html?appid=1450000220&areaid=1&target=top&ticket=1&auto=0&autotime=14&ajaxdm=yuewen&returnUrl=http%3A%2F%2Fbook.qq.com%2Fywlogin%2Flogined.html%3FrefererType%3DNORMAL%26http_referer%3Dhttp%253A%252F%252Fchuangshi.qq.com%252F -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  
+    <title>注册</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/reader/css/pact.css}">
+  
+    <link type="text/css" rel="stylesheet" th:href="@{/reader/css/registter.css}">
+    <style id="tsbrowser_video_independent_player_style" type="text/css">
+        [tsbrowser_force_max_size] {
+            width: 100% !important;
+            height: 100% !important;
+            left: 0px !important;
+            top: 0px !important;
+            margin: 0px !important;
+            padding: 0px !important;
+            transform: none !important;
+        }
+
+        [tsbrowser_force_fixed] {
+            position: fixed !important;
+            z-index: 9999 !important;
+            background: black !important;
+        }
+
+        [tsbrowser_force_hidden] {
+            opacity: 0 !important;
+            z-index: 0 !important;
+        }
+
+        [tsbrowser_hide_scrollbar] {
+            overflow: hidden !important;
+        }
+
+        [tsbrowser_display_none] {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+        }
+
+        [tsbrowser_force_show] {
+            display: black !important;
+            visibility: visible !important;
+            opacity: 0;
+        }
+    </style>
+</head>
+
+
+<body>
+    <div class="wrap">
+        <!-- start 头部 -->
+        <div class="header reg-header yuewen">
+            <div class="box-center">
+                <div class="logo cf"><em></em><span class="lang">用户注册</span></div>
+            </div>
+        </div>
+        <!-- end 头部 -->
+        <!-- start 整体居中 -->
+        <div class="box-center">
+            <!-- start 注册模块 -->
+            <div class="reg-wrap">
+                <!-- start 注册进度 -->
+                <div class="reg-step">
+                    <!-- 步进到哪一步，就给当前span上class：act -->
+                    <span class="lang act">填写注册信息</span>
+                </div>
+                <div class="reg-form-wrap">
+                    <form action="" onsubmit="return false">
+                        <div class="reg-form-list form-list">
+                            <dl>
+                                <dd id="" class=""><em>用户名</em><input type="text" id="txtusername" placeholder="用户名(长度4~20)">
+
+                                </dd>
+                                <dd class="top" id=""><em>邮箱</em>
+                                    <input class="mid" type="text" placeholder="请输入邮箱号码" id="txtemail">
+                                    <i class="sprite icon-error"></i>
+                                </dd>
+
+
+                                <dd id="emailcode"><em>邮箱验证</em>
+                                    <input type="text" class="mid" placeholder="输入验证码" id="txtemailcode">
+                                    <a class="get-code stat" href="javascript:" onclick="getCode()" id="get_code"
+                                        data-stat="qd_L09|获取验证码|3">获取验证码</a>
+                                </dd>
+                                <dd id="password" class=""><em>密码</em><input type="password" id="txtpassword"
+                                        placeholder="8-18位大小写字母、符号或数字">
+
+                                </dd>
+
+                            </dl>
+                            <!--<div class="deal">-->
+                                <!--<input type="checkbox" id="deal" name="checkbox" checked="">-->
+                                <!--<label for="deal" class="ui-checkbox"></label><label for="deal">我已阅读并同意 </label><a-->
+                                    <!--href="" target="_blank">《用户服务协议》</a>-->
+                                <!--<label>和</label> <a target="_blank" href="">《隐私政策》</a>-->
+                            <!--</div>-->
+                            <a class="blue-btn go-reg btn-yuewen" href="#" onclick="register()"
+                                id="btnRegister">立即注册</a>
+                        </div>
+                    </form>
+                </div>
+                <!-- end 注册进度 -->
+            </div>
+            <!-- end 注册模块 -->
+        </div>
+        <!-- end 整体居中 -->
+
+
+
+
+        <!-- start 页脚 -->
+        <div class="footer-wrap">
+
+        </div>
+    </div>
+    <script src="./js/jquery-1.9.1.min.js"></script>
+    <script>
+        function checkUsername() {
+            //获取用户名
+            var username = $("#txtusername").val();
+            //正则表达式
+            var reg_username = /^\w{4,20}$/;
+            //正则test()方法判断返回是否符合
+            var flag = reg_username.test(username);
+            if (flag) {
+                //合法
+                $("#txtusername").css("border", "");
+            } else {
+                //不合法
+                $("#txtusername").css("border", "1px solid red");
+            }
+            return flag;
+        }
+        function checkCode() {
+            //获取密码
+            var txtemailcode = $("#txtemailcode").val();
+            //正则表达式
+            // var reg_password=/^\w{8,20}$/;
+            //正则test()方法判断返回是否符合
+            var flag = !(txtemailcode == "");
+
+            return flag;
+        }
+
+        function checkPassword() {
+            //获取密码
+            var password = $("#txtpassword").val();
+            //正则表达式
+            var reg_password = /^\w{8,20}$/;
+            //正则test()方法判断返回是否符合
+            var flag = reg_password.test(password);
+            if (flag) {
+                //合法
+                $("#txtpassword").css("border", "");
+            } else {
+                //不合法
+                $("#txtpassword").css("border", "1px solid red");
+            }
+            return flag;
+        }
+        function checkEmail() {
+            //获取邮箱
+            var email = $("#txtemail").val();
+            //正则表达式
+            var reg_email = /^\w+@\w+\.\w+$/;
+            //test方法
+            var flag = reg_email.test(email);
+            if (flag) {
+                $("#txtemail").css("border", "");
+            } else {
+                $("#txtemail").css("border", "1px solid red");
+            }
+            return flag;
+        }
+        $(function () {
+
+            // //注意载blur里check**方法后面不要加()
+            $("#txtusername").blur(checkUsername);
+            $("#txtpassword").blur(checkPassword);
+            $("#txtemail").blur(checkEmail);
+        });
+        function register() {
+            if (checkUsername() && checkPassword() && checkEmail() && checkPassword()) {
+                var username = $("#txtusername").val();
+                var email = $("#txtemail").val();
+                var password = $("#txtpassword").val();
+                var code = $("#txtemailcode").val();
+                var data = {
+                    username,
+                    email,
+                    password,
+                    code
+                }
+
+                $.ajax({
+				url: '/bookread/register/reader',
+                type: 'post',
+                data: data,
+                dataType: "json",
+                success: function (data, status) {  
+                    alert(data.message);
+                    if(data.result){
+                        location.href="/bookread/reader/login"
+                    }
+                }
+            });
+            } else {
+                alert("请填写所有选项")
+            }
+
+        };
+        var seconds;
+        var out;
+        function getCode(){
+            if (checkEmail()) {
+                var email = $("#txtemail").val();
+                var data = {
+                    email,
+                }
+                seconds = 60;
+                out = setInterval(time,1000);
+                $.ajax({
+				url: '/bookread/register/getCode/reader',
+                type: 'post',
+                data: data,
+                dataType: "json",
+                success: function (data, status) {  
+					alert(data.message);
+                }
+			})
+            } else {
+                alert("请填写正确的邮箱")
+            }
+        }
+
+        function time() {
+            seconds--;
+
+            $("#get_code").attr('style', 'pointer-events: none');
+            $("#get_code").text(seconds+"秒");
+            if (seconds <= 0) {
+                $("#get_code").text("获取验证码");
+                $("#get_code").removeAttr('style');
+                clearInterval(out);
+            }
+        }
+
+
+    </script>
+
+</body>
+
+</html>

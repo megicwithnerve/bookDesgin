@@ -8,7 +8,7 @@
     <result column="writer_name" jdbcType="VARCHAR" property="writerName" />
     <result column="real_name" jdbcType="VARCHAR" property="realName" />
     <result column="telphone" jdbcType="VARCHAR" property="telphone" />
-    <result column="profit" jdbcType="VARCHAR" property="profit" />
+    <result column="profit" jdbcType="INTEGER" property="profit" />
     <result column="writer_status" jdbcType="INTEGER" property="writerStatus" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -30,7 +30,7 @@
       profit, writer_status)
     values (#{writerId,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{writerName,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, #{telphone,jdbcType=VARCHAR}, 
-      #{profit,jdbcType=VARCHAR}, #{writerStatus,jdbcType=INTEGER})
+      #{profit,jdbcType=INTEGER}, #{writerStatus,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.magician.book.pojo.Writer">
     insert into tb_writer
@@ -80,7 +80,7 @@
         #{telphone,jdbcType=VARCHAR},
       </if>
       <if test="profit != null">
-        #{profit,jdbcType=VARCHAR},
+        #{profit,jdbcType=INTEGER},
       </if>
       <if test="writerStatus != null">
         #{writerStatus,jdbcType=INTEGER},
@@ -106,7 +106,7 @@
         telphone = #{telphone,jdbcType=VARCHAR},
       </if>
       <if test="profit != null">
-        profit = #{profit,jdbcType=VARCHAR},
+        profit = #{profit,jdbcType=INTEGER},
       </if>
       <if test="writerStatus != null">
         writer_status = #{writerStatus,jdbcType=INTEGER},
@@ -121,7 +121,7 @@
       writer_name = #{writerName,jdbcType=VARCHAR},
       real_name = #{realName,jdbcType=VARCHAR},
       telphone = #{telphone,jdbcType=VARCHAR},
-      profit = #{profit,jdbcType=VARCHAR},
+      profit = #{profit,jdbcType=INTEGER},
       writer_status = #{writerStatus,jdbcType=INTEGER}
     where writer_id = #{writerId,jdbcType=INTEGER}
   </update>
@@ -130,7 +130,7 @@
     select
     <include refid="Base_Column_List" />
     from tb_writer
-    where email = #{email,jdbcType=VARCHAR} and password = #{[password,jdbcType=VARCHAR}
+    where email = #{email,jdbcType=VARCHAR} and password = #{password,jdbcType=VARCHAR}
   </select>
 
   <select id="getByemail" parameterType="java.lang.String" resultMap="BaseResultMap">

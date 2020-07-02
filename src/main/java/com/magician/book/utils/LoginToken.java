@@ -5,8 +5,9 @@ import java.util.Date;
 public class LoginToken implements java.io.Serializable{
 
     private UserType userType;//token类型
-    private Object obj;//用户信息
+    private Long objid;//用户信息
     private Long date;//过期时间
+    private String objPassworld;
 
     public UserType getUserType() {
         return userType;
@@ -16,28 +17,28 @@ public class LoginToken implements java.io.Serializable{
         this.userType = userType;
     }
 
-    public Object getObj() {
-        return obj;
+    public Long getObjid() {
+        return objid;
     }
 
-    public void setObj(Object obj) {
-        this.obj = obj;
+    public void setObjid(Long objid) {
+        this.objid = objid;
     }
 
     public Long getDate() {
         return date;
     }
 
-    @Override
-    public String toString() {
-        return "LoginToken{" +
-                "userType=" + userType +
-                ",obj=" + obj +
-                ",date=" + date +
-                '}';
-    }
 
     public void setDate(Long date) {
         this.date = date;
+    }
+
+    public String getObjPassworld() {
+        return objPassworld;
+    }
+
+    public void setObjPassworld(String objPassworld) {
+        this.objPassworld = objPassworld;
     }
 }

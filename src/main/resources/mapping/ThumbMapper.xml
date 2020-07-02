@@ -6,7 +6,7 @@
     <result column="book_id" jdbcType="INTEGER" property="bookId" />
     <result column="reader_id" jdbcType="INTEGER" property="readerId" />
     <result column="thumb_status" jdbcType="INTEGER" property="thumbStatus" />
-    <result column="updateTime" jdbcType="DATE" property="updatetime" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
   </resultMap>
   <sql id="Base_Column_List">
     thumb_id, book_id, reader_id, thumb_status, updateTime
@@ -25,7 +25,7 @@
     insert into tb_thumb (thumb_id, book_id, reader_id, 
       thumb_status, updateTime)
     values (#{thumbId,jdbcType=INTEGER}, #{bookId,jdbcType=INTEGER}, #{readerId,jdbcType=INTEGER}, 
-      #{thumbStatus,jdbcType=INTEGER}, #{updatetime,jdbcType=DATE})
+      #{thumbStatus,jdbcType=INTEGER}, #{updatetime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.magician.book.pojo.Thumb">
     insert into tb_thumb
@@ -60,7 +60,7 @@
         #{thumbStatus,jdbcType=INTEGER},
       </if>
       <if test="updatetime != null">
-        #{updatetime,jdbcType=DATE},
+        #{updatetime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -77,7 +77,7 @@
         thumb_status = #{thumbStatus,jdbcType=INTEGER},
       </if>
       <if test="updatetime != null">
-        updateTime = #{updatetime,jdbcType=DATE},
+        updateTime = #{updatetime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where thumb_id = #{thumbId,jdbcType=INTEGER}
@@ -87,7 +87,14 @@
     set book_id = #{bookId,jdbcType=INTEGER},
       reader_id = #{readerId,jdbcType=INTEGER},
       thumb_status = #{thumbStatus,jdbcType=INTEGER},
-      updateTime = #{updatetime,jdbcType=DATE}
+      updateTime = #{updatetime,jdbcType=TIMESTAMP}
     where thumb_id = #{thumbId,jdbcType=INTEGER}
   </update>
+  <select id="getThumbOne" parameterType="com.magician.book.pojo.Thumb" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_thumb
+    where book_id = #{bookId,jdbcType=INTEGER}
+    and reader_id = #{readerId,jdbcType=INTEGER}
+  </select>
 </mapper>

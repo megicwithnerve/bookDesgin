@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>忘记密码</title>
+    <link th:href="@{/reader/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/reader/css/gloab.css}" rel="stylesheet">
+    <link th:href="@{/reader/css/forget.css}" rel="stylesheet">
+    <script th:src="@{/reader/js/jquery-1.9.1.min.js}"></script>
+
+</head>
+
+<body class="bgf4">
+    <div class="login-box f-mt10 f-pb50">
+        <div class="main bgf">
+            <div class="reg-box-pan display-inline">
+                <div class="step">
+                    <ul>
+                        <li class="col-xs-4 on">
+                            <span class="num"><em class="f-r5"></em><i>1</i></span>
+                            <span class="line_bg lbg-r"></span>
+                            <p class="lbg-txt">填写邮箱</p>
+                        </li>
+                        <li class="col-xs-4">
+                            <span class="num"><em class="f-r5"></em><i>2</i></span>
+                            <span class="line_bg lbg-l"></span>
+                            <span class="line_bg lbg-r"></span>
+                            <p class="lbg-txt">重置密码</p>
+                        </li>
+                        <li class="col-xs-4">
+                            <span class="num"><em class="f-r5"></em><i>3</i></span>
+                            <span class="line_bg lbg-l"></span>
+                            <p class="lbg-txt">重置成功</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="reg-box" id="verifyCheck" style="margin-top:20px;">
+                    <div class="part1">
+                        <div class="item col-xs-12">
+                            <span class="intelligent-label f-fl"><b class="ftx04">*</b>邮箱：</span>
+                            <div class="f-fl item-ifo">
+                                <input type="text" maxlength="20" class="txt03 f-r3 required" tabindex="1"
+                                    data-valid="isNonEmpty||between:3-20||isUname" data-error="请输入正确的邮箱" id="email" />
+                                <span class="ie8 icon-close close hide"></span>
+                                <label class="icon-sucessfill blank hide"></label>
+                                <label class="focus"><span>请输入正确的邮箱</span></label>
+                                <label class="focus valid"></label>
+                            </div>
+                        </div>
+
+                        <div class="item col-xs-12">
+                            <span class="intelligent-label f-fl">&nbsp;</span>
+                            <div class="f-fl item-ifo">
+                                <a href="javascript:;" class="btn btn-blue f-r3" id="btn_part1">下一步</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="part2" style="display:none">
+
+                        <!-- <div class="item col-xs-12">
+                            <span class="intelligent-label f-fl">&nbsp;</span>
+                            <div class="f-fl item-ifo">
+                                <a href="javascript:;" class="btn btn-blue f-r3" id="btn_part2">验证</a>
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="part3" style="display:none">
+                        <div class="alert alert-info" style="width:700px">验证码将已到你的邮箱，请及时填写。</div>
+                        <div class="item col-xs-12 f-mb10" style="height:auto">
+                            <span class="intelligent-label f-fl">邮箱：</span>
+                            <div class="f-fl item-ifo c-blue" id="txtemail">
+
+                            </div>
+                        </div>
+                        <div class="item col-xs-12">
+                            <span class="intelligent-label f-fl"><b class="ftx04">*</b>验证码：</span>
+                            <div class="f-fl item-ifo">
+                                <input type="text" maxlength="6" id="verifyNo" class="txt03 f-r3 f-fl required"
+                                    tabindex="4" style="width:167px" data-valid="isNonEmpty||isInt"
+                                    data-error="验证码不能为空||请输入6位数字验证码" />
+
+                            </div>
+                        </div>
+                        <div class="item col-xs-12">
+                            <span class="intelligent-label f-fl"><b class="ftx04">*</b>新密码：</span>
+                            <div class="f-fl item-ifo">
+                                <input type="password" id="password" maxlength="20" class="txt03 f-r3 required"
+                                    tabindex="3" style="ime-mode:disabled;" onpaste="return  false" autocomplete="off"
+                                    data-valid="isNonEmpty||between:6-20||level:2"
+                                    data-error="密码不能为空||密码长度6-20位||该密码太简单，有被盗风险，建议字母+数字的组合" />
+                                <span class="ie8 icon-close close hide" style="right:55px"></span>
+                                <label class="icon-sucessfill blank hide"></label>
+                                <label class="focus">6-20位英文（区分大小写）、数字、字符的组合</label>
+                                <label class="focus valid"></label>
+                                <span class="clearfix"></span>
+                                <label class="strength">
+                                    <span class="f-fl f-size12">安全程度：</span>
+                                    <b><i>弱</i><i>中</i><i>强</i></b>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="item col-xs-12">
+                            <span class="intelligent-label f-fl"><b class="ftx04">*</b>确认密码：</span>
+                            <div class="f-fl item-ifo">
+                                <input type="password" maxlength="20" class="txt03 f-r3 required" tabindex="4"
+                                    style="ime-mode:disabled;" onpaste="return  false" autocomplete="off"
+                                    data-valid="isNonEmpty||between:6-16||isRepeat:password"
+                                    data-error="密码不能为空||密码长度6-16位||两次密码输入不一致" id="repassword" />
+                                <span class="ie8 icon-close close hide" style="right:55px"></span>
+                                <label class="icon-sucessfill blank hide"></label>
+                                <label class="focus">请再输入一遍上面的密码</label>
+                                <label class="focus valid"></label>
+                            </div>
+                        </div>
+                        <div class="item col-xs-12">
+                            <span class="intelligent-label f-fl">&nbsp;</span>
+                            <div class="f-fl item-ifo">
+                                <a href="javascript:;" class="btn btn-blue f-r3" id="btn_part3">下一步</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="part4 text-center" style="display:none">
+                        <h3>恭喜您，您已重置密码成功，快去登录吧！</h3>
+                       请返回到 <a href="/bookread/reader/login" class="c-blue">登录页面</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="m-sPopBg" style="z-index:998;"></div>
+
+    <script>
+        $(function () {
+            //第一页的确定按钮
+            $("#btn_part1").click(function () {
+                var email = $("#email").val()
+                var ze = /^[A-Za-z\d]+[A-Za-z\d\-_\.]*@([A-Za-z\d]+[A-Za-z\d\-]*\.)+[A-Za-z]{2,4}$/
+                if (!ze.test(email)) {
+                    alert("邮箱格式不正确")
+                    return;
+                }
+                $.ajax({
+                    url: '/bookread/getCode/reader',
+                    type: 'post',
+                    data: {
+                        email
+                    },
+                    dataType: "json",
+                    success: function (data, status) {
+                        alert(data.message);
+                        if (data.result) {
+                            $(".part1").hide();
+                            $("#txtemail").text($("#email").val())
+                            $(".part3").show();
+                            $(".step li").eq(1).addClass("on");
+                        }
+                    }
+                });
+
+
+            });
+
+            //第三页的确定按钮
+            $("#btn_part3").click(function () {
+                var pwd = $("#password").val();
+                var repwd = $("#repassword").val();
+                var p = /^(?![A-Za-z]+$)(?![A-Z0-9]+$)(?![a-z0-9]+$)(?![a-z\W_!@#$%^&*`~()-+=]+$)(?![A-Z\W_!@#$%^&*`~()-+=+$)(?![0-9\W_!@#$%^&*`~()-+=]+$)[a-zA-Z0-9\W_!@#$%^&*`~()-+=]{8,16}$/;
+                if (!p.test(pwd)) {
+                    alert("密码格式不规范")
+                    return;
+                }
+                // console.log(pwd)
+                // console.log(repwd)
+                if (pwd != repwd) {
+                    alert("重复密码错误")
+                    return;
+                }
+                var email = $("#txtemail").text()
+                var code = $("#verifyNo").val()
+                var password = pwd
+                $.ajax({
+                    url: '/bookread/reset/reader',
+                    type: 'post',
+                    data: {
+                        email,
+                        code,
+                        password
+                    },
+                    dataType: "json",
+                    success: function (data, status) {
+                        alert(data.message);
+                        if (data.result) {
+                            $(".part3").hide();
+                            $(".part4").show();
+                            $(".step li").eq(2).addClass("on");
+
+                        }else {
+                            return
+                        }
+                    }
+                })
+                new Countdown({
+                    maxTime: 10,
+                    ing: function (c) {
+                        $("#times").text(c);
+                    },
+                    after: function () {
+                        window.location.href = "/bookread/reader/login";
+                    }
+                });
+            });
+        });
+        function showoutc() { $(".m-sPopBg,.m-sPopCon").show(); }
+        function closeClause() {
+            $(".m-sPopBg,.m-sPopCon").hide();
+        }
+    </script>
+</body>
+
+</html>

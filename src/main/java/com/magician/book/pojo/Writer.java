@@ -13,7 +13,7 @@ public class Writer {
 
     private String telphone;
 
-    private String profit;
+    private Integer profit;
 
     private Integer writerStatus;
 
@@ -65,12 +65,12 @@ public class Writer {
         this.telphone = telphone == null ? null : telphone.trim();
     }
 
-    public String getProfit() {
+    public Integer getProfit() {
         return profit;
     }
 
-    public void setProfit(String profit) {
-        this.profit = profit == null ? null : profit.trim();
+    public void setProfit(Integer profit) {
+        this.profit = profit;
     }
 
     public Integer getWriterStatus() {

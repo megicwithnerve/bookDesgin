@@ -4,6 +4,7 @@ import com.magician.book.dao.AdminMapper;
 import com.magician.book.pojo.Admin;
 import com.magician.book.services.AdminService;
 import com.magician.book.utils.APIResult;
+import com.magician.book.utils.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +17,8 @@ public class AdminServiceImpl implements AdminService {
     AdminMapper adminMapper;
     @Override
     public APIResult queryByPwd(String loginName, String pwd) {
-        Long id = 1L;
         APIResult apiResult = null;
+        pwd = MD5Utils.StringInMd5(pwd);
         List<Admin> list = adminMapper.selectByEmailAndPwd(loginName,pwd);
         if(list.size() == 0) {
             apiResult = new APIResult("账号或密码错误", false, 200, null);

@@ -9,6 +9,26 @@ public class Setmeal {
 
     private Integer price;
 
+    private Integer isDel;
+
+    private String setmealName;
+
+    public String getSetmealName() {
+        return setmealName;
+    }
+
+    public void setSetmealName(String setmealName) {
+        this.setmealName = setmealName;
+    }
+
+    public Integer getIsDel() {
+        return isDel;
+    }
+
+    public void setIsDel(Integer isDel) {
+        this.isDel = isDel;
+    }
+
     public Integer getSetmealId() {
         return setmealId;
     }

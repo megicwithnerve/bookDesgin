@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head lang="en">
+    <meta charset="utf-8" />
+    <title>个人信息</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/reader/css/public.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/reader/css/mygrxx.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/reader/css/proList.css}" />
+    <link rel="stylesheet" th:href="@{/reader/css/lycss.css}" type="text/css" />
+    <link rel="stylesheet" th:href="@{/reader/css/zxf_page.css}" type="text/css" />
+
+</head>
+
+<body>
+    <div th:include="reader/header::header-nav(${bookKind},${reader})"></div>
+    <div class="Bott">
+        <div class="wrapper clearfix">
+            <div class="zuo fl">
+                <h3>
+                    <p class="clearfix"><span class="fl" th:text="${reader.username}"></span></p>
+                </h3>
+                <div>
+                    <h4>账户管理</h4>
+                    <ul>
+                        <li><a href="/bookread/reader/myinfo">个人信息</a></li>
+                        <li><a href="/bookread/reader/editpassword">修改密码</a></li>
+                    </ul>
+                    <h4>个人中心</h4>
+                    <ul>
+                        <li><a href="/bookread/reader/buyrecord">购买记录</a></li>
+                        <li><a href="/bookread/reader/order">我的充值</a></li>
+                        <li class="on"><a href="/bookread/reader/orderrecord">充值记录</a></li>
+                    </ul>
+
+                </div>
+            </div>
+            <div class="you fl">
+                <div class="table">
+                    <div class="tr">
+                        <div>交易方式</div>
+                        <div>充值点数</div>
+                        <div>赠送点数</div>
+                        <div>单价</div>
+                        <div>订单状态</div>
+                    </div>
+                    <div class="th" th:each="item,recordStat : ${record.data}">
+                        <div class="price" style="">支付宝</div>
+                        <div class="price" th:text="${item.ticketNumber}"></div>
+                        <div class="price" th:text="${item.discount}"></div>
+                        <div class="price sAll" th:text="${item.price}"></div>
+                        <div th:if="${item.status} eq 1" class="price" >支付成功</div>
+                        <div th:if="${item.status} eq 0" class="price" >待支付</div>
+                        <div th:if="${item.status} eq 2" class="price" >支付失败</div>
+                    </div>
+
+                    <div class="tr clearfix">
+
+                    </div>
+                    <div class="zxf_pagediv"></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+   
+
+   <!--footer-->
+   <div th:replace="reader/footer::footer-fragment"></div>
+    <!--<script th:src="@{/reader/js/jquery-1.12.4.min.js}" type="text/javascript" charset="utf-8"></script>-->
+    <script th:src="@{/reader/js/jquery-1.9.1.min.js}"></script>
+    <script th:src="@{/reader/js/zxf_page.js}"></script>
+</body>
+<script>
+    var indexpage = [[${ record.indexpage }]];
+    var pagessize = [[${ record.pagesize }]];
+    var countpages = [[${ record.countpage }]];
+    $(function () {
+        init()
+    })
+
+    function init() {
+        //翻页
+        $(".zxf_pagediv").createPage({
+            pageNum: countpages,
+            current: indexpage,
+            backfun: function (e) {
+                if (e.current > countpages) {
+
+                    return
+                }
+                if (e.current == 0) {
+                    e.current = 1
+                }
+                pageGet(e.current);
+            }
+        });
+
+
+    }
+    function pageGet(indexpage) {
+        if(indexpage <= 0 || indexpage >  countpages){
+            return;
+        }
+        var url = `/bookread/reader/orderrecord?indexpage=${indexpage}&pagesize=${pagessize}`
+        location.href = url;
+    }
+</script>
+</html>

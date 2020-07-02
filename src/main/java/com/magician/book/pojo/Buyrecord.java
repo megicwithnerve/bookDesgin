@@ -16,7 +16,15 @@ public class Buyrecord {
 
     private Integer price;
 
-    private Date cratedtime;
+    private Date createdtime;
+
+    public Integer getReaderId() {
+        return readerId;
+    }
+
+    public void setReaderId(Integer readerId) {
+        this.readerId = readerId;
+    }
 
     public Integer getBuyrecordId() {
         return buyrecordId;
@@ -58,11 +66,11 @@ public class Buyrecord {
         this.price = price;
     }
 
-    public Date getCratedtime() {
-        return cratedtime;
+    public Date getCreatedtime() {
+        return createdtime;
     }
 
-    public void setCratedtime(Date cratedtime) {
-        this.cratedtime = cratedtime;
+    public void setCreatedtime(Date createdtime) {
+        this.createdtime = createdtime;
     }
 }

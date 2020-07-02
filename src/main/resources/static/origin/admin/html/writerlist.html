@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-L-admin1.0</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+        content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="../css/font.css">
+    <link rel="stylesheet" href="../css/xadmin.css">
+    <link rel="stylesheet" href="../css/zxf_page.css">
+    <script src="../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/xadmin.js"></script>
+    <script type="text/javascript" src="../js/zxf_page.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div class="x-nav">
+        <span class="layui-breadcrumb">
+
+            <a>
+                <cite>作者列表</cite></a>
+        </span>
+
+        <a class="layui-btn layui-btn-primary layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+            href="javascript:location.replace(location.href);" title="刷新">
+            <i class="layui-icon" style="line-height:38px">ဂ</i></a>
+    </div>
+    <div class="x-body">
+        <div class="layui-row">
+
+            <form class=" x-so" style="float: left;" onsubmit="return false">
+                <input type="text" id="searchName" name="" placeholder="请输入笔名" autocomplete="off" class="layui-input">
+                <button class="layui-btn" onclick=" searchWriter()" lay-filter="sreach"><i
+                        class="layui-icon">&#xe615;</i></button>
+            </form>
+        </div>
+        <!-- <xblock style="display: block;">
+                <button class="layui-btn" onclick="showAddRow()"><i class="layui-icon"></i>添加</button>
+          
+                <form class=" x-so" style="float: right;" onsubmit="return false">
+                  <input type="text" id="searchName" name="" placeholder="请输入章节名" autocomplete="off" class="layui-input">
+                  <button class="layui-btn" onclick=" search()" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+                </form>
+          
+              </xblock> -->
+        <table class="layui-table">
+            <thead>
+                <tr>
+
+                    <th>ID</th>
+                    <th>笔名</th>
+                    <th>真名</th>
+                    <th>邮箱</th>
+                    <th>支付宝</th>
+                    <th>收益</th>
+                    <th>状态</th>
+                    <th>操作</th>
+            </thead>
+            <tbody id="writerBody">
+
+            </tbody>
+        </table>
+        <div class="zxf_pagediv"></div>
+
+    </div>
+    <script>
+        var indexpage = 1;
+        var pagesize = 10;
+        var searchName = null;
+        $(document).ready(function () {
+
+            // 开始写 jQuery 代码...
+            init(indexpage, pagesize);
+            // console.log("提示")
+
+        });
+
+        function init(index, pagesize) {
+            var data = {
+                indexpage: index,
+                pagesize: pagesize,
+                searchName: null,
+                status: null
+            }
+            $.ajax({
+                type: "POST",
+                url: "/bookread/admin/searchWriter",
+                data: data,
+                dataType: "json",
+                success: function (data) {
+                    putData(data);
+                    pages(data);
+                }
+            });
+        };
+
+        function pages(pager) {
+
+            //翻页
+            $(".zxf_pagediv").createPage({
+                pageNum: pager.countpage,
+                current: pager.indexpage,
+                backfun: function (e) {
+                    if (e.current > pager.countpage) {
+                        return;
+                    }
+                    if (e.current == 0) {
+                        e.current = 1;
+                    }
+                    pageGet(e.current, pager.pagesize);
+                }
+            });
+
+
+        };
+
+        function pageGet(indexpage, pagesize) {
+            var data = {
+                indexpage: indexpage,
+                pagesize: pagesize,
+                searchName: searchName,
+                status: null
+            }
+            $.ajax({
+                type: "POST",
+                url: "/bookread/admin/searchWriter",
+                data: data,
+                dataType: "json",
+                success: function (data) {
+                    putData(data);
+                    pages(data);
+
+                }
+            });
+        };
+
+        function putData(pager) {
+            var body = $("#writerBody");
+            body.empty();
+            for (var i of pager.data) {
+                var btn = "";
+                var statusName;
+                if (i.writerStatus == 0) {
+                    statusName = "<span class='layui-btn-disabled layui-btn layui-btn-warm layui-btn-radius'>待审核</span>";
+                } else if (i.writerStatus == 1) {
+                    statusName = "<span class='layui-btn layui-btn-warm layui-btn-radius'>已启用</span>";
+                    btn = ` <a title="禁用" class="layui-btn layui-btn-sm layui-btn-normal"  onclick="writer_stop(this,${i.writerId})" href="javascript:;">
+                            禁用
+                            </a>`
+                } else {
+                    statusName = "<span class='layui-btn-disabled layui-btn layui-btn-warm layui-btn-radius'>已禁用</span>";
+                    btn = ` <a title="启用" class="layui-btn layui-btn-sm layui-btn-normal"  onclick="writer_start(this,${i.writerId})" href="javascript:;">
+                            启用
+                            </a>`
+                }
+                var tr = ` 
+                <tr>
+                    <td>${i.writerId}</td>
+                    <td>${i.writerName}</td>
+                    <td>${i.realName}</td>
+                    <td>${i.email}</td>
+                    <td>${i.telphone}</td>
+                    <td>${i.profit}</td>
+                    <td class="td-status">
+                        ${statusName}
+                    </td>
+                    <td class="td-manage">
+                            <a onclick="showbooklist(${i.writerId})" class="layui-btn layui-btn-sm layui-btn-primary" href="javascript:;"  title="查看书架">
+              查看书架
+              </a>
+              ${btn}
+              
+                    </td>
+                </tr>`;
+                body.append(tr);
+            }
+        };
+
+        function showbooklist(writerId) {
+            window.sessionStorage.writerId = writerId;
+            window.sessionStorage.writerindexpage = indexpage;
+            window.location.href = "./booklist.html";
+        }
+
+        function searchWriter(){
+            searchName = $("#searchName").val();
+            pageGet(1,pagesize);
+        }
+    </script>
+    <script>
+
+     
+
+        /*用户-封号*/
+        function writer_stop(obj, id) {
+            layer.confirm('确认禁用吗？', function (index) {
+
+                var data = {
+                    writerId: id,
+                    writerStatus: 2
+                }
+                //发异步把用户状态进行更改
+                $.ajax({
+                    type: "POST",
+                    url: "/bookread/admin/editWriter",
+                    data: data,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.result == true) {
+                            $(obj).attr('title', '禁用')
+                            $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已禁用');
+                            var btn = $(obj).parents("tr").find(".td-manage").find('a')[1];
+                            btn = $(btn)
+                            var click = btn.attr("onclick").replace("stop", "start");
+                            btn.attr("onclick", click)
+                            btn.html('启用')
+                            layer.msg('已禁用!', { icon: 5, time: 1000 });
+                        } else {
+                            layer.msg('修改失败!', { icon: 5, time: 1000 });
+                        }
+                    }
+                });
+
+
+
+
+
+            });
+        }
+
+        /*用户-解封*/
+        function writer_start(obj, id) {
+            layer.confirm('确认启用吗？', function (index) {
+
+
+                var data = {
+                    writerId: id,
+                    writerStatus: 1
+                }
+                //发异步把用户状态进行更改
+                $.ajax({
+                    type: "POST",
+                    url: "/bookread/admin/editWriter",
+                    data: data,
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.result == true) {
+                            $(obj).attr('title', '禁用')
+
+                            $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
+
+                            var btn = $(obj).parents("tr").find(".td-manage").find('a')[1];
+                            btn = $(btn)
+                            var click = btn.attr("onclick").replace("start", "stop");
+                            btn.attr("onclick", click)
+                            btn.html('禁用')
+                            layer.msg('已启用', { icon: 1, time: 1000 });
+                        } else {
+                            layer.msg('修改失败!', { icon: 5, time: 1000 });
+                        }
+                    }
+                });
+
+
+
+            });
+        }
+
+        
+
+
+    </script>
+</body>
+
+</html>

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class BuyrecordEntiy implements Serializable {
+
     private Integer buyrecordId;
 
     private Book book;
@@ -14,7 +15,7 @@ public class BuyrecordEntiy implements Serializable {
 
     private Integer price;
 
-    private Date cratedtime;
+    private Date createdtime;
 
     public Integer getBuyrecordId() {
         return buyrecordId;
@@ -56,11 +57,23 @@ public class BuyrecordEntiy implements Serializable {
         this.price = price;
     }
 
-    public Date getCratedtime() {
-        return cratedtime;
+    public Date getCreatedtime() {
+        return createdtime;
     }
 
-    public void setCratedtime(Date cratedtime) {
-        this.cratedtime = cratedtime;
+    public void setCreatedtime(Date createdtime) {
+        this.createdtime = createdtime;
+    }
+
+    @Override
+    public String toString() {
+        return "BuyrecordEntiy{" +
+                "buyrecordId=" + buyrecordId +
+                ", book=" + book +
+                ", chapter=" + chapter +
+                ", writer=" + writer +
+                ", price=" + price +
+                ", createdtime=" + createdtime +
+                '}';
     }
 }

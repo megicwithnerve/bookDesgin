@@ -6,9 +6,11 @@
     <result column="ticket_number" jdbcType="INTEGER" property="ticketNumber" />
     <result column="discount" jdbcType="INTEGER" property="discount" />
     <result column="price" jdbcType="INTEGER" property="price" />
+    <result column="is_del" jdbcType="INTEGER" property="isDel" />
+    <result column="setmeal_name" jdbcType="VARCHAR" property="setmealName" />
   </resultMap>
   <sql id="Base_Column_List">
-    setmeal_id, ticket_number, discount, price
+    setmeal_id, ticket_number, discount, price,is_del,setmeal_name
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -22,9 +24,9 @@
   </delete>
   <insert id="insert" parameterType="com.magician.book.pojo.Setmeal">
     insert into tb_setmeal (setmeal_id, ticket_number, discount, 
-      price)
+      price,is_del,setmeal_name)
     values (#{setmealId,jdbcType=INTEGER}, #{ticketNumber,jdbcType=INTEGER}, #{discount,jdbcType=INTEGER}, 
-      #{price,jdbcType=INTEGER})
+      #{price,jdbcType=INTEGER},#{isDel,jdbcType=INTEGER},#{setmealName,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.magician.book.pojo.Setmeal">
     insert into tb_setmeal
@@ -41,6 +43,12 @@
       <if test="price != null">
         price,
       </if>
+      <if test="isDel != null">
+        is_del,
+      </if>
+      <if test="setmealName != null">
+        setmeal_name,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="setmealId != null">
@@ -54,6 +62,12 @@
       </if>
       <if test="price != null">
         #{price,jdbcType=INTEGER},
+      </if>
+      <if test="isDel != null">
+        #{isDel,jdbcType=INTEGER},
+      </if>
+      <if test="setmealName != null">
+        #{setmealName,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -69,6 +83,12 @@
       <if test="price != null">
         price = #{price,jdbcType=INTEGER},
       </if>
+      <if test="isDel != null">
+        is_del = #{isDel,jdbcType=INTEGER},
+      </if>
+      <if test="setmealName != null">
+        setmeal_name = #{setmealName,jdbcType=VARCHAR},
+      </if>
     </set>
     where setmeal_id = #{setmealId,jdbcType=INTEGER}
   </update>
@@ -76,13 +96,22 @@
     update tb_setmeal
     set ticket_number = #{ticketNumber,jdbcType=INTEGER},
       discount = #{discount,jdbcType=INTEGER},
-      price = #{price,jdbcType=INTEGER}
+      price = #{price,jdbcType=INTEGER},
+      is_del = #{isDel,jdbcType=INTEGER},
+      setmeal_name = #{setmealName,jdbcType=VARCHAR}
     where setmeal_id = #{setmealId,jdbcType=INTEGER}
   </update>
+
   <select id="getList"  resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from tb_setmeal
+    <if test="isDel != null">
+      where is_del = 1
+    </if>
+    <if test="offset != null and limit != null">
 
+      limit #{offset},#{limit}
+    </if>
   </select>
 </mapper>

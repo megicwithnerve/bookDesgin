@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>我的书架</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="stylesheet" th:href="@{/reader/js/layer/skin/espresso/style.css}" type="text/css" />
+    <style>
+        .new_chapter {
+            padding: 15px 10px;
+            min-height: 400px;
+            height: auto !important;
+            height: 400px;
+            color: #787878;
+            background-color: #fff;
+            font-size: 12px;
+        }
+
+        .new_chapter .second_tab {
+            line-height: 32px;
+        }
+
+        .fr {
+            float: right;
+            display: inline;
+        }
+
+        .fl {
+            float: left;
+            display: inline;
+        }
+
+        .new_chapter b {
+            color: #b01f2e;
+            font-weight: bold;
+            font-family: "微软雅黑";
+            font-size: 14px;
+            padding: 0 2px;
+        }
+
+        .cl15 {
+            height: 15px;
+            clear: both;
+            overflow: hidden;
+            font-size: 0;
+            line-height: 0;
+        }
+
+        .new_chapter .casehead {
+            height: 40px;
+            line-height: 40px;
+            background: #e4e8ea;
+            overflow: hidden;
+        }
+
+        .new_chapter .casehead span,
+        .new_chapter .main_con li span {
+            height: 40px;
+            color: #4b7b9c;
+            float: left;
+            text-align: center;
+            display: block;
+        }
+
+        ul,
+        ol {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .new_chapter ul li {
+            height: 40px;
+            line-height: 40px;
+            overflow: hidden;
+            border-top-width: 1px;
+            border-top-style: solid;
+            border-top-color: rgb(213, 216, 220);
+            background-color: rgb(245, 245, 245);
+        }
+
+        .new_chapter ul li a {
+            color: #e14391;
+            text-decoration: none;
+        }
+
+        .pagenumber {
+            padding: 20px 25px 0 9px;
+            line-height: 25px;
+        }
+
+        .clear {
+            zoom: 1;
+        }
+
+        .clear:before,
+        .clear:after {
+            display: table;
+            content: '';
+        }
+
+        .clear:after {
+            clear: both;
+        }
+
+        .sq {
+            width: 232px;
+        }
+
+        .sq a {
+            color: #b32938 !important;
+        }
+
+        .lb {
+            width: 78px
+        }
+
+        .lb a {
+            color: #333 !important;
+        }
+        .layui-layer-close {
+            background: url(/bookread/reader/js/layer/skin/espresso/close.png);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="new_chapter" id="collection">
+        <div class="second_tab">
+            <!--您的书架可收藏 20本小说-->
+        </div>
+        <div class="cl15"></div>
+        <div class="tabpane">
+            <div class="con" >
+                <div class="casehead">
+                    <span style="width:78px">类别</span>
+                    <span style="width:154px">书名</span>
+                    <span style="width:154px">作者</span>
+                    <span style="width:232px">上次看到</span>
+                    <span style="width:146px">操作</span>
+                </div>
+                <ul id="zuijin" class="main_con">
+                    <li th:each="item,collectionStat : ${collections.data}" th:id="${item.collectionId}">
+                        <span class="lb">
+                        <a th:href="'/bookread/reader/bookKind/'+${item.book.bookKind}" target="_blank" th:text="${item.book.bookKind}"></a>
+                        </span>
+                        <span style="width:154px">
+                            <a th:href="'/bookread/reader/bookinfo/'+${item.book.bookId}" target="_blank" th:text="${item.book.bookName}" ></a>
+                        </span>
+                        <span style="width:154px">
+                        <a th:href="'/bookread/reader/writer/'+${item.book.writerId}" target="_blank" th:text="${item.book.writerName}"></a>
+                        </span>
+                        <span class="sq">
+                            <a th:if="${item.chapter.chapterId} ne null" th:href="'/bookread/reader/chapter/'+${item.chapter.chapterId}" target="_blank" th:text="${item.chapter.chapterNumber}+' '+ ${item.chapter.chapterName}"></a>
+                        <!--[[${item.chapter.chapterId}]]-->
+                        </span>
+                        <span style="width:56px">
+                            <a href="#" th:onclick="'del('+${item.collectionId}+')'">移除</a>
+                        </span>
+                        <span style="width:90px">
+                            <b>
+                            <a href="#" th:onclick="'showbookmark('+${item.collectionId}+')'">查看书签</a>
+                            </b>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+
+        </div>
+    </div>
+    <div class="new_chapter" id="bookmark" style="display: none;">
+        <div class="second_tab" >
+            <a href="#" onclick="showcollection()"> 返回书架</a>
+        </div>
+        <div class="cl15"></div>
+        <div class="tabpane">
+            <div class="con" >
+                <div class="casehead">
+                    <span style="width:154px"> </span>
+                    <span style="width:78px">序号</span>
+                    <span style="width:232px">书签记录</span>
+                    <span style="width:146px">操作</span>
+                </div>
+                <ul class="main_con" id="bookmarkul">
+
+                </ul>
+            </div>
+
+
+        </div>
+    </div>
+</body>
+
+<script th:src="@{/reader/js/jquery-1.9.1.min.js}"></script>
+<script>
+    function del(collectionId) {
+
+        $.ajax({
+            url: '/bookread/reader/delmybook',
+            type: 'post',
+            data: {
+                collectionId
+            },
+            dataType: "json",
+            success: function (data, status) {
+                alert(data.message);
+                if(data.result == true){
+                    var id = "#"+collectionId;
+                    $(id).hide();
+                }
+            }
+        });
+
+    }
+
+    function showbookmark(collectionId) {
+        console.log(collectionId)
+        var indexpage = 1;
+        var pagesize = 5;
+        $.ajax({
+            url: '/bookread/reader/mybookmark',
+            type: 'post',
+            data: {
+                collectionId,
+                indexpage,
+                pagesize
+            },
+            dataType: "json",
+            success: function (data, status) {
+                bookmarkdata(data.data);
+                $("#collection").hide();
+                $("#bookmark").show();
+            }
+        });
+
+    }
+
+    function bookmarkdata(data) {
+        var ul = $("#bookmarkul");
+        for(var item of data){
+            let li = `<li id="${item.bookmarkId}">
+                         <span style="width:154px"> </span>
+                        <span class="lb">
+                        <a href="" target="_blank" >1</a>
+                        </span>
+                        <span class="sq">
+                            <a  href="/bookread/reader/chapter/${item.chapter.chapterId}" target="_blank" >${item.chapter.chapterNumber}  ${item.chapter.chapterName}</a>
+                        </span>
+                        <span style="width:146px">
+                            <a href="#" onclick="delbookmark(${item.bookmarkId})">移除</a>
+                        </span>
+                    </li>
+                    `;
+            ul.append(li);
+        }
+    }
+
+    function showcollection() {
+        $("#collection").show();
+        $("#bookmark").hide();
+    }
+
+    function delbookmark(bookmarkId) {
+
+        $.ajax({
+            url: '/bookread/reader/delbookmark',
+            type: 'post',
+            data: {
+                bookmarkId
+            },
+            dataType: "json",
+            success: function (data, status) {
+                alert(data.message);
+                if(data.result == true){
+                    var id = "#"+bookmarkId;
+                    $(id).hide();
+                }
+            }
+        });
+
+    }
+</script>
+</html>

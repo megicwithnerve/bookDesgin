@@ -1,8 +1,13 @@
 package com.magician.book.controller;
 
+import com.magician.book.pojo.Admin;
+import com.magician.book.pojo.Reader;
 import com.magician.book.pojo.User;
+import com.magician.book.pojo.Writer;
 import com.magician.book.services.AdminService;
+import com.magician.book.services.ReaderService;
 import com.magician.book.services.UserService;
+import com.magician.book.services.WriterService;
 import com.magician.book.utils.APIResult;
 import com.magician.book.utils.LoginToken;
 import com.magician.book.utils.UserType;
@@ -10,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,85 +30,117 @@ import java.util.Map;
 @Controller
 public class Login {
 
-
-    @PostMapping("admin/login")
-    public APIResult login(@RequestParam("userName") String userName,
-                        @RequestParam("password") String password,
-                        HttpSession session){
-
-
-        if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)) {
-            session.setAttribute("errorMsg", "用户名或密码不能为空");
-            return new APIResult();
-        }
-
-
-        session.setAttribute("loginUser", "555555");
-        session.setAttribute("loginUserId", 22);
-
-        return new APIResult();
-    }
-
-
-    @PostMapping("/writer/login")
-    public APIResult writerlogin(@RequestParam("userName") String userName,
-                        @RequestParam("password") String password,
-                        HttpSession session){
-        if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)) {
-            session.setAttribute("errorMsg", "用户名或密码不能为空");
-            return new APIResult();
-        }
-        String kaptchaCode = session.getAttribute("verifyCode") + "";
-//        if (StringUtils.isEmpty(kaptchaCode) || !verifyCode.equals(kaptchaCode)) {
-//            session.setAttribute("errorMsg", "验证码错误");
-//            return "admin/login";
-//        }
-
-
-
-        return new APIResult();
-    }
-
-    @PostMapping("/reader/login")
-    public APIResult readerlogin(@RequestParam("userName") String userName,
-                                 @RequestParam("password") String password,
-                                 HttpSession session){
-        if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)) {
-            session.setAttribute("errorMsg", "用户名或密码不能为空");
-            return new APIResult();
-        }
-
-
-
-
-        return new APIResult();
-    }
-
+    @Autowired
+    WriterService writerService;
 
     @Autowired
     AdminService adminService;
 
-    @RequestMapping("/reader/loginout")
+    @Autowired
+    ReaderService readerService;
+
+    @Autowired
+    UserService userService;
+
+    @RequestMapping("login/admin")
     @ResponseBody
-    public APIResult loginout(){
-        System.out.println("2255");
-//        return "index.jsp";
-        return new APIResult();
+    public APIResult login(@RequestParam("loginName") String loginName,
+                        @RequestParam("password") String password,
+                        HttpSession session,
+                        HttpServletResponse response){
+
+        APIResult result = adminService.queryByPwd(loginName,password);
+        if(result.isResult()){
+            Admin admin = (Admin) result.getData();
+            LoginToken loginToken = new LoginToken();
+            loginToken.setUserType(UserType.admin);
+            loginToken.setObjid(admin.getAdminId());
+            loginToken.setObjPassworld(admin.getLoginPassword());
+            String token = userService.getToken(loginToken);
+
+
+            Cookie cookie = new Cookie("token", token);
+            cookie.setPath("/");
+            response.addCookie(cookie);
+        }
+
+        return result;
     }
 
-    @RequestMapping("/writer/loginout")
+
+    @RequestMapping("/login/writer")
     @ResponseBody
-    public APIResult writerloginout(){
-        System.out.println("2255");
-//        return "index.jsp";
-        return new APIResult();
+    public APIResult writerlogin(@RequestParam("email") String email,
+                        @RequestParam("password") String password,
+                        HttpSession session,
+                        HttpServletResponse response){
+
+        APIResult result = writerService.getWriterBypwd(email,password,session);
+        if(result.isResult()){
+            Writer writer = (Writer) result.getData();
+            LoginToken loginToken = new LoginToken();
+            loginToken.setUserType(UserType.writer);
+            loginToken.setObjid(Long.valueOf(writer.getWriterId()));
+            loginToken.setObjPassworld(writer.getPassword());
+            String token = userService.getToken(loginToken);
+
+
+            Cookie cookie = new Cookie("token", token);
+            cookie.setPath("/");
+            response.addCookie(cookie);
+        }
+
+        return result;
     }
-    @RequestMapping("/admin/loginout")
+
+    @RequestMapping("/login/reader")
     @ResponseBody
-    public APIResult adminloginout(){
-        System.out.println("2255");
-//        return "index.jsp";
-        return new APIResult();
+    public APIResult readerlogin(@RequestParam("email") String email,
+                                 @RequestParam("password") String password,
+                                 HttpSession session,
+                                 HttpServletResponse response){
+        APIResult result = readerService.queryByPwd(email,password,session);
+        if(result.isResult()){
+            Reader reader = (Reader) result.getData();
+            LoginToken loginToken = new LoginToken();
+            loginToken.setUserType(UserType.reader);
+            loginToken.setObjid(Long.valueOf(reader.getReaderId()));
+            loginToken.setObjPassworld(reader.getPassword());
+            String token = userService.getToken(loginToken);
+
+            System.out.println(token);
+            Cookie cookie = new Cookie("token", token);
+            cookie.setPath("/");
+            response.addCookie(cookie);
+        }
+
+        return result;
+    }
+
+
+
+
+    @RequestMapping("/loginout/reader")
+    public String loginout(HttpServletResponse response){
+        Cookie cookie = new Cookie("token",null);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        return "redirect:/reader/login";
+    }
+
+    @RequestMapping("/loginout/writer")
+    public String writerloginout(HttpServletResponse response){
+        Cookie cookie = new Cookie("token",null);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        return "redirect:/origin/writer/login.html";
+    }
+    @RequestMapping("/loginout/admin")
+    public String adminloginout(HttpServletResponse response){
+        Cookie cookie = new Cookie("token",null);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+        return "redirect:/origin/admin/login.html";
     }
 
     //重置密码
@@ -113,19 +151,31 @@ public class Login {
      * @param response
      * @return
      */
-    @Autowired
-    UserService userService;
 
-    @RequestMapping(value = "/reader/getCode", method = RequestMethod.POST)
+
+    @RequestMapping(value = "/getCode/reader", method = RequestMethod.POST)
     @ResponseBody
-    public String readergetCode(String entity, HttpServletRequest request, HttpServletResponse response) throws MessagingException {
-        return userService.getCode(null);
+    public APIResult readergetCode(String email) throws MessagingException {
+        System.out.println(email);
+        return userService.sendEmail(email,0);
     }
 
-    @RequestMapping(value = "/writer/getCode", method = RequestMethod.POST)
+    @RequestMapping(value = "/getCode/writer", method = RequestMethod.POST)
     @ResponseBody
-    public String writergetCode(String entity, HttpServletRequest request, HttpServletResponse response) throws MessagingException {
-        return userService.getCode(null);
+    public APIResult writergetCode(String email) throws MessagingException {
+        return userService.sendEmail(email,1);
+    }
+
+    @RequestMapping(value = "/reset/reader", method = RequestMethod.POST)
+    @ResponseBody
+    public APIResult readerReset(String email,String code,String password) throws MessagingException {
+        return userService.resetPassword(email,0,code,password);
+    }
+
+    @RequestMapping(value = "/reset/writer", method = RequestMethod.POST)
+    @ResponseBody
+    public APIResult writerReset(String email,String code) throws MessagingException {
+        return userService.sendEmail(email,0);
     }
 
 

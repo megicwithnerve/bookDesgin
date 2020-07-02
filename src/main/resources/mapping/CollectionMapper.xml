@@ -6,7 +6,7 @@
     <result column="book_id" jdbcType="INTEGER" property="bookId" />
     <result column="reader_id" jdbcType="INTEGER" property="readerId" />
     <result column="chapter_id" jdbcType="INTEGER" property="chapterId" />
-    <result column="updateTime" jdbcType="DATE" property="updatetime" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
   </resultMap>
   <sql id="Base_Column_List">
     collection_id, book_id, reader_id, chapter_id, updateTime
@@ -25,7 +25,7 @@
     insert into tb_collection (collection_id, book_id, reader_id, 
       chapter_id, updateTime)
     values (#{collectionId,jdbcType=INTEGER}, #{bookId,jdbcType=INTEGER}, #{readerId,jdbcType=INTEGER}, 
-      #{chapterId,jdbcType=INTEGER}, #{updatetime,jdbcType=DATE})
+      #{chapterId,jdbcType=INTEGER}, #{updatetime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.magician.book.pojo.BookCollection">
     insert into tb_collection
@@ -60,7 +60,7 @@
         #{chapterId,jdbcType=INTEGER},
       </if>
       <if test="updatetime != null">
-        #{updatetime,jdbcType=DATE},
+        #{updatetime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -77,7 +77,7 @@
         chapter_id = #{chapterId,jdbcType=INTEGER},
       </if>
       <if test="updatetime != null">
-        updateTime = #{updatetime,jdbcType=DATE},
+        updateTime = #{updatetime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where collection_id = #{collectionId,jdbcType=INTEGER}
@@ -87,17 +87,70 @@
     set book_id = #{bookId,jdbcType=INTEGER},
       reader_id = #{readerId,jdbcType=INTEGER},
       chapter_id = #{chapterId,jdbcType=INTEGER},
-      updateTime = #{updatetime,jdbcType=DATE}
+      updateTime = #{updatetime,jdbcType=TIMESTAMP}
     where collection_id = #{collectionId,jdbcType=INTEGER}
   </update>
-  <select id="getCollectionList"  resultMap="BaseResultMap">
-  select
-  <include refid="Base_Column_List" />
-  from tb_collection
-  where reader_id = #{readerId,jdbcType=INTEGER}
-    <if test="offset != null and limit != null">
-      limit #{offset},#{limit}
-    </if>
-</select>
+  <!--<select id="getCollectionList"  resultMap="BaseResultMap">-->
+  <!--select-->
+  <!--<include refid="Base_Column_List" />-->
+  <!--from tb_collection-->
+  <!--where reader_id = #{readerId,jdbcType=INTEGER}-->
+    <!--<if test="offset != null and limit != null">-->
+      <!--limit #{offset},#{limit}-->
+    <!--</if>-->
+<!--</select>-->
+
+  <resultMap type="com.magician.book.pojo.BookCollectionEntity" id="resultBookCollectionMap">
+    <id column="collection_id" jdbcType="INTEGER" property="collectionId" />
+    <result column="reader_id" jdbcType="INTEGER" property="readerId" />
+    <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    <association  property="book" javaType="com.magician.book.pojo.Book">
+      <id column="book_id" jdbcType="INTEGER" property="bookId" />
+      <result column="book_image" jdbcType="VARCHAR" property="bookImage" />
+      <result column="book_name" jdbcType="VARCHAR" property="bookName" />
+      <result column="book_info" jdbcType="VARCHAR" property="bookInfo" />
+      <result column="word_number" jdbcType="INTEGER" property="wordNumber" />
+      <result column="price" jdbcType="INTEGER" property="price" />
+      <result column="writer_name" jdbcType="VARCHAR" property="writerName" />
+      <result column="writer_id" jdbcType="INTEGER" property="writerId" />
+      <result column="book_status" jdbcType="INTEGER" property="bookStatus" />
+      <result column="message" jdbcType="VARCHAR" property="message" />
+      <result column="clicks" jdbcType="INTEGER" property="clicks" />
+      <result column="thumbs" jdbcType="INTEGER" property="thumbs" />
+      <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+      <result column="book_kind" jdbcType="VARCHAR" property="bookKind" />
+    </association >
+    <association property="chapter" javaType="com.magician.book.pojo.Chapter">
+      <id column="chapter_id" jdbcType="INTEGER" property="chapterId" />
+      <result column="chapter_number" jdbcType="VARCHAR" property="chapterNumber" />
+      <result column="chapter_name" jdbcType="VARCHAR" property="chapterName" />
+      <result column="price" jdbcType="INTEGER" property="price" />
+      <result column="book_id" jdbcType="INTEGER" property="bookId" />
+      <result column="book_name" jdbcType="VARCHAR" property="bookName" />
+      <result column="writer_id" jdbcType="INTEGER" property="writerId" />
+      <result column="chapter_status" jdbcType="INTEGER" property="chapterStatus" />
+      <result column="vip_chapter" jdbcType="INTEGER" property="vipChapter" />
+      <result column="message" jdbcType="VARCHAR" property="message" />
+      <result column="createdTime" jdbcType="TIMESTAMP" property="createdtime" />
+      <result column="updateTime" jdbcType="TIMESTAMP" property="updatetime" />
+    </association>
+  </resultMap>
+
+  <select id="getCollectionList"  resultMap="resultBookCollectionMap">
+    select * from tb_collection co
+    left join tb_book b on co.book_id = b.book_id
+    left join tb_chapter c on co.chapter_id = c.chapter_id
+    where co.reader_id = #{readerId,jdbcType=INTEGER} and b.book_status = 1
+  <if test="offset != null and limit != null">
+  limit #{offset},#{limit}
+  </if>
+  </select>
+  <select id="getCollectionByReadIdBookId"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_collection
+    where reader_id = #{readerId,jdbcType=INTEGER}
+    and book_id = #{bookId,jdbcType=INTEGER}
+  </select>
 
 </mapper>

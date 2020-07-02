@@ -1,6 +1,7 @@
 package com.magician.book.controller;
 
 import com.aliyun.oss.OSSClient;
+import com.magician.book.utils.APIResult;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -30,23 +31,12 @@ public class Oss {
     //上传图片 文件
     @RequestMapping("/addp.do")
     @ResponseBody
-    public String addp(@RequestParam("file") MultipartFile file,
-                       @RequestParam("objectName") String objectName) throws IOException {//
-        System.out.println(endpoint);
+    public APIResult addp(@RequestParam("file") MultipartFile  file,
+                          @RequestParam("objectName") String objectName) throws IOException {//
         this.ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
-        // String objectName="1.jpg";
-        //String content = "bookroom";
-        //System.out.printf(objectName);
-        //System.out.printf(map);
-        // ByteArrayInputStream c = content.
-
-//        System.out.printf("vvvv");
-        System.out.printf(file.getName());
-
         ossClient.putObject(bucketName, "image/zsj/"+objectName,new ByteArrayInputStream(file.getBytes()));
         ossClient.shutdown();
-        System.out.println();
-        return "上传成功";
+        return new APIResult("上传成功",true,200);
     }
 
     @RequestMapping("/up.do")

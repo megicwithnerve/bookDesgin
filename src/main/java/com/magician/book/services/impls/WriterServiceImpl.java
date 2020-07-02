@@ -10,11 +10,13 @@ import com.magician.book.pojo.Book;
 import com.magician.book.pojo.Writer;
 import com.magician.book.services.WriterService;
 import com.magician.book.utils.APIResult;
+import com.magician.book.utils.MD5Utils;
 import com.magician.book.utils.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Service
@@ -32,11 +34,11 @@ public class WriterServiceImpl implements WriterService {
     public APIResult getWriterInfoById(Integer writerId) {
         APIResult apiResult = null;
 
-        Writer writer = writerMapper.selectByPrimaryKey(1);
+        Writer writer = writerMapper.selectByPrimaryKey(writerId);
         if(writer == null){
             apiResult = new APIResult("查找失败",false,200,null);
         }else {
-            apiResult = new APIResult("查找失败",true,200,writer);
+            apiResult = new APIResult("查找成功",true,200,writer);
         }
         return apiResult;
     }
@@ -47,6 +49,7 @@ public class WriterServiceImpl implements WriterService {
         APIResult apiResult = null;
 
         Integer result = writerMapper.updateByPrimaryKeySelective(writer);
+        System.out.println(result);
         if(writer == null){
             apiResult = new APIResult("更新失败",false,200,null);
         }else {
@@ -57,14 +60,26 @@ public class WriterServiceImpl implements WriterService {
 
     //作者登录
     @Override
-    public APIResult getWriterBypwd(String email, String pwd) {
+    public APIResult getWriterBypwd(String email, String pwd, HttpSession session) {
         APIResult apiResult = null;
+        pwd = MD5Utils.StringInMd5(pwd);
+        Writer writer = null;
+        writer = writerMapper.getByEmailPwd(email,pwd);
 
-        Writer writer = writerMapper.getByEmailPwd(email,pwd);
+
         if(writer == null){
-            apiResult = new APIResult("查找失败",false,200,null);
+            apiResult = new APIResult("账号密码错误",false,500,null);
         }else {
-            apiResult = new APIResult("查找失败",true,200,writer);
+            if(writer.getWriterStatus() == 1){
+                apiResult = new APIResult("登录成功",true,200,writer);
+                session.setAttribute("writerId",writer.getWriterId());
+            }else if(writer.getWriterStatus() == 0){
+                apiResult = new APIResult("账号待审核",false,500,writer);
+            }else {
+                apiResult = new APIResult("账号已封禁，请联系管理员",false,500,writer);
+
+            }
+
         }
         return apiResult;
     }
@@ -78,6 +93,10 @@ public class WriterServiceImpl implements WriterService {
         if(list.size() != 0){
             return new APIResult("邮箱重复",false,200,null);
         }
+        String password = MD5Utils.StringInMd5(writer.getPassword());
+        writer.setPassword(password);
+        writer.setProfit(0);
+        writer.setWriterStatus(0);
         Integer result = writerMapper.insertSelective(writer);
 
         if(result == 0){
@@ -85,7 +104,7 @@ public class WriterServiceImpl implements WriterService {
         }else {
             apiResult = new APIResult("注册成功,请等待审核",true,200,null);
         }
-        return null;
+        return apiResult;
     }
 
     @Override
@@ -115,5 +134,30 @@ public class WriterServiceImpl implements WriterService {
     @Override
     public Pager getWriterMessage(Integer writerId) {
         return null;
+    }
+
+    @Override
+    public APIResult updatePwd(String oldpwd, String newpwd, String repwd, Integer writerId) {
+        APIResult apiResult = null;
+        if(!newpwd.equals(repwd)){
+            return new APIResult("新密码与重复密码不正确！",false,500,null);
+        }
+        oldpwd = MD5Utils.StringInMd5(oldpwd);
+        newpwd = MD5Utils.StringInMd5(newpwd);
+        Writer writer = writerMapper.selectByPrimaryKey(writerId);
+        if(writer == null){
+            apiResult = new APIResult("用户不存在,请重新登录",false,500,null);
+        }else if(!writer.getPassword().equals(oldpwd)){
+            apiResult = new APIResult("原密码错误",false,500,null);
+        }else{
+            writer.setPassword(newpwd);
+            Integer result = writerMapper.updateByPrimaryKeySelective(writer);
+            if(result == 0){
+                apiResult = new APIResult("密码不符合规范",false,500,null);
+            }else {
+                apiResult = new APIResult("修改成功",true,200,null);
+            }
+        }
+        return apiResult;
     }
 }

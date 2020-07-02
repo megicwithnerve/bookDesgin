@@ -10,7 +10,27 @@
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="out_trade_no" jdbcType="VARCHAR" property="outTradeNo" />
     <result column="trade_no" jdbcType="VARCHAR" property="tradeNo" />
-    <result column="createdTime" jdbcType="DATE" property="createdtime" />
+    <result column="createdTime" jdbcType="TIMESTAMP" property="createdtime" />
+  </resultMap>
+
+  <resultMap id="ResultEntityMap" type="com.magician.book.pojo.RechargeRecordEntity">
+    <id column="rechargerecord_id" jdbcType="INTEGER" property="rechargerecordId" />
+    <result column="ticket_number" jdbcType="INTEGER" property="ticketNumber" />
+    <result column="discount" jdbcType="INTEGER" property="discount" />
+    <result column="price" jdbcType="INTEGER" property="price" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="out_trade_no" jdbcType="VARCHAR" property="outTradeNo" />
+    <result column="trade_no" jdbcType="VARCHAR" property="tradeNo" />
+    <result column="createdTime" jdbcType="TIMESTAMP" property="createdtime" />
+    <association property="reader" javaType="com.magician.book.pojo.Reader">
+      <id column="reader_id" jdbcType="INTEGER" property="readerId" />
+      <!--<result column="email" jdbcType="VARCHAR" property="email" />-->
+      <!--<result column="password" jdbcType="VARCHAR" property="password" />-->
+      <result column="username" jdbcType="VARCHAR" property="username" />
+      <!--<result column="telphone" jdbcType="VARCHAR" property="telphone" />-->
+      <!--<result column="balance" jdbcType="VARCHAR" property="balance" />-->
+      <!--<result column="reader_status" jdbcType="VARCHAR" property="readerStatus" />-->
+    </association>
   </resultMap>
   <sql id="Base_Column_List">
     rechargerecord_id, reader_id, ticket_number, discount, price, status, out_trade_no, 
@@ -33,7 +53,7 @@
       )
     values (#{rechargerecordId,jdbcType=INTEGER}, #{readerId,jdbcType=INTEGER}, #{ticketNumber,jdbcType=INTEGER}, 
       #{discount,jdbcType=INTEGER}, #{price,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
-      #{outTradeNo,jdbcType=VARCHAR}, #{tradeNo,jdbcType=VARCHAR}, #{createdtime,jdbcType=DATE}
+      #{outTradeNo,jdbcType=VARCHAR}, #{tradeNo,jdbcType=VARCHAR}, #{createdtime,jdbcType=TIMESTAMP}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.magician.book.pojo.Rechargerecord">
@@ -93,7 +113,7 @@
         #{tradeNo,jdbcType=VARCHAR},
       </if>
       <if test="createdtime != null">
-        #{createdtime,jdbcType=DATE},
+        #{createdtime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -122,7 +142,7 @@
         trade_no = #{tradeNo,jdbcType=VARCHAR},
       </if>
       <if test="createdtime != null">
-        createdTime = #{createdtime,jdbcType=DATE},
+        createdTime = #{createdtime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where rechargerecord_id = #{rechargerecordId,jdbcType=INTEGER}
@@ -136,16 +156,38 @@
       status = #{status,jdbcType=INTEGER},
       out_trade_no = #{outTradeNo,jdbcType=VARCHAR},
       trade_no = #{tradeNo,jdbcType=VARCHAR},
-      createdTime = #{createdtime,jdbcType=DATE}
+      createdTime = #{createdtime,jdbcType=TIMESTAMP}
     where rechargerecord_id = #{rechargerecordId,jdbcType=INTEGER}
   </update>
 
   <select id="getRechargerecord"  resultMap="BaseResultMap">
+  select
+  <include refid="Base_Column_List" />
+  from tb_rechargerecord
+  where reader_id = #{readerId,jdbcType=INTEGER}
+  order by createdTime desc
+  <if test="offset != null and limit != null">
+    limit #{offset},#{limit}
+  </if>
+</select>
+  <select id="selectByGradeNo"  resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from tb_rechargerecord
-    where reader_id = #{readerId,jdbcType=INTEGER}
-    order by cratedTime desc
+    where out_trade_no = #{outTradeNo,jdbcType=VARCHAR}
+
+  </select>
+
+  <select id="getRechargerecordByAdmin"  resultMap="ResultEntityMap">
+    select
+    *
+    from tb_rechargerecord r1,tb_reader r2
+    where r2.username like #{readerName,jdbcType=VARCHAR}
+    and r1.reader_id = r2.reader_id
+    <if test="startTime != null and endTime != null">
+     and r1.createdTime between #{startTime,jdbcType=VARCHAR} and #{endTime,jdbcType=VARCHAR}
+    </if>
+    order by createdTime desc
     <if test="offset != null and limit != null">
       limit #{offset},#{limit}
     </if>

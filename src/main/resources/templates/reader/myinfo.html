@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head lang="en">
+    <meta charset="utf-8" />
+    <title>个人信息</title>
+    <link rel="stylesheet" th:href="@{/reader/css/lycss.css}" type="text/css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/reader/css/public.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/reader/css/mygrxx.css}" />
+</head>
+
+<body>
+<div th:include="reader/header::header-nav(${bookKind},${reader})"></div>
+    <div class="Bott">
+        <div class="wrapper clearfix">
+            <div class="zuo fl">
+                <h3>
+                    <p class="clearfix"><span class="fl" th:text="${reader.username}"></span></p>
+                </h3>
+                <div>
+                    <h4>账户管理</h4>
+                    <ul>
+                        <li class="on"><a href="/bookread/reader/myinfo">个人信息</a></li>
+                        <li><a href="/bookread/reader/editpassword">修改密码</a></li>
+                    </ul>
+                    <h4>个人中心</h4>
+                    <ul>
+                        <li><a href="/bookread/reader/buyrecord">购买记录</a></li>
+                        <li><a href="/bookread/reader/order">我的充值</a></li>
+                        <li><a href="/bookread/reader/orderrecord">充值记录</a></li>
+                    </ul>
+
+                </div>
+            </div>
+            <div class="you fl">
+                <h2>个人信息</h2>
+                <div class="gxin">
+                    <!--<div class="tx">-->
+                        <!--<a href="#"><img src="img/tx.png" />-->
+                            <!--<p id="avatar">修改头像</p>-->
+                        <!--</a></div>-->
+                    <div class="xx">
+                        <h3 class="clearfix"><strong class="fl">基础资料</strong><a href="#" class="fr" id="edit1">编辑</a>
+                        </h3>
+                        <div th:text="'姓名：'+${reader.username}"></div>
+                        <div th:text="'手机号：'+${reader.telphone}"></div>
+                        <div th:text="'余额：'+${reader.balance}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--遮罩-->
+    <div class="mask"></div>
+    <!--编辑弹框-->
+    <div class="bj">
+        <!--<div class="clearfix"><a href="#" class="fr gb">-->
+            <!--<img src="img/icon4.png" /></a>-->
+        <!--</div>-->
+        <h3>编辑基础资料</h3>
+        <form action="#" method="get">
+            <p><label>姓名：</label><input id="username" type="text" th:value="${reader.username}" /></p>
+            <p><label>手机号：</label><input id="telphone" type="text" th:value="${reader.telphone}" /></p>
+            <!--<p>-->
+                <!--<label>性别：</label>-->
+                <!--<span><input type="radio" />男</span>-->
+                <!--<span><input type="radio" />女</span>-->
+            <!--</p>-->
+            <div class="">
+                <input type="button" onclick="saveinfo()"  value="保存" />
+                <input type="button" class="gb" value="取消" />
+            </div>
+        </form>
+    </div>
+    <!--高级设置修改-->
+    <!--<div class="xg">-->
+        <!--<div class="clearfix"><a href="#" class="fr gb"><img src="img/icon4.png" /></a></div>-->
+        <!--<h3>切换账号地区</h3>-->
+        <!--<form action="#" method="get">-->
+            <!--<p><label>姓名：</label><input type="text" value="六六六" /></p>-->
+            <!--<div class="bc">-->
+                <!--<input type="button" value="保存" />-->
+                <!--<input type="button" value="取消" />-->
+            <!--</div>-->
+        <!--</form>-->
+    <!--</div>-->
+    <!--修改头像-->
+    <!--<div class="avatar">-->
+        <!--<div class="clearfix"><a href="#" class="fr gb"><img src="img/icon4.png" /></a></div>-->
+        <!--<h3>修改头像</h3>-->
+        <!--<form action="#" method="get">-->
+            <!--<h4>请上传图片</h4>-->
+            <!--<input type="button" value="上传头像" />-->
+            <!--<p>jpg或png，大小不超过2M</p>-->
+            <!--<input type="submit" value="提交" />-->
+        <!--</form>-->
+    <!--</div>-->
+
+
+   
+
+   <!--footer-->
+   <div th:replace="reader/footer::footer-fragment"></div>
+    <script th:src="@{/reader/js/jquery-1.9.1.min.js}" type="text/javascript" charset="utf-8"></script>
+    <script>
+        $(function(){
+            $("#edit1").click(function(){
+                $(".mask").show();
+                $(".bj").show();
+            });
+
+            $(".gb").click(function(){
+                $(".mask").hide();
+                $(".bj").hide();
+                // $(".xg").hide();
+                // $(".remima").hide();
+                // $(".avatar").hide();
+                // $(".pj").hide();
+                // $(".chak").hide();
+            });
+        })
+
+        function saveinfo() {
+
+            var username = $("#username").val();
+            var telphone = $("#telphone").val();
+            var data = {
+                username,
+                telphone
+            }
+
+            $.ajax({
+                url: '/bookread/reader/updateinfo',
+                type: 'post',
+                data: data,
+                dataType: "json",
+                success: function (data, status) {
+                    alert(data.message);
+                    if(data.result){
+                        location.href = "/bookread/reader/myinfo";
+                    }
+
+                }
+            })
+        }
+    </script>
+</body>
+
+</html>

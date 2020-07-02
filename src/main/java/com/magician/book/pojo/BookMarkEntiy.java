@@ -6,7 +6,7 @@ package com.magician.book.pojo;
 public class BookMarkEntiy implements java.io.Serializable{
     private Integer bookmarkId;
 
-    private BookCollection bookCollection;
+    private Integer collectionId;
 
     private Chapter chapter;
 
@@ -18,12 +18,12 @@ public class BookMarkEntiy implements java.io.Serializable{
         this.bookmarkId = bookmarkId;
     }
 
-    public BookCollection getBookCollection() {
-        return bookCollection;
+    public Integer getBookCollectionId() {
+        return collectionId;
     }
 
-    public void setBookCollection(BookCollection bookCollection) {
-        this.bookCollection = bookCollection;
+    public void setBookCollectionId(Integer collectionId) {
+        this.collectionId = collectionId;
     }
 
     public Chapter getChapter() {

@@ -10,6 +10,8 @@ import com.magician.book.pojo.Writer;
 import com.magician.book.utils.APIResult;
 import com.magician.book.utils.Pager;
 
+import javax.servlet.http.HttpSession;
+
 public interface WriterService {
 
     public APIResult getWriterInfoById(Integer writerId);
@@ -18,7 +20,7 @@ public interface WriterService {
     public APIResult updateWriterInfo(Writer writer);
 
     //登录
-    public APIResult getWriterBypwd(String email,String pwd);
+    public APIResult getWriterBypwd(String email, String pwd, HttpSession session);
 
     //注册
     public APIResult insertWriter(Writer writer);
@@ -32,6 +34,6 @@ public interface WriterService {
     //获取发给作者的消息
     public Pager getWriterMessage(Integer writerId);
 
-
+    public APIResult updatePwd(String oldpwd,String newpwd,String repwd,Integer writerId);
 
 }

@@ -14,7 +14,7 @@
     <result column="message" jdbcType="VARCHAR" property="message" />
     <result column="clicks" jdbcType="INTEGER" property="clicks" />
     <result column="thumbs" jdbcType="INTEGER" property="thumbs" />
-    <result column="createTime" jdbcType="DATE" property="createtime" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
     <result column="book_kind" jdbcType="VARCHAR" property="bookKind" />
   </resultMap>
   <sql id="Base_Column_List">
@@ -41,7 +41,7 @@
       #{bookInfo,jdbcType=VARCHAR}, #{wordNumber,jdbcType=INTEGER}, #{price,jdbcType=INTEGER},
       #{writerName,jdbcType=VARCHAR}, #{writerId,jdbcType=INTEGER}, #{bookStatus,jdbcType=INTEGER},
       #{message,jdbcType=VARCHAR}, #{clicks,jdbcType=INTEGER}, #{thumbs,jdbcType=INTEGER},
-      #{createtime,jdbcType=DATE}, #{bookKind,jdbcType=VARCHAR})
+      #{createtime,jdbcType=TIMESTAMP}, #{bookKind,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.magician.book.pojo.Book">
     insert into tb_book
@@ -127,7 +127,7 @@
         #{thumbs,jdbcType=INTEGER},
       </if>
       <if test="createtime != null">
-        #{createtime,jdbcType=DATE},
+        #{createtime,jdbcType=TIMESTAMP},
       </if>
       <if test="bookKind != null">
         #{bookKind,jdbcType=VARCHAR},
@@ -192,7 +192,7 @@
       message = #{message,jdbcType=VARCHAR},
       clicks = #{clicks,jdbcType=INTEGER},
       thumbs = #{thumbs,jdbcType=INTEGER},
-      createTime = #{createtime,jdbcType=DATE},
+      createTime = #{createtime,jdbcType=TIMESTAMP},
       book_kind = #{bookKind,jdbcType=VARCHAR}
     where book_id = #{bookId,jdbcType=INTEGER}
   </update>
@@ -201,14 +201,20 @@
     <include refid="Base_Column_List" />
     from tb_book
     <where>
+      <if test=" writerId != null">
+        and writer_id = #{writerId,jdbcType=INTEGER}
+      </if>
+      <if test=" bookStatus != null">
+        and book_status = #{bookStatus,jdbcType=INTEGER}
+      </if>
       <if test="kind != null">
-        book_kind like #{kind,jdbcType=VARCHAR}
+       and book_kind like #{kind,jdbcType=VARCHAR}
       </if>
       <if test="bookname != null">
-        book_name like #{bookname,jdbcType=VARCHAR}
+       and book_name like #{bookname,jdbcType=VARCHAR}
       </if>
       <if test="writername != null">
-        writer_name like #{bookname,jdbcType=VARCHAR}
+       and writer_name like #{bookname,jdbcType=VARCHAR}
       </if>
     </where>
     <if test="clicks != null">
@@ -226,6 +232,16 @@
     select
     <include refid="Base_Column_List" />
     from tb_book
-    where writer_id = #{writerId,jdbcType=INTEGER}
+    <where>
+      <if test="writerId != null">
+        and writer_id = #{writerId,jdbcType=INTEGER}
+      </if>
+      <if test=" bookStatus != null">
+        and book_status = #{bookStatus,jdbcType=INTEGER}
+      </if>
+    </where>
+    <if test="offset != null and limit != null">
+      limit #{offset},#{limit}
+    </if>
   </select>
 </mapper>

@@ -6,8 +6,42 @@
     <result column="book_id" jdbcType="INTEGER" property="bookId" />
     <result column="reader_id" jdbcType="INTEGER" property="readerId" />
     <result column="parent_id" jdbcType="INTEGER" property="parentId" />
-    <result column="createTime" jdbcType="DATE" property="createtime" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
     <result column="comment_status" jdbcType="INTEGER" property="commentStatus" />
+  </resultMap>
+  <resultMap id="BaseCollectionMap" type="com.magician.book.pojo.CommentBackEntity">
+    <id column="comment_id" jdbcType="INTEGER" property="commentId" />
+    <result column="book_id" jdbcType="INTEGER" property="bookId" />
+    <result column="context" jdbcType="LONGVARCHAR" property="context" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="comment_status" jdbcType="INTEGER" property="commentStatus" />
+    <association  property="reader" javaType="com.magician.book.pojo.Reader">
+      <id column="reader_id" jdbcType="INTEGER" property="readerId" />
+      <result column="email" jdbcType="VARCHAR" property="email" />
+      <result column="password" jdbcType="VARCHAR" property="password" />
+      <result column="username" jdbcType="VARCHAR" property="username" />
+      <result column="telphone" jdbcType="VARCHAR" property="telphone" />
+      <result column="balance" jdbcType="VARCHAR" property="balance" />
+      <result column="reader_status" jdbcType="VARCHAR" property="readerStatus" />
+    </association >
+  </resultMap>
+  <resultMap id="CommentEntityResultMap" type="com.magician.book.pojo.CommentEntity">
+    <id column="comment_id" jdbcType="INTEGER" property="commentId" />
+    <result column="book_id" jdbcType="INTEGER" property="bookId" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="context" jdbcType="LONGVARCHAR" property="context" />
+    <association  property="reader" javaType="com.magician.book.pojo.Reader">
+      <id column="reader_id" jdbcType="INTEGER" property="readerId" />
+      <result column="email" jdbcType="VARCHAR" property="email" />
+      <result column="password" jdbcType="VARCHAR" property="password" />
+      <result column="username" jdbcType="VARCHAR" property="username" />
+      <result column="telphone" jdbcType="VARCHAR" property="telphone" />
+      <result column="balance" jdbcType="VARCHAR" property="balance" />
+      <result column="reader_status" jdbcType="VARCHAR" property="readerStatus" />
+    </association >
+
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.magician.book.pojo.Comment">
     <result column="context" jdbcType="LONGVARCHAR" property="context" />
@@ -30,12 +64,12 @@
     delete from tb_comment
     where comment_id = #{commentId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.magician.book.pojo.Comment">
+  <insert id="insert" useGeneratedKeys="true" keyProperty="comment_id" parameterType="com.magician.book.pojo.Comment">
     insert into tb_comment (comment_id, book_id, reader_id, 
       parent_id, createTime, comment_status, 
       context)
     values (#{commentId,jdbcType=INTEGER}, #{bookId,jdbcType=INTEGER}, #{readerId,jdbcType=INTEGER}, 
-      #{parentId,jdbcType=INTEGER}, #{createtime,jdbcType=DATE}, #{commentStatus,jdbcType=INTEGER}, 
+      #{parentId,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, #{commentStatus,jdbcType=INTEGER},
       #{context,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.magician.book.pojo.Comment">
@@ -77,7 +111,7 @@
         #{parentId,jdbcType=INTEGER},
       </if>
       <if test="createtime != null">
-        #{createtime,jdbcType=DATE},
+        #{createtime,jdbcType=TIMESTAMP},
       </if>
       <if test="commentStatus != null">
         #{commentStatus,jdbcType=INTEGER},
@@ -100,7 +134,7 @@
         parent_id = #{parentId,jdbcType=INTEGER},
       </if>
       <if test="createtime != null">
-        createTime = #{createtime,jdbcType=DATE},
+        createTime = #{createtime,jdbcType=TIMESTAMP},
       </if>
       <if test="commentStatus != null">
         comment_status = #{commentStatus,jdbcType=INTEGER},
@@ -116,7 +150,7 @@
     set book_id = #{bookId,jdbcType=INTEGER},
       reader_id = #{readerId,jdbcType=INTEGER},
       parent_id = #{parentId,jdbcType=INTEGER},
-      createTime = #{createtime,jdbcType=DATE},
+      createTime = #{createtime,jdbcType=TIMESTAMP},
       comment_status = #{commentStatus,jdbcType=INTEGER},
       context = #{context,jdbcType=LONGVARCHAR}
     where comment_id = #{commentId,jdbcType=INTEGER}
@@ -126,8 +160,27 @@
     set book_id = #{bookId,jdbcType=INTEGER},
       reader_id = #{readerId,jdbcType=INTEGER},
       parent_id = #{parentId,jdbcType=INTEGER},
-      createTime = #{createtime,jdbcType=DATE},
+      createTime = #{createtime,jdbcType=TIMESTAMP},
       comment_status = #{commentStatus,jdbcType=INTEGER}
     where comment_id = #{commentId,jdbcType=INTEGER}
   </update>
+
+  <select id="selectCommentEntity" parameterType="java.lang.Integer" resultMap="CommentEntityResultMap">
+    select *
+    from tb_comment c1
+    left join tb_reader r1
+    on c1.reader_id = r1.reader_id
+    where c1.parent_id = 0 and c1.book_id = #{bookId,jdbcType=INTEGER}
+    order by createTime desc
+    <if test="offset != null and limit != null">
+      limit #{offset},#{limit}
+    </if>
+  </select>
+  <select id="selectBackCommentEntity" parameterType="java.lang.Integer" resultMap="BaseCollectionMap">
+    select *
+    from tb_comment c1
+    left join tb_reader r1
+    on c1.reader_id = r1.reader_id and book_id = #{bookId,jdbcType=INTEGER}
+    where c1.comment_id = and c1.parent_id ne 0
+  </select>
 </mapper>

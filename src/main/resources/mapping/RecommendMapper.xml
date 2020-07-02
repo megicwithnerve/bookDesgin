@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.magician.book.dao.RecommendMapper">
+
+  <resultMap id="BaseResultMap" type="com.magician.book.pojo.Recommend">
+    <id column="recommend_id" jdbcType="INTEGER" property="recommendId" />
+    <result column="book_id" jdbcType="INTEGER" property="bookId" />
+    <result column="level" jdbcType="INTEGER" property="level" />
+  </resultMap>
+
+
+  <sql id="Base_Column_List">
+    recommend_id, book_id, level
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_recommend
+    where recommend_id = #{recommendId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_recommend
+    where recommend_id = #{recommendId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.magician.book.pojo.Recommend">
+    insert into tb_recommend (recommend_id, book_id, level
+      )
+    values (#{recommendId,jdbcType=INTEGER}, #{bookId,jdbcType=INTEGER}, #{level,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.magician.book.pojo.Recommend">
+    insert into tb_recommend
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="recommendId != null">
+        recommend_id,
+      </if>
+      <if test="bookId != null">
+        book_id,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="recommendId != null">
+        #{recommendId,jdbcType=INTEGER},
+      </if>
+      <if test="bookId != null">
+        #{bookId,jdbcType=INTEGER},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.magician.book.pojo.Recommend">
+    update tb_recommend
+    <set>
+      <if test="bookId != null">
+        book_id = #{bookId,jdbcType=INTEGER},
+      </if>
+      <if test="level != null">
+        level = #{level,jdbcType=INTEGER},
+      </if>
+    </set>
+    where recommend_id = #{recommendId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.magician.book.pojo.Recommend">
+    update tb_recommend
+    set book_id = #{bookId,jdbcType=INTEGER},
+      level = #{level,jdbcType=INTEGER}
+    where recommend_id = #{recommendId,jdbcType=INTEGER}
+  </update>
+
+  <resultMap  type="com.magician.book.pojo.RecommendEntity" id="RecommendEntityResultMap">
+    <id column="recommend_id" jdbcType="INTEGER" property="recommendId" />
+    <result column="level" jdbcType="INTEGER" property="level" />
+    <association  property="book" javaType="com.magician.book.pojo.Book">
+      <id column="book_id" jdbcType="INTEGER" property="bookId" />
+      <result column="book_image" jdbcType="VARCHAR" property="bookImage" />
+      <result column="book_name" jdbcType="VARCHAR" property="bookName" />
+      <result column="book_info" jdbcType="VARCHAR" property="bookInfo" />
+      <result column="word_number" jdbcType="INTEGER" property="wordNumber" />
+      <result column="price" jdbcType="INTEGER" property="price" />
+      <result column="writer_name" jdbcType="VARCHAR" property="writerName" />
+      <result column="writer_id" jdbcType="INTEGER" property="writerId" />
+      <result column="book_status" jdbcType="INTEGER" property="bookStatus" />
+      <result column="message" jdbcType="VARCHAR" property="message" />
+      <result column="clicks" jdbcType="INTEGER" property="clicks" />
+      <result column="thumbs" jdbcType="INTEGER" property="thumbs" />
+      <result column="createTime" jdbcType="TIMESTAMP" property="createtime" />
+      <result column="book_kind" jdbcType="VARCHAR" property="bookKind" />
+    </association>
+  </resultMap>
+
+  <select id="getReconmmendById" parameterType="com.magician.book.pojo.Recommend" resultMap="RecommendEntityResultMap">
+    select *
+    from tb_recommend r
+    left join tb_book b
+    on r.book_id = b.book_id
+    where recommend_id = #{recommendId,jdbcType=INTEGER}
+
+  </select>
+  <select id="getReconmmendList" parameterType="java.lang.Integer" resultMap="RecommendEntityResultMap">
+    select *
+    from tb_recommend r
+    left join tb_book b
+    on r.book_id = b.book_id
+    <if test="type != null">
+      order by `level`
+    </if>
+    <if test="offset != null and limit != null">
+      limit #{offset},#{limit}
+    </if>
+
+  </select>
+</mapper>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head >
+    <meta charset="UTF-8">
+    <title>读者用户登录</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="Keywords" content="网站关键词">
+    <meta name="Description" content="网站介绍">
+    <link rel="stylesheet" th:href="@{/reader/css/base.css}">
+    <link rel="stylesheet" th:href="@{/reader/css/iconfont.css}">
+    <link rel="stylesheet" th:href="@{/reader/css/reg.css}">
+</head>
+<body>
+<div id="ajax-hook"></div>
+<div class="wrap">
+    <div class="wpn">
+        <div class="form-data pos">
+            <a href=""><img src="" class="head-logo"></a>
+            <div class="change-login">
+                <p class="account_number on">邮箱登录</p>
+            </div>
+            <div class="form1">
+                <p class="p-input pos">
+                    <label for="num"></label>
+                    <input type="text" id="num" placeholder="邮箱">
+                </p>
+                <p class="p-input pos">
+                    <label for="pass"></label>
+                    <!--<input type="password" style="display:none"/>-->
+                    <input type="password" id="pass" autocomplete="new-password" placeholder="请输入密码">
+                </p>
+                
+            </div>
+            
+            <div class="r-forget cl">
+                <a href="/bookread/reader/register" target="_bank" class="z">账号注册</a>
+                <a href="/bookread/reader/forget" target="_bank" class="y">忘记密码</a>
+            </div>
+            <button class="lang-btn log-btn" onclick="login()">登录</button>
+            <div class="third-party">
+               
+            </div>
+            <p class="right">电子书阅览系统</p>
+        </div>
+    </div>
+</div>
+
+</body>
+<script th:src="@{/reader/js/jquery-1.9.1.min.js}"></script>
+<script th:src="@{/reader/js/agree.js}"></script>
+<!--<script th:src="@{/reader/js/login.js}"></script>-->
+<script>
+    // $(function () {
+    //     // 登录点击事件
+    //
+    //
+    //         $(".log-btn").click(function(){
+    //
+    //             var email = $("#num").val().trim();
+    //             var password = $("#pass").val().trim();
+    //
+    //             if (email != "" && password != "") {
+    //                 var ldata = {email:email,password:pass};
+    //
+    //                 $.ajax({
+    //                     url: 'http:localhost:8080/bookread/login/reader',
+    //                     type: 'post',
+    //                     dataType: 'json',
+    //                     async: true,
+    //                     data: ldata,
+    //                     success:function(data){
+    //                         alert(data.msg);
+    //                         if (data.result) {
+    //                             // globalTip({'msg':'登录成功!','setTime':3,'jump':true,'URL':'http://www.ui.cn'});
+    //                             location.href = "/bookread/index"
+    //                         }
+    //                     },
+    //                     error:function(){
+    //
+    //                     }
+    //                 });
+    //             } else {
+    //                 return false;
+    //             }
+    //         });
+    //
+    //
+    //
+    //
+    //     // 登录的回车事件
+    //     $(window).keydown(function(event) {
+    //         if (event.keyCode == 13) {
+    //             $('.log-btn').trigger('click');
+    //         }
+    //     });
+    //
+    //
+    // })
+    function login() {
+        // console.log("ttt")
+        var email = $("#num").val().trim();
+        var password = $("#pass").val().trim();
+        var ldata = {email:email,password:password};
+        console.log(ldata);
+        if (email != "" && password != "") {
+
+
+            $.ajax({
+                url: '/bookread/login/reader',
+                type: 'post',
+                dataType: 'json',
+                data: ldata,
+                success:function(data){
+                    console.log(data)
+                    alert(data.message);
+                    if (data.result) {
+                        // globalTip({'msg':'登录成功!','setTime':3,'jump':true,'URL':'http://www.ui.cn'});
+                        location.href = "/bookread/index"
+                    }
+                },
+                error:function(){
+
+                }
+            });
+        } else {
+            alert("请输入");
+            return false;
+        }
+    }
+</script>
+</html>

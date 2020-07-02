@@ -3,6 +3,7 @@ package com.magician.book.pojo;
 import java.util.Date;
 
 public class Rechargerecord {
+
     private Integer rechargerecordId;
 
     private Integer readerId;
